@@ -12,9 +12,7 @@
       --bg1:#0a1020;
 
       --glass: rgba(255,255,255,.06);
-      --glass2: rgba(255,255,255,.045);
       --stroke: rgba(255,255,255,.10);
-      --stroke2: rgba(255,255,255,.14);
 
       --text:#f6f8ff;
       --muted: rgba(246,248,255,.70);
@@ -27,14 +25,13 @@
 
       --r-lg:26px;
       --r-md:20px;
-      --r-sm:16px;
 
       --safeT: env(safe-area-inset-top, 0px);
       --safeB: env(safe-area-inset-bottom, 0px);
       --safeL: env(safe-area-inset-left, 0px);
       --safeR: env(safe-area-inset-right, 0px);
 
-      --tap: 46px;
+      --tap: 48px;       /* удобная высота для touch */
       --sidebarW: 250px;
     }
 
@@ -64,63 +61,56 @@
       gap:14px;
       min-height: calc(100vh - 28px - var(--safeT) - var(--safeB));
     }
-
-    /* ✅ phone-first: на телефоне делаем 1 колонку */
+    /* ✅ адаптация под телефон */
     @media (max-width: 860px){
       .app{grid-template-columns: 1fr;}
       :root{ --sidebarW: 100%; }
     }
 
-    /* TOPBAR (glass) */
+    /* ✅ ШАПКА БОЛЬШЕ */
     .topbar{
       grid-column: 1 / -1;
       border:1px solid var(--stroke);
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.045));
+      background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.045));
       border-radius: var(--r-lg);
       box-shadow: var(--shadow);
-      padding:12px 12px;
+      padding: 18px 14px; /* было 12px */
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
       backdrop-filter: blur(14px);
       position: relative;
+      min-height: 86px; /* ✅ выше шапка */
     }
 
-    /* left slot */
-    .top-left{
+    .top-left, .top-right{
       display:flex;
       align-items:center;
       gap:10px;
-      min-width: 110px;
+      min-width: 120px;
     }
 
-    /* ✅ logo centered absolutely */
+    /* ✅ ЛОГО ПО ЦЕНТРУ + гарантированная видимость */
     .top-center{
       position:absolute;
       left:50%;
-      transform: translateX(-50%);
+      top:50%;
+      transform: translate(-50%, -50%);
       display:flex;
       align-items:center;
       justify-content:center;
       pointer-events:none;
+      width: min(70%, 320px);
     }
 
     .brand-logo{
-      height: 42px;
+      height: 54px;          /* ✅ крупнее */
       width: auto;
-      max-width: 190px;
+      max-width: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 12px 22px rgba(0,0,0,.35));
-    }
-
-    /* right slot */
-    .top-right{
-      display:flex;
-      align-items:center;
-      justify-content:flex-end;
-      gap:10px;
-      min-width: 110px;
+      display:block;
+      filter: drop-shadow(0 14px 26px rgba(0,0,0,.40));
     }
 
     .tbtn{
@@ -136,17 +126,21 @@
       backdrop-filter: blur(10px);
       white-space:nowrap;
     }
-    .tbtn.primary{
+
+    /* ✅ синие кнопки: текст белый */
+    .tbtn.primary,
+    .btn-blue{
       background: linear-gradient(180deg, rgba(43,108,255,.95), rgba(29,78,216,.85));
       border-color: rgba(43,108,255,.50);
-      color:#0b1020;
+      color:#ffffff; /* ✅ было тёмным */
       box-shadow: 0 12px 28px rgba(43,108,255,.22);
     }
+
     .chip-mini{
       border:1px solid var(--stroke);
       background: rgba(0,0,0,.18);
       color: var(--muted);
-      padding:8px 10px;
+      padding:10px 12px;
       border-radius: 16px;
       font-weight:900;
       font-size:12px;
@@ -155,7 +149,6 @@
       align-items:center;
     }
 
-    /* SIDEBAR */
     .sidebar{
       border:1px solid var(--stroke);
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
@@ -207,7 +200,6 @@
       box-shadow: 0 12px 26px rgba(43,108,255,.10);
     }
 
-    /* MAIN */
     .main{
       border:1px solid var(--stroke);
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
@@ -348,7 +340,6 @@
       text-align:center;
     }
 
-    /* Bottom bar */
     .cartbar{
       position: sticky;
       bottom: 0;
@@ -376,17 +367,12 @@
       font-size:14px;
       white-space:nowrap;
     }
-    .btn-blue{
-      background: linear-gradient(180deg, rgba(43,108,255,.95), rgba(29,78,216,.85));
-      color:#0b1020;
-    }
     .btn-ghost{
       background: rgba(255,255,255,.06);
       border:1px solid var(--stroke);
       color:var(--text);
     }
 
-    /* MODALS */
     .modal{
       position:fixed; inset:0;
       display:none; align-items:flex-end; justify-content:center;
@@ -402,7 +388,7 @@
       box-shadow: var(--shadow);
       padding:12px;
       backdrop-filter: blur(14px);
-      max-height: min(76vh, 640px);
+      max-height: min(78vh, 700px);
       overflow:auto;
       -webkit-overflow-scrolling: touch;
     }
@@ -442,15 +428,9 @@
         <div class="chip-mini" id="tgHint">Telegram</div>
       </div>
 
-      <!-- ✅ ЛОГО ПО ЦЕНТРУ -->
       <div class="top-center">
-        <picture>
-          <source srcset="logo.webp" type="image/webp">
-          <source srcset="logo.png" type="image/png">
-          <source srcset="logo.jpg" type="image/jpeg">
-          <img class="brand-logo" src="logo.png" alt="TG Studio Logo"
-               onerror="this.style.display='none';">
-        </picture>
+        <!-- ✅ исправление лого: пробуем 3 варианта + явный fallback -->
+        <img class="brand-logo" id="brandLogo" src="logo.png" alt="TG Studio Logo">
       </div>
 
       <div class="top-right">
@@ -558,23 +538,52 @@
   </div>
 
 <script>
-  // Telegram WebApp init (✅ раскрытие на весь экран)
+  // ✅ Telegram WebApp init: исправляем "50%" и закрытие при скролле
   const tg = window.Telegram?.WebApp;
   const tgHint = document.getElementById('tgHint');
 
   if (tg){
     tg.ready();
 
-    // 🔥 важно: разворачиваем WebApp полностью (убирает открытие "на 50%")
+    // Ключевое: раскрыть на весь экран
     tg.expand();
 
-    // Telegram Android/iOS: иногда помогает принудительный fullscreen (если доступно)
+    // Иногда помогает в новых клиентах (если доступно)
     try { tg.requestFullscreen(); } catch(e) {}
+
+    // Запрещаем "swipe-down to close" на iOS (если поддерживается)
+    try { tg.disableClosingConfirmation(); } catch(e) {}
 
     tgHint.textContent = "Telegram WebApp";
   } else {
     tgHint.textContent = "Web";
   }
+
+  // ✅ FIX LOGO: если logo.png нет — пробуем logo.jpg, logo.webp
+  (function fixLogo(){
+    const img = document.getElementById('brandLogo');
+    const variants = ["logo.png", "logo.jpg", "logo.webp"];
+    let i = 0;
+
+    function tryNext(){
+      if(i >= variants.length){
+        // если вообще не нашли — показываем текстовый fallback
+        img.alt = "TG Studio";
+        img.style.display = "none";
+        const holder = document.createElement("div");
+        holder.style.fontWeight = "1000";
+        holder.style.fontSize = "18px";
+        holder.style.color = "rgba(246,248,255,.92)";
+        holder.textContent = "TG Studio";
+        document.querySelector(".top-center").appendChild(holder);
+        return;
+      }
+      img.src = variants[i++];
+    }
+
+    img.onerror = tryNext;
+    // стартуем с текущего src; если он не существует — onerror сработает
+  })();
 
   // =========================
   // DATA
@@ -614,7 +623,6 @@
   let activeSub = DATA.categories[0].subs[0];
   const cart = new Map();
 
-  // UI refs
   const catList = document.getElementById('catList');
   const subPills = document.getElementById('subPills');
   const cardsEl = document.getElementById('cards');
@@ -628,11 +636,7 @@
 
   const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 
-  function cartCount(){
-    let c=0;
-    for (const q of cart.values()) c+=q;
-    return c;
-  }
+  function cartCount(){ let c=0; for (const q of cart.values()) c+=q; return c; }
   function cartTotal(){
     let t=0;
     for (const [id, qty] of cart.entries()){
@@ -650,9 +654,7 @@
     activeCat = catId;
     const cat = DATA.categories.find(c=>c.id===catId);
     activeSub = cat?.subs?.[0] || "";
-    renderCats();
-    renderSubs();
-    renderCards();
+    renderCats(); renderSubs(); renderCards();
   }
 
   function renderCats(){
@@ -679,11 +681,7 @@
       const p = document.createElement('button');
       p.className = "pill" + (s===activeSub ? " active" : "");
       p.textContent = s;
-      p.onclick = ()=>{
-        activeSub = s;
-        renderSubs();
-        renderCards();
-      };
+      p.onclick = ()=>{ activeSub = s; renderSubs(); renderCards(); };
       subPills.appendChild(p);
     });
   }
@@ -751,7 +749,6 @@
     renderTotals();
   }
 
-  // Modals
   function openModal(m){ m.style.display="flex"; }
   function closeModalById(id){ document.getElementById(id).style.display="none"; }
 
@@ -765,7 +762,6 @@
     });
   });
 
-  // Consult
   document.getElementById('btnConsult').onclick = ()=> openModal(mConsult);
 
   const cHint = document.getElementById('cHint');
@@ -785,14 +781,12 @@
       cHint.textContent = "⚠️ Открой в Telegram, чтобы отправить.";
       return;
     }
-    const payload = { source:"consult", name, contact, task, budget, deadline, ts: Date.now() };
-    tg.sendData(JSON.stringify(payload));
+    tg.sendData(JSON.stringify({ source:"consult", name, contact, task, budget, deadline, ts: Date.now() }));
     tg.HapticFeedback?.notificationOccurred?.("success");
     cHint.textContent = "✅ Отправлено!";
     setTimeout(()=>closeModalById("mConsult"), 450);
   };
 
-  // Request (cart)
   const cartItems = document.getElementById('cartItems');
   const cartSubtitle = document.getElementById('cartSubtitle');
   const cartHint = document.getElementById('cartHint');
@@ -867,8 +861,7 @@
       cartHint.textContent = "⚠️ Запрос пустой.";
       return;
     }
-    const payload = { source:"cart", items, total: cartTotal(), ts: Date.now() };
-    tg.sendData(JSON.stringify(payload));
+    tg.sendData(JSON.stringify({ source:"cart", items, total: cartTotal(), ts: Date.now() }));
     tg.HapticFeedback?.notificationOccurred?.("success");
     cartHint.textContent = "✅ Отправлено!";
     setTimeout(()=>closeModalById("mCart"), 450);
@@ -880,9 +873,8 @@
   };
 
   document.getElementById('btnShare').onclick = async ()=>{
-    const text = "TG Studio — professional Telegram bot and WebApp solution";
     const url = location.href;
-    if (navigator.share) { try { await navigator.share({ text, url }); } catch(e){} }
+    if (navigator.share) { try { await navigator.share({ url }); } catch(e){} }
     else { try { await navigator.clipboard.writeText(url); alert("Ссылка скопирована ✅"); } catch(e){ prompt("Скопируй ссылку:", url); } }
   };
 
@@ -890,10 +882,7 @@
     window.open("https://t.me/Yaki_Tahirov", "_blank");
   };
 
-  // init
-  renderCats();
-  renderSubs();
-  renderCards();
+  renderCats(); renderSubs(); renderCards();
 </script>
 </body>
 </html>
