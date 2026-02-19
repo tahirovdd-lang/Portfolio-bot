@@ -1,33 +1,41 @@
 import os
 import json
 import asyncio
+import logging
 from dotenv import load_dotenv
 
 from aiogram import Bot, Dispatcher, F
-from aiogram.enums import ParseMode
+from aiogram.filters import CommandStart
 from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton, WebAppInfo
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
+from aiogram.enums import ParseMode
+from aiogram.client.default import DefaultBotProperties
 
 load_dotenv()
+
+logging.basicConfig(level=logging.INFO)
 
 # ======================
 # CONFIG
 # ======================
-BOT_TOKEN = os.getenv("BOT_TOKEN", "")
+BOT_TOKEN = os.getenv("BOT_TOKEN", "").strip()
 ADMIN_ID = int(os.getenv("ADMIN_ID", "6013591658"))
-WEBAPP_URL = os.getenv("WEBAPP_URL", "https://tahirovdd-lang.github.io/Portfolio-bot/")
+WEBAPP_URL = os.getenv("WEBAPP_URL", "https://tahirovdd-lang.github.io/Portfolio-bot/").strip()
 
-BRAND_NAME = os.getenv("BRAND_NAME", "TG Studio — professional Telegram bot and WebApp solution")
-BOT_USERNAME = os.getenv("BOT_USERNAME", "@Ecosystem_portfolio_bot")
-PHONE = os.getenv("PHONE", "+998 (93) 746-00-22")
-EMAIL = os.getenv("EMAIL", "tahirov.dd@gmail.com")
-TG_CONTACT = os.getenv("TG_CONTACT", "@Yaki_Tahirov")
+BRAND_NAME = os.getenv("BRAND_NAME", "TG Studio — professional Telegram bot and WebApp solution").strip()
+BOT_USERNAME = os.getenv("BOT_USERNAME", "@Ecosystem_portfolio_bot").strip()
+PHONE = os.getenv("PHONE", "+998 (93) 746-00-22").strip()
+EMAIL = os.getenv("EMAIL", "tahirov.dd@gmail.com").strip()
+TG_CONTACT = os.getenv("TG_CONTACT", "@Yaki_Tahirov").strip()
 
 if not BOT_TOKEN:
     raise SystemExit("❌ BOT_TOKEN пустой. Заполни BOT_TOKEN в .env")
 
-bot = Bot(BOT_TOKEN, parse_mode=ParseMode.HTML)
+bot = Bot(
+    token=BOT_TOKEN,
+    default=DefaultBotProperties(parse_mode=ParseMode.HTML)
+)
 dp = Dispatcher()
 
 
@@ -95,7 +103,8 @@ class Lead(StatesGroup):
     deadline = State()
 
 
-@dp.message(F.text.in_({"/start", "start"}))
+# ✅ ВАЖНО: CommandStart() гарантированно ловит /start и /start@bot
+@dp.message(CommandStart())
 async def start_cmd(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(WELCOME, reply_markup=main_kb())
@@ -183,10 +192,6 @@ async def lead_deadline(message: Message, state: FSMContext):
 # ======================
 @dp.message(F.web_app_data)
 async def webapp_data_handler(message: Message):
-    """
-    WebApp отправляет JSON через Telegram.WebApp.sendData()
-    Aiogram получает в message.web_app_data.data
-    """
     raw = message.web_app_data.data or ""
     user = message.from_user
 
@@ -197,7 +202,7 @@ async def webapp_data_handler(message: Message):
 
     src = (payload.get("source") or "webapp").strip()
 
-    # 1) Консультация
+    # Консультация из WebApp
     if src in ("consult", "lead", "form"):
         name = (payload.get("name") or "—").strip()
         contact = (payload.get("contact") or "—").strip()
@@ -218,7 +223,7 @@ async def webapp_data_handler(message: Message):
         await message.answer("✅ Заявка отправлена из приложения! Я свяжусь с вами.", reply_markup=main_kb())
         return
 
-    # 2) Корзина / запрос
+    # Корзина / запрос
     if src == "cart":
         items = payload.get("items") or []
         total = payload.get("total") or 0
@@ -248,7 +253,7 @@ async def webapp_data_handler(message: Message):
         await message.answer("✅ Запрос отправлен! Я свяжусь с вами.", reply_markup=main_kb())
         return
 
-    # 3) fallback (если пришло неизвестное)
+    # fallback
     await bot.send_message(
         ADMIN_ID,
         "📩 <b>WebApp Data (unknown)</b>\n"
@@ -267,6 +272,7 @@ async def fallback(message: Message):
 # RUN
 # ======================
 async def main():
+    logging.info("✅ Bot started polling...")
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
