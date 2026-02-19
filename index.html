@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Портфолио — Telegram Dev</title>
+  <title>TG Studio — Portfolio</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root{
@@ -26,7 +26,7 @@
                   radial-gradient(900px 650px at 110% 10%, rgba(255,255,255,.05), transparent 55%),
                   var(--bg);
       color:var(--text);
-      padding: calc(16px + var(--safeT)) 16px calc(92px + var(--safeB));
+      padding: calc(16px + var(--safeT)) 16px calc(104px + var(--safeB));
     }
     .wrap{max-width:980px;margin:0 auto;}
     .top{
@@ -34,21 +34,23 @@
       padding:14px 14px; border:1px solid var(--stroke); background:var(--card);
       border-radius: var(--r); box-shadow: var(--shadow);
     }
-    .brand{display:flex; gap:12px; align-items:center;}
+    .brand{display:flex; gap:12px; align-items:center; min-width:0;}
     .logo{
       width:44px; height:44px; border-radius:14px;
       background: linear-gradient(135deg, rgba(212,160,23,.95), rgba(212,160,23,.35));
       display:flex; align-items:center; justify-content:center;
       color:#111; font-weight:900;
+      flex:0 0 auto;
     }
-    .h1{font-weight:900; font-size:18px; margin:0; line-height:1.15;}
-    .sub{margin:4px 0 0; color:var(--muted); font-size:13px;}
+    .h1{font-weight:900; font-size:16px; margin:0; line-height:1.15;}
+    .sub{margin:4px 0 0; color:var(--muted); font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
     .pill{
       border:1px solid var(--stroke);
       padding:8px 10px; border-radius:999px;
       color:var(--muted); font-size:12px;
       background: rgba(0,0,0,.15);
       white-space:nowrap;
+      flex:0 0 auto;
     }
 
     .grid{display:grid; grid-template-columns: 1.2fr .8fr; gap:14px; margin-top:14px;}
@@ -79,7 +81,7 @@
     }
     .ctitle{margin:0; font-weight:900; font-size:15px;}
     .cdesc{margin:4px 0 0; color:var(--muted); font-size:13px; line-height:1.35;}
-    .link{color: var(--accent); text-decoration:none; font-weight:700;}
+    .link{color: var(--accent); text-decoration:none; font-weight:800;}
 
     .list{display:flex; flex-direction:column; gap:10px;}
     .li{padding:10px 12px; border:1px solid var(--stroke); border-radius:16px; background: rgba(0,0,0,.10); color:var(--muted); font-size:13px; line-height:1.35;}
@@ -137,12 +139,12 @@
     <div class="top">
       <div class="brand">
         <div class="logo">TG</div>
-        <div>
-          <p class="h1">Telegram Dev — портфолио</p>
-          <p class="sub">Боты • WebApp • Интеграции • Дизайн</p>
+        <div style="min-width:0;">
+          <p class="h1">TG Studio — professional Telegram bot and WebApp solution</p>
+          <p class="sub">🤖 @Ecosystem_portfolio_bot • 📞 +998 (93) 746-00-22 • ✉️ tahirov.dd@gmail.com • TG @Yaki_Tahirov</p>
         </div>
       </div>
-      <div class="pill" id="hint">Открыто в Telegram</div>
+      <div class="pill" id="hint">WebApp</div>
     </div>
 
     <div class="grid">
@@ -152,12 +154,12 @@
       </div>
 
       <div class="card">
-        <p class="section-title">Что делаю</p>
+        <p class="section-title">Что я делаю</p>
         <div class="list">
-          <div class="li">🤖 Telegram-боты: заявки, меню, запись, продажи</div>
+          <div class="li">🤖 Telegram-боты: заявки, продажи, меню, запись</div>
           <div class="li">📱 Telegram WebApp: каталог, корзина, оплаты</div>
           <div class="li">🔌 Интеграции: Click/Payme, Instagram, Яндекс Карты, CRM</div>
-          <div class="li">🎨 Дизайн под iPhone/Android, аккуратная UX-логика</div>
+          <div class="li">📩 Контакт: <a class="link" href="https://t.me/Yaki_Tahirov" target="_blank" rel="noreferrer">@Yaki_Tahirov</a></div>
         </div>
       </div>
     </div>
@@ -165,7 +167,7 @@
 
   <div class="bottomBar">
     <div class="actions">
-      <button class="btn primary" id="btnLead">📝 Оставить заявку</button>
+      <button class="btn primary" id="btnLead">📝 Оставить заявку (в боте)</button>
       <button class="btn ghost" id="btnShare">🔗 Поделиться</button>
     </div>
   </div>
@@ -187,29 +189,31 @@
 
   <script>
     const tg = window.Telegram?.WebApp;
+    const hint = document.getElementById("hint");
     if (tg) {
       tg.ready();
       tg.expand();
-      document.getElementById("hint").textContent = "Telegram WebApp";
+      hint.textContent = "Telegram WebApp";
     } else {
-      document.getElementById("hint").textContent = "Web версия";
+      hint.textContent = "Web версия";
     }
 
+    // 👉 Замени здесь на свои реальные кейсы/ссылки (если нужно)
     const CASES = [
       {
         title: "🍷 Grand Cru — каталог Fine Wine & Spirits",
         desc: "WebApp каталог + поиск + карточки товаров + заявка менеджеру.",
-        link: "https://t.me/your_link"
+        link: "https://t.me/Ecosystem_portfolio_bot"
       },
       {
         title: "🍽️ Ресторан — меню/заказ",
         desc: "Категории, корзина, доставка/самовывоз, оплаты, мультиязык.",
-        link: "https://t.me/your_link"
+        link: "https://t.me/Ecosystem_portfolio_bot"
       },
       {
         title: "💈 Барбершоп — запись",
         desc: "Запись к мастерам, админ-режим, выходные, расписание.",
-        link: "https://t.me/your_link"
+        link: "https://t.me/Ecosystem_portfolio_bot"
       }
     ];
 
@@ -231,7 +235,6 @@
       }
       modal.style.display = "flex";
     }
-
     function closeModal(){ modal.style.display = "none"; }
 
     CASES.forEach(item=>{
@@ -252,20 +255,22 @@
     modal.addEventListener("click", (e)=>{ if(e.target === modal) closeModal(); });
 
     document.getElementById("btnLead").addEventListener("click", ()=>{
-      // Открываем чат с ботом и предлагаем оставить заявку в самом боте
-      // (в WebApp нельзя напрямую отправить админу без своего backend)
-      if (tg) tg.close();
-      else alert("Оставь заявку в боте: нажми '📝 Оставить заявку'");
+      // В WebApp лучше вести в бота (там форма заявки и отправка админу)
+      if (tg) {
+        tg.openTelegramLink("https://t.me/Ecosystem_portfolio_bot");
+      } else {
+        window.open("https://t.me/Ecosystem_portfolio_bot", "_blank");
+      }
     });
 
     document.getElementById("btnShare").addEventListener("click", async ()=>{
-      const text = "Моё портфолио Telegram-ботов и WebApp 👇";
+      const text = "TG Studio — professional Telegram bot and WebApp solution 👇";
+      const url = location.href;
       if (navigator.share) {
-        try { await navigator.share({ text, url: location.href }); } catch(e){}
+        try { await navigator.share({ text, url }); } catch(e){}
       } else {
-        try { await navigator.clipboard.writeText(location.href); alert("Ссылка скопирована ✅"); } catch(e){
-          prompt("Скопируй ссылку:", location.href);
-        }
+        try { await navigator.clipboard.writeText(url); alert("Ссылка скопирована ✅"); }
+        catch(e){ prompt("Скопируй ссылку:", url); }
       }
     });
   </script>
