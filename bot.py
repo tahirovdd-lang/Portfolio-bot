@@ -1,4 +1,5 @@
 import os
+import json
 import asyncio
 from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton, WebAppInfo
@@ -14,10 +15,10 @@ ADMIN_ID = int(os.getenv("ADMIN_ID", "0"))
 WEBAPP_URL = os.getenv("WEBAPP_URL", "")
 
 BRAND_NAME = os.getenv("BRAND_NAME", "TG Studio")
-BOT_USERNAME = os.getenv("BOT_USERNAME", "@your_bot")
-PHONE = os.getenv("PHONE", "+998 (__) ___-__-__")
-EMAIL = os.getenv("EMAIL", "mail@example.com")
-TG_CONTACT = os.getenv("TG_CONTACT", "@username")
+BOT_USERNAME = os.getenv("BOT_USERNAME", "@Ecosystem_portfolio_bot")
+PHONE = os.getenv("PHONE", "+998 (93) 746-00-22")
+EMAIL = os.getenv("EMAIL", "tahirov.dd@gmail.com")
+TG_CONTACT = os.getenv("TG_CONTACT", "@Yaki_Tahirov")
 
 if not BOT_TOKEN or not ADMIN_ID or not WEBAPP_URL:
     raise SystemExit("❌ Заполни BOT_TOKEN, ADMIN_ID, WEBAPP_URL в .env")
@@ -41,7 +42,7 @@ def main_kb() -> ReplyKeyboardMarkup:
 WELCOME = (
     f"👋 Привет! Это <b>{BRAND_NAME}</b>\n\n"
     "Я делаю <b>Telegram-ботов</b> и <b>Telegram WebApp</b> под бизнес.\n"
-    "Нажми <b>🚀 Открыть портфолио</b> — покажу кейсы и услуги.\n\n"
+    "Нажми <b>🚀 Открыть портфолио</b> — там кейсы и можно оставить заявку прямо в приложении.\n\n"
     f"🤖 Бот: <b>{BOT_USERNAME}</b>"
 )
 
@@ -76,6 +77,7 @@ CONTACTS = (
 )
 
 
+# ---------- Обычная заявка через чат ----------
 class Lead(StatesGroup):
     name = State()
     contact = State()
@@ -154,7 +156,7 @@ async def lead_deadline(message: Message, state: FSMContext):
     user = message.from_user
 
     admin_text = (
-        "🆕 <b>Новая заявка</b>\n\n"
+        "🆕 <b>Новая заявка (из чата)</b>\n\n"
         f"👤 Имя: {data.get('name','—')}\n"
         f"📞 Контакт: {data.get('contact','—')}\n"
         f"🧩 Задача: {data.get('task','—')}\n"
@@ -165,6 +167,43 @@ async def lead_deadline(message: Message, state: FSMContext):
 
     await bot.send_message(ADMIN_ID, admin_text)
     await message.answer("✅ Заявка отправлена! Я свяжусь с тобой.", reply_markup=main_kb())
+
+
+# ---------- ✅ Заявка из WebApp (sendData) ----------
+@dp.message(F.web_app_data)
+async def webapp_lead(message: Message):
+    """
+    WebApp отправляет JSON через Telegram.WebApp.sendData()
+    Aiogram получает в message.web_app_data.data
+    """
+    raw = message.web_app_data.data or ""
+    user = message.from_user
+
+    try:
+        payload = json.loads(raw)
+    except Exception:
+        payload = {"text": raw}
+
+    name = (payload.get("name") or "—").strip()
+    contact = (payload.get("contact") or "—").strip()
+    task = (payload.get("task") or "—").strip()
+    budget = (payload.get("budget") or "—").strip()
+    deadline = (payload.get("deadline") or "—").strip()
+    source = (payload.get("source") or "webapp").strip()
+
+    admin_text = (
+        "🆕 <b>Новая заявка (из WebApp)</b>\n\n"
+        f"👤 Имя: {name}\n"
+        f"📞 Контакт: {contact}\n"
+        f"🧩 Задача: {task}\n"
+        f"💰 Бюджет: {budget}\n"
+        f"⏳ Срок: {deadline}\n"
+        f"🔎 Source: {source}\n\n"
+        f"👤 TG: @{user.username if user.username else '—'} | ID: <code>{user.id}</code>"
+    )
+
+    await bot.send_message(ADMIN_ID, admin_text)
+    await message.answer("✅ Заявка отправлена из приложения! Я свяжусь с тобой.", reply_markup=main_kb())
 
 
 @dp.message()
