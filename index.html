@@ -31,7 +31,7 @@
       --safeL: env(safe-area-inset-left, 0px);
       --safeR: env(safe-area-inset-right, 0px);
 
-      --tap: 48px;       /* удобная высота для touch */
+      --tap: 48px;
       --sidebarW: 250px;
     }
 
@@ -61,37 +61,40 @@
       gap:14px;
       min-height: calc(100vh - 28px - var(--safeT) - var(--safeB));
     }
-    /* ✅ адаптация под телефон */
     @media (max-width: 860px){
       .app{grid-template-columns: 1fr;}
       :root{ --sidebarW: 100%; }
     }
 
-    /* ✅ ШАПКА БОЛЬШЕ */
+    /* TOPBAR */
     .topbar{
       grid-column: 1 / -1;
       border:1px solid var(--stroke);
       background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.045));
       border-radius: var(--r-lg);
       box-shadow: var(--shadow);
-      padding: 18px 14px; /* было 12px */
+      padding: 18px 14px;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
       backdrop-filter: blur(14px);
       position: relative;
-      min-height: 86px; /* ✅ выше шапка */
+      min-height: 92px;
     }
 
-    .top-left, .top-right{
+    .top-left{
       display:flex;
       align-items:center;
-      gap:10px;
-      min-width: 120px;
+      gap:12px;
+      min-width: 170px;
     }
 
-    /* ✅ ЛОГО ПО ЦЕНТРУ + гарантированная видимость */
+    .brandtxt{line-height:1.05;}
+    .brandtxt .t1{font-weight:1000; font-size:16px;}
+    .brandtxt .t2{margin-top:5px; color:var(--muted); font-weight:900; font-size:12px; max-width: 240px;}
+
+    /* ✅ Logo centered + bigger + framed */
     .top-center{
       position:absolute;
       left:50%;
@@ -101,16 +104,36 @@
       align-items:center;
       justify-content:center;
       pointer-events:none;
-      width: min(70%, 320px);
+      width: min(74%, 360px);
+    }
+
+    .logo-frame{
+      border-radius: 22px;
+      padding: 10px 14px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.05));
+      box-shadow: 0 18px 40px rgba(0,0,0,.35);
+      backdrop-filter: blur(14px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
 
     .brand-logo{
-      height: 54px;          /* ✅ крупнее */
+      height: 70px;            /* ✅ увеличили */
       width: auto;
-      max-width: 100%;
+      max-width: 320px;
       object-fit: contain;
       display:block;
       filter: drop-shadow(0 14px 26px rgba(0,0,0,.40));
+    }
+
+    .top-right{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:10px;
+      min-width: 140px;
     }
 
     .tbtn{
@@ -127,28 +150,15 @@
       white-space:nowrap;
     }
 
-    /* ✅ синие кнопки: текст белый */
-    .tbtn.primary,
-    .btn-blue{
+    /* blue buttons: white text */
+    .tbtn.primary, .btn-blue{
       background: linear-gradient(180deg, rgba(43,108,255,.95), rgba(29,78,216,.85));
       border-color: rgba(43,108,255,.50);
-      color:#ffffff; /* ✅ было тёмным */
+      color:#ffffff;
       box-shadow: 0 12px 28px rgba(43,108,255,.22);
     }
 
-    .chip-mini{
-      border:1px solid var(--stroke);
-      background: rgba(0,0,0,.18);
-      color: var(--muted);
-      padding:10px 12px;
-      border-radius: 16px;
-      font-weight:900;
-      font-size:12px;
-      min-height: var(--tap);
-      display:flex;
-      align-items:center;
-    }
-
+    /* SIDEBAR */
     .sidebar{
       border:1px solid var(--stroke);
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
@@ -200,6 +210,7 @@
       box-shadow: 0 12px 26px rgba(43,108,255,.10);
     }
 
+    /* MAIN */
     .main{
       border:1px solid var(--stroke);
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
@@ -308,38 +319,7 @@
     }
     .sum{color:var(--muted2); font-weight:900; font-size:12px;}
 
-    .qty{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.05);
-      border-radius: 18px;
-      padding:8px;
-      min-width: 126px;
-      justify-content:space-between;
-    }
-    .qbtn{
-      width:36px;height:36px;border-radius:14px;
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.06);
-      color:var(--text);
-      font-size:18px;
-      font-weight:1000;
-      cursor:pointer;
-    }
-    .qbtn.plus{
-      background: rgba(43,108,255,.22);
-      border-color: rgba(43,108,255,.34);
-    }
-    .qval{
-      font-weight:1000;
-      font-size:14px;
-      color:var(--text);
-      width:32px;
-      text-align:center;
-    }
-
+    /* ✅ убрали блок qty (+ -) и общий подсчет: cartbar оставим только кнопки */
     .cartbar{
       position: sticky;
       bottom: 0;
@@ -351,12 +331,9 @@
       display:flex;
       gap:10px;
       align-items:center;
-      justify-content:space-between;
+      justify-content:flex-end;
       backdrop-filter: blur(10px);
     }
-    .cartinfo{min-width:0;}
-    .cartinfo .big{font-weight:1000;}
-    .cartinfo .small{color:var(--muted); font-size:12px; margin-top:2px;}
     .cartbar .btn{
       min-height: var(--tap);
       border:none;
@@ -373,6 +350,7 @@
       color:var(--text);
     }
 
+    /* MODALS */
     .modal{
       position:fixed; inset:0;
       display:none; align-items:flex-end; justify-content:center;
@@ -425,12 +403,16 @@
     <!-- TOP BAR -->
     <div class="topbar">
       <div class="top-left">
-        <div class="chip-mini" id="tgHint">Telegram</div>
+        <div class="brandtxt">
+          <div class="t1">TG Studio</div>
+          <div class="t2">Professional telegram bot and WebApp solution</div>
+        </div>
       </div>
 
       <div class="top-center">
-        <!-- ✅ исправление лого: пробуем 3 варианта + явный fallback -->
-        <img class="brand-logo" id="brandLogo" src="logo.png" alt="TG Studio Logo">
+        <div class="logo-frame">
+          <img class="brand-logo" id="brandLogo" src="logo.png" alt="TG Studio Logo">
+        </div>
       </div>
 
       <div class="top-right">
@@ -445,7 +427,7 @@
           <div class="name">TG Studio</div>
           <div class="tag">Portfolio • WebApp</div>
         </div>
-        <div class="tag">Menu</div>
+        <div class="tag" id="tgHint">Telegram</div>
       </div>
       <div class="cat" id="catList"></div>
     </aside>
@@ -455,11 +437,8 @@
       <div class="pills" id="subPills"></div>
       <div class="grid" id="cards"></div>
 
+      <!-- ✅ убрали сумму/кол-во и подсчет -->
       <div class="cartbar">
-        <div class="cartinfo">
-          <div class="big">Выбрано: <span id="pickedCount">0</span></div>
-          <div class="small">Сумма: <span id="pickedSum">0</span> сум</div>
-        </div>
         <button class="btn btn-ghost" id="btnShare">Поделиться</button>
         <button class="btn btn-blue" id="btnSendRequest">Отправить запрос</button>
       </div>
@@ -497,18 +476,16 @@
       <div class="sheetTop">
         <div>
           <h3>Запрос</h3>
-          <p id="cartSubtitle">Пока пусто.</p>
+          <p id="cartSubtitle">Отправка запроса админу.</p>
         </div>
         <button class="x" data-close="mCart">✕</button>
       </div>
 
-      <div class="form" id="cartItems"></div>
-
-      <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
-        <button class="tbtn" id="cartClear">Очистить</button>
-        <button class="tbtn primary" id="cartSend">Отправить</button>
+      <div class="form">
+        <textarea class="in" id="rText" placeholder="Опиши что нужно: бот / WebApp / интеграции, сроки, бюджет"></textarea>
+        <button class="tbtn primary" id="rSend">✅ Отправить запрос</button>
+        <div class="hint" id="rHint"></div>
       </div>
-      <div class="hint" id="cartHint" style="margin-top:8px;"></div>
     </div>
   </div>
 
@@ -526,7 +503,6 @@
       <div class="form">
         <div class="in" style="display:flex; flex-direction:column; gap:8px;">
           <div><b>Telegram:</b> <a class="link" href="https://t.me/Yaki_Tahirov" target="_blank" rel="noreferrer">@Yaki_Tahirov</a></div>
-          <div><b>Бот:</b> <a class="link" href="https://t.me/Ecosystem_portfolio_bot" target="_blank" rel="noreferrer">@Ecosystem_portfolio_bot</a></div>
           <div><b>Телефон:</b> <a class="link" href="tel:+998937460022">+998 (93) 746-00-22</a></div>
           <div><b>Почта:</b> <a class="link" href="mailto:tahirov.dd@gmail.com">tahirov.dd@gmail.com</a></div>
         </div>
@@ -538,56 +514,42 @@
   </div>
 
 <script>
-  // ✅ Telegram WebApp init: исправляем "50%" и закрытие при скролле
+  // Telegram WebApp init (полный экран)
   const tg = window.Telegram?.WebApp;
   const tgHint = document.getElementById('tgHint');
 
   if (tg){
     tg.ready();
-
-    // Ключевое: раскрыть на весь экран
     tg.expand();
-
-    // Иногда помогает в новых клиентах (если доступно)
     try { tg.requestFullscreen(); } catch(e) {}
-
-    // Запрещаем "swipe-down to close" на iOS (если поддерживается)
     try { tg.disableClosingConfirmation(); } catch(e) {}
-
     tgHint.textContent = "Telegram WebApp";
   } else {
     tgHint.textContent = "Web";
   }
 
-  // ✅ FIX LOGO: если logo.png нет — пробуем logo.jpg, logo.webp
+  // Fix logo: try png -> jpg -> webp
   (function fixLogo(){
     const img = document.getElementById('brandLogo');
     const variants = ["logo.png", "logo.jpg", "logo.webp"];
     let i = 0;
-
-    function tryNext(){
-      if(i >= variants.length){
-        // если вообще не нашли — показываем текстовый fallback
-        img.alt = "TG Studio";
+    img.onerror = () => {
+      i++;
+      if(i < variants.length){
+        img.src = variants[i];
+      } else {
         img.style.display = "none";
         const holder = document.createElement("div");
         holder.style.fontWeight = "1000";
         holder.style.fontSize = "18px";
         holder.style.color = "rgba(246,248,255,.92)";
         holder.textContent = "TG Studio";
-        document.querySelector(".top-center").appendChild(holder);
-        return;
+        document.querySelector(".logo-frame").appendChild(holder);
       }
-      img.src = variants[i++];
-    }
-
-    img.onerror = tryNext;
-    // стартуем с текущего src; если он не существует — onerror сработает
+    };
   })();
 
-  // =========================
-  // DATA
-  // =========================
+  // Data
   const DATA = {
     categories: [
       { id:"services", name:"Услуги", subs:["Боты","WebApp","Интеграции","Дизайн"] },
@@ -597,58 +559,29 @@
       { id:"contacts", name:"Контакты", subs:["Связь"] },
     ],
     cards: [
-      { id:"s_bot", cat:"services", sub:"Боты", title:"Telegram Bot", tags:["Leads","Admin"], price:800000, img:"images/bot.jpg", desc:"Бот для заявок, продаж, меню, записи. Уведомления админу.", link:"https://t.me/Ecosystem_portfolio_bot" },
-      { id:"s_webapp", cat:"services", sub:"WebApp", title:"Telegram WebApp", tags:["Catalog","UI"], price:1500000, img:"images/webapp.jpg", desc:"Полноэкранное приложение в Telegram: каталог, карточки, поиск.", link:"https://tahirovdd-lang.github.io/Portfolio-bot/" },
-      { id:"s_cart", cat:"services", sub:"WebApp", title:"WebApp + Корзина", tags:["Cart","Checkout"], price:2500000, img:"images/cart.jpg", desc:"Каталог + корзина + оформление + отправка админу.", link:"https://tahirovdd-lang.github.io/Portfolio-bot/" },
-      { id:"s_integr", cat:"services", sub:"Интеграции", title:"Интеграции", tags:["Click/Payme","Maps"], price:890000, img:"images/integr.jpg", desc:"Подключение оплат, QR, Instagram, Яндекс Карты, CRM.", link:"" },
-      { id:"s_ui", cat:"services", sub:"Дизайн", title:"UI/UX Design", tags:["Dark Glass","iOS"], price:650000, img:"images/ui.jpg", desc:"Дизайн в стиле iOS / glass / dark, адаптив.", link:"" },
+      { id:"s_bot", cat:"services", sub:"Боты", title:"Telegram Bot", tags:["Leads","Admin"], price:0, img:"images/bot.jpg", desc:"Бот для заявок, продаж, меню, записи. Уведомления админу.", link:"https://t.me/Yaki_Tahirov" },
+      { id:"s_webapp", cat:"services", sub:"WebApp", title:"Telegram WebApp", tags:["Catalog","UI"], price:0, img:"images/webapp.jpg", desc:"Полноэкранное приложение в Telegram: каталог, карточки, поиск.", link:"https://tahirovdd-lang.github.io/Portfolio-bot/" },
+      { id:"s_integr", cat:"services", sub:"Интеграции", title:"Интеграции", tags:["Click/Payme","Maps"], price:0, img:"images/integr.jpg", desc:"Подключение оплат, QR, Instagram, Яндекс Карты, CRM.", link:"" },
+      { id:"s_ui", cat:"services", sub:"Дизайн", title:"UI/UX Design", tags:["Dark Glass","iOS"], price:0, img:"images/ui.jpg", desc:"Дизайн в стиле iOS / glass / dark, адаптив.", link:"" },
 
-      { id:"p_grandcru", cat:"portfolio", sub:"WebApp", title:"Grand Cru", tags:["Catalog","Search"], price:0, img:"images/grandcru.jpg", desc:"Каталог Fine Wine & Spirits + поиск + заявки менеджеру.", link:"https://t.me/Ecosystem_portfolio_bot" },
-      { id:"p_rest", cat:"portfolio", sub:"WebApp", title:"Restaurant Menu", tags:["Cart","Lang"], price:0, img:"images/restaurant.jpg", desc:"Меню, корзина, доставка/самовывоз, мультиязык.", link:"" },
+      { id:"p_grandcru", cat:"portfolio", sub:"WebApp", title:"Grand Cru", tags:["Catalog","Search"], price:0, img:"images/grandcru.jpg", desc:"Каталог Fine Wine & Spirits + поиск + заявки менеджеру.", link:"" },
+      { id:"p_rest", cat:"portfolio", sub:"WebApp", title:"Restaurant Menu", tags:["Cart","Lang"], price:0, img:"images/restaurant.jpg", desc:"Меню, доставка/самовывоз, мультиязык.", link:"" },
       { id:"p_booking", cat:"portfolio", sub:"Боты", title:"Booking Bot", tags:["Schedule","Admin"], price:0, img:"images/booking.jpg", desc:"Запись к мастерам, выходные, подтверждения.", link:"" },
 
-      { id:"pr_start", cat:"prices", sub:"Старт", title:"Start Pack", tags:["Bot","Basic"], price:500000, img:"images/price1.jpg", desc:"Бот-визитка / портфолио / простые заявки.", link:"" },
-      { id:"pr_biz", cat:"prices", sub:"Бизнес", title:"Business Pack", tags:["WebApp","Cart"], price:2500000, img:"images/price2.jpg", desc:"WebApp + корзина + оформление заказа.", link:"" },
+      { id:"pr_start", cat:"prices", sub:"Старт", title:"Start Pack", tags:["Bot","Basic"], price:0, img:"images/price1.jpg", desc:"Бот-визитка / портфолио / простые заявки.", link:"" },
+      { id:"pr_biz", cat:"prices", sub:"Бизнес", title:"Business Pack", tags:["WebApp"], price:0, img:"images/price2.jpg", desc:"WebApp + оформление заказа.", link:"" },
 
       { id:"rv1", cat:"reviews", sub:"Текст", title:"Отзыв #1", tags:["5★"], price:0, img:"images/review1.jpg", desc:"Сюда вставишь текст отзыва клиента.", link:"" },
-
       { id:"ct", cat:"contacts", sub:"Связь", title:"Связаться", tags:["Telegram","Email"], price:0, img:"images/contact.jpg", desc:"Открой окно контактов снизу и напиши мне.", link:"" },
     ]
   };
 
-  // =========================
-  // STATE
-  // =========================
   let activeCat = DATA.categories[0].id;
   let activeSub = DATA.categories[0].subs[0];
-  const cart = new Map();
 
   const catList = document.getElementById('catList');
   const subPills = document.getElementById('subPills');
   const cardsEl = document.getElementById('cards');
-
-  const pickedCount = document.getElementById('pickedCount');
-  const pickedSum = document.getElementById('pickedSum');
-
-  const mConsult = document.getElementById('mConsult');
-  const mCart = document.getElementById('mCart');
-  const mContacts = document.getElementById('mContacts');
-
-  const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-
-  function cartCount(){ let c=0; for (const q of cart.values()) c+=q; return c; }
-  function cartTotal(){
-    let t=0;
-    for (const [id, qty] of cart.entries()){
-      const p = DATA.cards.find(x=>x.id===id);
-      if(p) t += (p.price||0) * qty;
-    }
-    return t;
-  }
-  function renderTotals(){
-    pickedCount.textContent = cartCount();
-    pickedSum.textContent = fmt(cartTotal());
-  }
 
   function setActive(catId){
     activeCat = catId;
@@ -664,10 +597,7 @@
       b.textContent = c.name;
       b.className = (c.id===activeCat) ? "active" : "";
       b.onclick = ()=> {
-        if(c.id === "contacts"){
-          openModal(mContacts);
-          return;
-        }
+        if(c.id === "contacts"){ openModal(document.getElementById('mContacts')); return; }
         setActive(c.id);
       };
       catList.appendChild(b);
@@ -695,8 +625,6 @@
     const list = DATA.cards.filter(p => p.cat===activeCat && p.sub===activeSub);
 
     list.forEach(p=>{
-      const qty = cart.get(p.id) || 0;
-
       const el = document.createElement('div');
       el.className = "card";
       el.innerHTML = `
@@ -715,38 +643,9 @@
           ${p.desc ? p.desc : ""}
           ${p.link ? `<div style="margin-top:6px;"><a class="link" href="${p.link}" target="_blank" rel="noreferrer">Открыть ссылку</a></div>` : ``}
         </div>
-
-        <div class="price-row">
-          <div>
-            <div class="price">
-              ${p.price ? `${fmt(p.price)} <span class="sum">сум</span>` : `<span class="sum">Портфолио</span>`}
-            </div>
-          </div>
-
-          <div class="qty">
-            <button class="qbtn" data-act="minus">–</button>
-            <div class="qval">${qty}</div>
-            <button class="qbtn plus" data-act="plus">+</button>
-          </div>
-        </div>
       `;
-
-      el.querySelector('[data-act="minus"]').onclick = ()=>{
-        const cur = cart.get(p.id) || 0;
-        const next = Math.max(0, cur-1);
-        if(next===0) cart.delete(p.id); else cart.set(p.id, next);
-        renderCards(); renderTotals();
-      };
-      el.querySelector('[data-act="plus"]').onclick = ()=>{
-        const cur = cart.get(p.id) || 0;
-        cart.set(p.id, cur+1);
-        renderCards(); renderTotals();
-      };
-
       cardsEl.appendChild(el);
     });
-
-    renderTotals();
   }
 
   function openModal(m){ m.style.display="flex"; }
@@ -755,14 +654,14 @@
   document.querySelectorAll('[data-close]').forEach(b=>{
     b.onclick = ()=> closeModalById(b.getAttribute('data-close'));
   });
-
   document.querySelectorAll('.modal').forEach(modal=>{
     modal.addEventListener('click', (e)=>{
       if(e.target === modal) modal.style.display = "none";
     });
   });
 
-  document.getElementById('btnConsult').onclick = ()=> openModal(mConsult);
+  // Consultation modal
+  document.getElementById('btnConsult').onclick = ()=> openModal(document.getElementById('mConsult'));
 
   const cHint = document.getElementById('cHint');
   document.getElementById('cSend').onclick = ()=>{
@@ -787,89 +686,24 @@
     setTimeout(()=>closeModalById("mConsult"), 450);
   };
 
-  const cartItems = document.getElementById('cartItems');
-  const cartSubtitle = document.getElementById('cartSubtitle');
-  const cartHint = document.getElementById('cartHint');
-
-  function renderCart(){
-    cartHint.textContent = "";
-    cartItems.innerHTML = "";
-    const items = [];
-    for(const [id, qty] of cart.entries()){
-      const p = DATA.cards.find(x=>x.id===id);
-      if(p) items.push({ ...p, qty });
-    }
-
-    if(items.length===0){
-      cartSubtitle.textContent = "Пока пусто.";
-      cartItems.innerHTML = `<div class="hint">Добавь услуги кнопкой +</div>`;
+  // Request modal (simple text)
+  document.getElementById('btnSendRequest').onclick = ()=> openModal(document.getElementById('mCart'));
+  const rHint = document.getElementById('rHint');
+  document.getElementById('rSend').onclick = ()=>{
+    rHint.textContent = "";
+    const text = document.getElementById('rText').value.trim();
+    if(!text){
+      rHint.textContent = "⚠️ Напиши текст запроса.";
       return;
     }
-
-    cartSubtitle.textContent = `Позиции: ${items.length} • Сумма: ${fmt(cartTotal())} сум`;
-
-    items.forEach(p=>{
-      const row = document.createElement('div');
-      row.className = "in";
-      row.style.display = "flex";
-      row.style.alignItems = "center";
-      row.style.justifyContent = "space-between";
-      row.style.gap = "10px";
-      row.innerHTML = `
-        <div style="min-width:0;">
-          <div style="font-weight:1000; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.title}</div>
-          <div class="hint">${p.price ? `${fmt(p.price)} сум × ${p.qty} = ${fmt((p.price||0)*p.qty)} сум` : `Портфолио × ${p.qty}`}</div>
-        </div>
-        <div class="qty" style="min-width:126px;">
-          <button class="qbtn" data-act="minus">–</button>
-          <div class="qval">${p.qty}</div>
-          <button class="qbtn plus" data-act="plus">+</button>
-        </div>
-      `;
-      row.querySelector('[data-act="minus"]').onclick = ()=>{
-        const cur = cart.get(p.id) || 0;
-        const next = Math.max(0, cur-1);
-        if(next===0) cart.delete(p.id); else cart.set(p.id, next);
-        renderCart(); renderCards(); renderTotals();
-      };
-      row.querySelector('[data-act="plus"]').onclick = ()=>{
-        const cur = cart.get(p.id) || 0;
-        cart.set(p.id, cur+1);
-        renderCart(); renderCards(); renderTotals();
-      };
-      cartItems.appendChild(row);
-    });
-  }
-
-  document.getElementById('cartClear').onclick = ()=>{
-    cart.clear();
-    renderCart(); renderCards(); renderTotals();
-  };
-
-  document.getElementById('cartSend').onclick = ()=>{
-    cartHint.textContent = "";
     if(!tg){
-      cartHint.textContent = "⚠️ Открой в Telegram, чтобы отправить.";
+      rHint.textContent = "⚠️ Открой в Telegram, чтобы отправить.";
       return;
     }
-    const items = [];
-    for(const [id, qty] of cart.entries()){
-      const p = DATA.cards.find(x=>x.id===id);
-      if(p) items.push({ id:p.id, title:p.title, price:p.price||0, qty, cat:p.cat, sub:p.sub });
-    }
-    if(items.length===0){
-      cartHint.textContent = "⚠️ Запрос пустой.";
-      return;
-    }
-    tg.sendData(JSON.stringify({ source:"cart", items, total: cartTotal(), ts: Date.now() }));
+    tg.sendData(JSON.stringify({ source:"lead", task: text, ts: Date.now() }));
     tg.HapticFeedback?.notificationOccurred?.("success");
-    cartHint.textContent = "✅ Отправлено!";
+    rHint.textContent = "✅ Отправлено!";
     setTimeout(()=>closeModalById("mCart"), 450);
-  };
-
-  document.getElementById('btnSendRequest').onclick = ()=>{
-    renderCart();
-    openModal(mCart);
   };
 
   document.getElementById('btnShare').onclick = async ()=>{
@@ -882,6 +716,7 @@
     window.open("https://t.me/Yaki_Tahirov", "_blank");
   };
 
+  // init
   renderCats(); renderSubs(); renderCards();
 </script>
 </body>
