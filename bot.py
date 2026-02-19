@@ -1,32 +1,39 @@
 import os
 import json
 import asyncio
+from dotenv import load_dotenv
+
 from aiogram import Bot, Dispatcher, F
+from aiogram.enums import ParseMode
 from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton, WebAppInfo
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
-from aiogram.enums import ParseMode
-from dotenv import load_dotenv
 
 load_dotenv()
 
+# ======================
+# CONFIG
+# ======================
 BOT_TOKEN = os.getenv("BOT_TOKEN", "")
-ADMIN_ID = int(os.getenv("ADMIN_ID", "0"))
-WEBAPP_URL = os.getenv("WEBAPP_URL", "")
+ADMIN_ID = int(os.getenv("ADMIN_ID", "6013591658"))
+WEBAPP_URL = os.getenv("WEBAPP_URL", "https://tahirovdd-lang.github.io/Portfolio-bot/")
 
-BRAND_NAME = os.getenv("BRAND_NAME", "TG Studio")
+BRAND_NAME = os.getenv("BRAND_NAME", "TG Studio — professional Telegram bot and WebApp solution")
 BOT_USERNAME = os.getenv("BOT_USERNAME", "@Ecosystem_portfolio_bot")
 PHONE = os.getenv("PHONE", "+998 (93) 746-00-22")
 EMAIL = os.getenv("EMAIL", "tahirov.dd@gmail.com")
 TG_CONTACT = os.getenv("TG_CONTACT", "@Yaki_Tahirov")
 
-if not BOT_TOKEN or not ADMIN_ID or not WEBAPP_URL:
-    raise SystemExit("❌ Заполни BOT_TOKEN, ADMIN_ID, WEBAPP_URL в .env")
+if not BOT_TOKEN:
+    raise SystemExit("❌ BOT_TOKEN пустой. Заполни BOT_TOKEN в .env")
 
 bot = Bot(BOT_TOKEN, parse_mode=ParseMode.HTML)
 dp = Dispatcher()
 
 
+# ======================
+# UI
+# ======================
 def main_kb() -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(
         keyboard=[
@@ -42,7 +49,7 @@ def main_kb() -> ReplyKeyboardMarkup:
 WELCOME = (
     f"👋 Привет! Это <b>{BRAND_NAME}</b>\n\n"
     "Я делаю <b>Telegram-ботов</b> и <b>Telegram WebApp</b> под бизнес.\n"
-    "Нажми <b>🚀 Открыть портфолио</b> — там кейсы и можно оставить заявку прямо в приложении.\n\n"
+    "Нажми <b>🚀 Открыть портфолио</b> — там дизайн в стиле Sebtech + можно отправить запрос прямо из приложения.\n\n"
     f"🤖 Бот: <b>{BOT_USERNAME}</b>"
 )
 
@@ -65,7 +72,7 @@ PRICING = (
 
 REVIEWS = (
     "⭐️ <b>Отзывы</b>\n"
-    "Могу добавить отзывы в WebApp (текст/скрин) и отдельную страницу.\n"
+    "Добавлю отзывы в WebApp (текст/скрины) и отдельную страницу.\n"
 )
 
 CONTACTS = (
@@ -77,7 +84,9 @@ CONTACTS = (
 )
 
 
-# ---------- Обычная заявка через чат ----------
+# ======================
+# CHAT LEAD FORM (FSM)
+# ======================
 class Lead(StatesGroup):
     name = State()
     contact = State()
@@ -87,28 +96,28 @@ class Lead(StatesGroup):
 
 
 @dp.message(F.text.in_({"/start", "start"}))
-async def start(message: Message, state: FSMContext):
+async def start_cmd(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(WELCOME, reply_markup=main_kb())
 
 
 @dp.message(F.text == "🧩 Услуги")
-async def services(message: Message):
+async def services_cmd(message: Message):
     await message.answer(SERVICES, reply_markup=main_kb())
 
 
 @dp.message(F.text == "💰 Прайс")
-async def pricing(message: Message):
+async def pricing_cmd(message: Message):
     await message.answer(PRICING, reply_markup=main_kb())
 
 
 @dp.message(F.text == "⭐️ Отзывы")
-async def reviews(message: Message):
+async def reviews_cmd(message: Message):
     await message.answer(REVIEWS, reply_markup=main_kb())
 
 
 @dp.message(F.text == "📩 Контакты")
-async def contacts(message: Message):
+async def contacts_cmd(message: Message):
     await message.answer(CONTACTS, reply_markup=main_kb())
 
 
@@ -169,9 +178,11 @@ async def lead_deadline(message: Message, state: FSMContext):
     await message.answer("✅ Заявка отправлена! Я свяжусь с тобой.", reply_markup=main_kb())
 
 
-# ---------- ✅ Заявка из WebApp (sendData) ----------
+# ======================
+# WEBAPP sendData HANDLER
+# ======================
 @dp.message(F.web_app_data)
-async def webapp_lead(message: Message):
+async def webapp_data_handler(message: Message):
     """
     WebApp отправляет JSON через Telegram.WebApp.sendData()
     Aiogram получает в message.web_app_data.data
@@ -182,28 +193,69 @@ async def webapp_lead(message: Message):
     try:
         payload = json.loads(raw)
     except Exception:
-        payload = {"text": raw}
+        payload = {"source": "unknown", "text": raw}
 
-    name = (payload.get("name") or "—").strip()
-    contact = (payload.get("contact") or "—").strip()
-    task = (payload.get("task") or "—").strip()
-    budget = (payload.get("budget") or "—").strip()
-    deadline = (payload.get("deadline") or "—").strip()
-    source = (payload.get("source") or "webapp").strip()
+    src = (payload.get("source") or "webapp").strip()
 
-    admin_text = (
-        "🆕 <b>Новая заявка (из WebApp)</b>\n\n"
-        f"👤 Имя: {name}\n"
-        f"📞 Контакт: {contact}\n"
-        f"🧩 Задача: {task}\n"
-        f"💰 Бюджет: {budget}\n"
-        f"⏳ Срок: {deadline}\n"
-        f"🔎 Source: {source}\n\n"
-        f"👤 TG: @{user.username if user.username else '—'} | ID: <code>{user.id}</code>"
+    # 1) Консультация
+    if src in ("consult", "lead", "form"):
+        name = (payload.get("name") or "—").strip()
+        contact = (payload.get("contact") or "—").strip()
+        task = (payload.get("task") or "—").strip()
+        budget = (payload.get("budget") or "—").strip()
+        deadline = (payload.get("deadline") or "—").strip()
+
+        admin_text = (
+            "🆕 <b>Консультация (WebApp)</b>\n\n"
+            f"👤 Имя: {name}\n"
+            f"📞 Контакт: {contact}\n"
+            f"🧩 Задача: {task}\n"
+            f"💰 Бюджет: {budget}\n"
+            f"⏳ Срок: {deadline}\n\n"
+            f"👤 TG: @{user.username if user.username else '—'} | ID: <code>{user.id}</code>"
+        )
+        await bot.send_message(ADMIN_ID, admin_text)
+        await message.answer("✅ Заявка отправлена из приложения! Я свяжусь с вами.", reply_markup=main_kb())
+        return
+
+    # 2) Корзина / запрос
+    if src == "cart":
+        items = payload.get("items") or []
+        total = payload.get("total") or 0
+
+        lines = []
+        for it in items[:50]:
+            title = it.get("title") or it.get("name") or "—"
+            qty = it.get("qty", 0)
+            price = it.get("price", 0)
+            cat = it.get("cat", "")
+            sub = it.get("sub", "")
+            extra = f" ({cat}/{sub})" if (cat or sub) else ""
+
+            if price:
+                lines.append(f"• {title}{extra} — {qty} × {int(price):,}".replace(",", " "))
+            else:
+                lines.append(f"• {title}{extra} — {qty}")
+
+        admin_text = (
+            "🛒 <b>Запрос из корзины (WebApp)</b>\n\n"
+            + ("\n".join(lines) if lines else "—")
+            + f"\n\n<b>Итого:</b> {int(total):,} сум".replace(",", " ")
+            + f"\n\n👤 TG: @{user.username if user.username else '—'} | ID: <code>{user.id}</code>"
+        )
+
+        await bot.send_message(ADMIN_ID, admin_text)
+        await message.answer("✅ Запрос отправлен! Я свяжусь с вами.", reply_markup=main_kb())
+        return
+
+    # 3) fallback (если пришло неизвестное)
+    await bot.send_message(
+        ADMIN_ID,
+        "📩 <b>WebApp Data (unknown)</b>\n"
+        f"👤 TG: @{user.username if user.username else '—'} | ID: <code>{user.id}</code>\n"
+        f"<pre>{raw}</pre>"
     )
-
-    await bot.send_message(ADMIN_ID, admin_text)
-    await message.answer("✅ Заявка отправлена из приложения! Я свяжусь с тобой.", reply_markup=main_kb())
+    await message.answer("✅ Данные получены.", reply_markup=main_kb())
 
 
 @dp.message()
@@ -211,9 +263,11 @@ async def fallback(message: Message):
     await message.answer("Выбери раздел в меню 👇", reply_markup=main_kb())
 
 
+# ======================
+# RUN
+# ======================
 async def main():
     await dp.start_polling(bot)
-
 
 if __name__ == "__main__":
     asyncio.run(main())
