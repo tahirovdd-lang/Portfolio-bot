@@ -31,8 +31,11 @@
 
       --safeT: env(safe-area-inset-top, 0px);
       --safeB: env(safe-area-inset-bottom, 0px);
+      --safeL: env(safe-area-inset-left, 0px);
+      --safeR: env(safe-area-inset-right, 0px);
 
       --sidebarW: 250px;
+      --tap: 46px; /* комфортная высота на iOS/Android */
     }
 
     *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
@@ -45,7 +48,11 @@
         radial-gradient(1200px 650px at 10% 0%, rgba(43,108,255,.18), transparent 60%),
         radial-gradient(900px 650px at 90% 10%, rgba(255,255,255,.05), transparent 55%),
         linear-gradient(180deg, var(--bg1), var(--bg0));
-      padding: calc(14px + var(--safeT)) 14px calc(14px + var(--safeB));
+      padding:
+        calc(14px + var(--safeT))
+        calc(14px + var(--safeR))
+        calc(14px + var(--safeB))
+        calc(14px + var(--safeL));
       overflow-x:hidden;
     }
 
@@ -62,7 +69,7 @@
       :root{ --sidebarW: 100%; }
     }
 
-    /* TOP BAR (как на скрине) */
+    /* TOP BAR */
     .topbar{
       grid-column: 1 / -1;
       border:1px solid var(--stroke);
@@ -92,10 +99,11 @@
 
     .top-actions{display:flex; gap:10px; align-items:center;}
     .tbtn{
+      min-height: var(--tap);
       border:1px solid var(--stroke);
       background: rgba(255,255,255,.06);
       color:var(--text);
-      padding:10px 12px;
+      padding:10px 14px;
       border-radius: 16px;
       font-weight:900;
       font-size:13px;
@@ -153,6 +161,7 @@
       border-radius: 18px;
       cursor:pointer;
       border:1px solid transparent;
+      min-height: var(--tap);
     }
     .cat button.active{
       color: var(--text);
@@ -181,9 +190,11 @@
       align-items:center;
       overflow:auto;
       scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
     }
     .pills::-webkit-scrollbar{display:none;}
     .pill{
+      min-height: var(--tap);
       border:1px solid var(--stroke);
       background: rgba(255,255,255,.06);
       color: var(--muted);
@@ -252,6 +263,9 @@
       font-size:12px;
     }
 
+    .hint{color:var(--muted); font-size:12px; line-height:1.35;}
+    a.link{color:var(--blue); font-weight:1000; text-decoration:none;}
+
     .price-row{
       display:flex;
       align-items:flex-end;
@@ -277,7 +291,7 @@
       justify-content:space-between;
     }
     .qbtn{
-      width:34px;height:34px;border-radius:14px;
+      width:36px;height:36px;border-radius:14px;
       border:1px solid var(--stroke);
       background: rgba(255,255,255,.06);
       color:var(--text);
@@ -297,7 +311,7 @@
       text-align:center;
     }
 
-    /* BOTTOM BAR */
+    /* Bottom bar */
     .cartbar{
       position: sticky;
       bottom: 0;
@@ -316,6 +330,7 @@
     .cartinfo .big{font-weight:1000;}
     .cartinfo .small{color:var(--muted); font-size:12px; margin-top:2px;}
     .cartbar .btn{
+      min-height: var(--tap);
       border:none;
       cursor:pointer;
       font-weight:1000;
@@ -334,7 +349,7 @@
       color:var(--text);
     }
 
-    /* MODALS */
+    /* MODALS (bottom sheet) */
     .modal{
       position:fixed; inset:0;
       display:none; align-items:flex-end; justify-content:center;
@@ -350,12 +365,16 @@
       box-shadow: var(--shadow);
       padding:12px;
       backdrop-filter: blur(14px);
+      max-height: min(76vh, 620px);
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
     }
     .sheetTop{display:flex; justify-content:space-between; gap:10px; align-items:flex-start;}
     .x{
       width:40px;height:40px;border-radius:16px;border:1px solid var(--stroke);
       background: rgba(255,255,255,.06); color:var(--text);
       cursor:pointer; font-weight:1000;
+      flex:0 0 auto;
     }
     .sheet h3{margin:0;font-size:16px;}
     .sheet p{margin:6px 0 0;color:var(--muted);font-size:13px;line-height:1.35;}
@@ -374,8 +393,11 @@
     textarea.in{min-height:92px; resize:none;}
     .row{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
     @media(max-width:520px){ .row{grid-template-columns:1fr;} }
-    .hint{color:var(--muted); font-size:12px;}
-    a.link{color:var(--blue); font-weight:1000; text-decoration:none;}
+
+    /* iOS: чтобы нижняя панель Telegram не перекрывала */
+    @supports (padding: max(0px)) {
+      body { padding-bottom: max(calc(14px + var(--safeB)), 14px); }
+    }
   </style>
 </head>
 
@@ -392,9 +414,9 @@
         </div>
       </div>
 
+      <!-- ✅ УБРАЛИ КОРЗИНУ ИЗ ШАПКИ -->
       <div class="top-actions">
-        <button class="tbtn" id="btnConsult">Консультация</button>
-        <button class="tbtn primary" id="btnOpenCart">Корзина (<span id="cartCountTop">0</span>)</button>
+        <button class="tbtn primary" id="btnConsult">Консультация</button>
       </div>
     </div>
 
@@ -410,14 +432,7 @@
 
       <div class="cat" id="catList"></div>
 
-      <div style="margin-top:10px; border-top:1px solid var(--stroke); padding-top:10px;">
-        <div class="hint">
-          🤖 <b>@Ecosystem_portfolio_bot</b><br>
-          📞 +998 (93) 746-00-22<br>
-          ✉️ tahirov.dd@gmail.com<br>
-          TG: <a class="link" href="https://t.me/Yaki_Tahirov" target="_blank" rel="noreferrer">@Yaki_Tahirov</a>
-        </div>
-      </div>
+      <!-- ✅ ПОД КОНТАКТАМИ НИЧЕГО НЕ ПОКАЗЫВАЕМ (убрали блок контактов из сайдбара) -->
     </aside>
 
     <!-- MAIN -->
@@ -462,12 +477,12 @@
     </div>
   </div>
 
-  <!-- CART MODAL -->
+  <!-- REQUEST/CART MODAL -->
   <div class="modal" id="mCart">
     <div class="sheet">
       <div class="sheetTop">
         <div>
-          <h3>Корзина</h3>
+          <h3>Запрос</h3>
           <p id="cartSubtitle">Пока пусто.</p>
         </div>
         <button class="x" data-close="mCart">✕</button>
@@ -475,11 +490,36 @@
 
       <div class="form" id="cartItems"></div>
 
-      <div style="margin-top:10px; display:flex; gap:10px;">
+      <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
         <button class="tbtn" id="cartClear">Очистить</button>
         <button class="tbtn primary" id="cartSend">Отправить</button>
       </div>
       <div class="hint" id="cartHint" style="margin-top:8px;"></div>
+    </div>
+  </div>
+
+  <!-- ✅ CONTACTS MODAL (открывается при клике на "Контакты") -->
+  <div class="modal" id="mContacts">
+    <div class="sheet">
+      <div class="sheetTop">
+        <div>
+          <h3>Контакты</h3>
+          <p>Свяжитесь со мной удобным способом:</p>
+        </div>
+        <button class="x" data-close="mContacts">✕</button>
+      </div>
+
+      <div class="form">
+        <div class="in" style="display:flex; flex-direction:column; gap:8px;">
+          <div><b>Telegram:</b> <a class="link" href="https://t.me/Yaki_Tahirov" target="_blank" rel="noreferrer">@Yaki_Tahirov</a></div>
+          <div><b>Бот:</b> <a class="link" href="https://t.me/Ecosystem_portfolio_bot" target="_blank" rel="noreferrer">@Ecosystem_portfolio_bot</a></div>
+          <div><b>Телефон:</b> <a class="link" href="tel:+998937460022">+998 (93) 746-00-22</a></div>
+          <div><b>Почта:</b> <a class="link" href="mailto:tahirov.dd@gmail.com">tahirov.dd@gmail.com</a></div>
+        </div>
+
+        <button class="tbtn primary" id="btnWriteTG">Написать в Telegram</button>
+        <div class="hint">Нажмите кнопку — откроется чат.</div>
+      </div>
     </div>
   </div>
 
@@ -488,17 +528,16 @@
   const tg = window.Telegram?.WebApp;
   const tgHint = document.getElementById('tgHint');
   if (tg){
-    tg.ready(); tg.expand();
+    tg.ready();
+    tg.expand();
     tgHint.textContent = "Telegram WebApp";
   } else {
     tgHint.textContent = "Web";
   }
 
   // =========================
-  // ДАННЫЕ ПОРТФОЛИО (редактируй тут)
+  // ДАННЫЕ ПОРТФОЛИО
   // =========================
-  // img: положи картинки в /images (GitHub Pages) и укажи путь
-  // link: ссылка на демо/бот/репо (опционально)
   const DATA = {
     categories: [
       { id:"services", name:"Услуги", subs:["Боты","WebApp","Интеграции","Дизайн"] },
@@ -508,27 +547,22 @@
       { id:"contacts", name:"Контакты", subs:["Связь"] },
     ],
     cards: [
-      // УСЛУГИ
       { id:"s_bot", cat:"services", sub:"Боты", title:"Telegram Bot", tags:["Leads","Admin"], price:800000, img:"images/bot.jpg", desc:"Бот для заявок, продаж, меню, записи. Уведомления админу.", link:"https://t.me/Ecosystem_portfolio_bot" },
       { id:"s_webapp", cat:"services", sub:"WebApp", title:"Telegram WebApp", tags:["Catalog","UI"], price:1500000, img:"images/webapp.jpg", desc:"Полноэкранное приложение в Telegram: каталог, карточки, поиск.", link:"https://tahirovdd-lang.github.io/Portfolio-bot/" },
-      { id:"s_cart", cat:"services", sub:"WebApp", title:"WebApp + Корзина", tags:["Cart","Checkout"], price:2500000, img:"images/cart.jpg", desc:"Каталог + корзина + оформление заказа + отправка админу.", link:"https://tahirovdd-lang.github.io/Portfolio-bot/" },
+      { id:"s_cart", cat:"services", sub:"WebApp", title:"WebApp + Корзина", tags:["Cart","Checkout"], price:2500000, img:"images/cart.jpg", desc:"Каталог + корзина + оформление + отправка админу.", link:"https://tahirovdd-lang.github.io/Portfolio-bot/" },
       { id:"s_integr", cat:"services", sub:"Интеграции", title:"Интеграции", tags:["Click/Payme","Maps"], price:890000, img:"images/integr.jpg", desc:"Подключение оплат, QR, Instagram, Яндекс Карты, CRM.", link:"" },
       { id:"s_ui", cat:"services", sub:"Дизайн", title:"UI/UX Design", tags:["Dark Glass","iOS"], price:650000, img:"images/ui.jpg", desc:"Дизайн в стиле iOS / glass / dark, адаптив.", link:"" },
 
-      // ПОРТФОЛИО (пример)
       { id:"p_grandcru", cat:"portfolio", sub:"WebApp", title:"Grand Cru", tags:["Catalog","Search"], price:0, img:"images/grandcru.jpg", desc:"Каталог Fine Wine & Spirits + поиск + заявки менеджеру.", link:"https://t.me/Ecosystem_portfolio_bot" },
       { id:"p_rest", cat:"portfolio", sub:"WebApp", title:"Restaurant Menu", tags:["Cart","Lang"], price:0, img:"images/restaurant.jpg", desc:"Меню, корзина, доставка/самовывоз, мультиязык.", link:"" },
       { id:"p_booking", cat:"portfolio", sub:"Боты", title:"Booking Bot", tags:["Schedule","Admin"], price:0, img:"images/booking.jpg", desc:"Запись к мастерам, выходные, подтверждения.", link:"" },
 
-      // ПРАЙС
       { id:"pr_start", cat:"prices", sub:"Старт", title:"Start Pack", tags:["Bot","Basic"], price:500000, img:"images/price1.jpg", desc:"Бот-визитка / портфолио / простые заявки.", link:"" },
       { id:"pr_biz", cat:"prices", sub:"Бизнес", title:"Business Pack", tags:["WebApp","Cart"], price:2500000, img:"images/price2.jpg", desc:"WebApp + корзина + оформление заказа.", link:"" },
 
-      // ОТЗЫВЫ (как карточки)
       { id:"rv1", cat:"reviews", sub:"Текст", title:"Отзыв #1", tags:["5★"], price:0, img:"images/review1.jpg", desc:"Сюда вставишь текст отзыва клиента.", link:"" },
 
-      // КОНТАКТЫ
-      { id:"ct", cat:"contacts", sub:"Связь", title:"Связаться", tags:["Telegram","Email"], price:0, img:"images/contact.jpg", desc:"TG: @Yaki_Tahirov • Phone: +998 (93) 746-00-22 • Mail: tahirov.dd@gmail.com", link:"https://t.me/Yaki_Tahirov" },
+      { id:"ct", cat:"contacts", sub:"Связь", title:"Связаться", tags:["Telegram","Email"], price:0, img:"images/contact.jpg", desc:"Открой окно контактов снизу и напиши мне.", link:"" },
     ]
   };
 
@@ -537,9 +571,7 @@
   // =========================
   let activeCat = DATA.categories[0].id;
   let activeSub = DATA.categories[0].subs[0];
-
-  // "Корзина" = выбранные услуги/позиции (id -> qty)
-  const cart = new Map();
+  const cart = new Map(); // id -> qty
 
   // =========================
   // UI refs
@@ -548,16 +580,18 @@
   const subPills = document.getElementById('subPills');
   const cardsEl = document.getElementById('cards');
 
-  const cartCountTop = document.getElementById('cartCountTop');
   const pickedCount = document.getElementById('pickedCount');
   const pickedSum = document.getElementById('pickedSum');
 
-  // modals
   const mConsult = document.getElementById('mConsult');
   const mCart = document.getElementById('mCart');
+  const mContacts = document.getElementById('mContacts');
 
   const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 
+  // =========================
+  // helpers
+  // =========================
   function cartCount(){
     let c=0;
     for (const q of cart.values()) c+=q;
@@ -572,9 +606,7 @@
     return t;
   }
   function renderTotals(){
-    const c = cartCount();
-    cartCountTop.textContent = c;
-    pickedCount.textContent = c;
+    pickedCount.textContent = cartCount();
     pickedSum.textContent = fmt(cartTotal());
   }
 
@@ -593,7 +625,14 @@
       const b = document.createElement('button');
       b.textContent = c.name;
       b.className = (c.id===activeCat) ? "active" : "";
-      b.onclick = ()=> setActive(c.id);
+      b.onclick = ()=> {
+        // ✅ При нажатии на Контакты — открываем нижнее окно, а не выводим контакты в блоке
+        if(c.id === "contacts"){
+          openModal(mContacts);
+          return;
+        }
+        setActive(c.id);
+      };
       catList.appendChild(b);
     });
   }
@@ -681,12 +720,20 @@
   function openModal(m){ m.style.display="flex"; }
   function closeModalById(id){ document.getElementById(id).style.display="none"; }
 
+  // закрытие по крестику
   document.querySelectorAll('[data-close]').forEach(b=>{
     b.onclick = ()=> closeModalById(b.getAttribute('data-close'));
   });
 
+  // закрытие по клику на затемнение
+  document.querySelectorAll('.modal').forEach(modal=>{
+    modal.addEventListener('click', (e)=>{
+      if(e.target === modal) modal.style.display = "none";
+    });
+  });
+
+  // Консультация
   document.getElementById('btnConsult').onclick = ()=> openModal(mConsult);
-  document.getElementById('btnOpenCart').onclick = ()=> { renderCart(); openModal(mCart); };
 
   // ====== Consult sendData ======
   const cHint = document.getElementById('cHint');
@@ -713,7 +760,7 @@
     setTimeout(()=>closeModalById("mConsult"), 450);
   };
 
-  // ====== Cart modal ======
+  // ====== Request modal (корзина) ======
   const cartItems = document.getElementById('cartItems');
   const cartSubtitle = document.getElementById('cartSubtitle');
   const cartHint = document.getElementById('cartHint');
@@ -729,7 +776,7 @@
 
     if(items.length===0){
       cartSubtitle.textContent = "Пока пусто.";
-      cartItems.innerHTML = `<div class="hint">Добавь услуги/позиции кнопкой +</div>`;
+      cartItems.innerHTML = `<div class="hint">Добавь услуги кнопкой +</div>`;
       return;
     }
 
@@ -773,7 +820,6 @@
     renderCart(); renderCards(); renderTotals();
   };
 
-  // Отправка корзины админу
   document.getElementById('cartSend').onclick = ()=>{
     cartHint.textContent = "";
     if(!tg){
@@ -786,22 +832,17 @@
       if(p) items.push({ id:p.id, title:p.title, price:p.price||0, qty, cat:p.cat, sub:p.sub });
     }
     if(items.length===0){
-      cartHint.textContent = "⚠️ Корзина пустая.";
+      cartHint.textContent = "⚠️ Запрос пустой.";
       return;
     }
-    const payload = {
-      source:"cart",
-      items,
-      total: cartTotal(),
-      ts: Date.now()
-    };
+    const payload = { source:"cart", items, total: cartTotal(), ts: Date.now() };
     tg.sendData(JSON.stringify(payload));
     tg.HapticFeedback?.notificationOccurred?.("success");
     cartHint.textContent = "✅ Отправлено!";
     setTimeout(()=>closeModalById("mCart"), 450);
   };
 
-  // Кнопка "Отправить запрос" снизу = открыть корзину
+  // нижняя кнопка "Отправить запрос"
   document.getElementById('btnSendRequest').onclick = ()=>{
     renderCart();
     openModal(mCart);
@@ -813,6 +854,11 @@
     const url = location.href;
     if (navigator.share) { try { await navigator.share({ text, url }); } catch(e){} }
     else { try { await navigator.clipboard.writeText(url); alert("Ссылка скопирована ✅"); } catch(e){ prompt("Скопируй ссылку:", url); } }
+  };
+
+  // Contacts modal button
+  document.getElementById('btnWriteTG').onclick = ()=>{
+    window.open("https://t.me/Yaki_Tahirov", "_blank");
   };
 
   // init
