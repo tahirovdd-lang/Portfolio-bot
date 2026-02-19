@@ -115,6 +115,7 @@
       background: rgba(0,0,0,.55);
       display:none; align-items:flex-end; justify-content:center;
       padding: 16px 16px calc(16px + var(--safeB));
+      z-index: 50;
     }
     .sheet{
       width:min(980px, 100%);
@@ -132,6 +133,23 @@
     }
     .sheet h3{margin:0; font-size:16px;}
     .sheet p{margin:8px 0 0; color:var(--muted); font-size:13px; line-height:1.4;}
+
+    /* lead form */
+    .form{margin-top:12px; display:flex; flex-direction:column; gap:10px;}
+    .in{
+      width:100%;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border-radius: 16px;
+      padding: 12px 12px;
+      font-size: 14px;
+      outline: none;
+    }
+    textarea.in{min-height: 92px; resize: none;}
+    .row{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+    @media (max-width: 520px){ .row{grid-template-columns:1fr;} }
+    .small{font-size:12px;color:var(--muted);margin-top:6px;}
   </style>
 </head>
 <body>
@@ -167,12 +185,13 @@
 
   <div class="bottomBar">
     <div class="actions">
-      <button class="btn primary" id="btnLead">📝 Оставить заявку (в боте)</button>
+      <button class="btn primary" id="btnLead">📝 Оставить заявку</button>
       <button class="btn ghost" id="btnShare">🔗 Поделиться</button>
     </div>
   </div>
 
-  <div class="modal" id="modal">
+  <!-- Case modal -->
+  <div class="modal" id="modalCase">
     <div class="sheet">
       <div class="sheetTop">
         <div>
@@ -187,9 +206,37 @@
     </div>
   </div>
 
+  <!-- Lead modal -->
+  <div class="modal" id="modalLead">
+    <div class="sheet">
+      <div class="sheetTop">
+        <div>
+          <h3>📝 Заявка</h3>
+          <p>Заполни форму — отправлю тебе ответ в Telegram.</p>
+        </div>
+        <button class="x" id="lClose">✕</button>
+      </div>
+
+      <div class="form">
+        <input class="in" id="lName" placeholder="Имя" />
+        <input class="in" id="lContact" placeholder="Контакт (телефон или @username)" />
+        <textarea class="in" id="lTask" placeholder="Что нужно сделать? (бот / WebApp / сайт / интеграции)"></textarea>
+
+        <div class="row">
+          <input class="in" id="lBudget" placeholder="Бюджет (примерно)" />
+          <input class="in" id="lDeadline" placeholder="Сроки (когда нужно)" />
+        </div>
+
+        <button class="btn primary" id="lSend">✅ Отправить</button>
+        <div class="small" id="lHint"></div>
+      </div>
+    </div>
+  </div>
+
   <script>
     const tg = window.Telegram?.WebApp;
     const hint = document.getElementById("hint");
+
     if (tg) {
       tg.ready();
       tg.expand();
@@ -198,7 +245,7 @@
       hint.textContent = "Web версия";
     }
 
-    // 👉 Замени здесь на свои реальные кейсы/ссылки (если нужно)
+    // Кейсы (замени на свои)
     const CASES = [
       {
         title: "🍷 Grand Cru — каталог Fine Wine & Spirits",
@@ -217,14 +264,16 @@
       }
     ];
 
+    // --- Case modal logic ---
     const casesEl = document.getElementById("cases");
-    const modal = document.getElementById("modal");
+    const modalCase = document.getElementById("modalCase");
     const mTitle = document.getElementById("mTitle");
     const mDesc = document.getElementById("mDesc");
     const mLinkWrap = document.getElementById("mLinkWrap");
     const mLink = document.getElementById("mLink");
+    const mClose = document.getElementById("mClose");
 
-    function openModal(item){
+    function openCase(item){
       mTitle.textContent = item.title;
       mDesc.textContent = item.desc;
       if(item.link){
@@ -233,9 +282,9 @@
       } else {
         mLinkWrap.style.display = "none";
       }
-      modal.style.display = "flex";
+      modalCase.style.display = "flex";
     }
-    function closeModal(){ modal.style.display = "none"; }
+    function closeCase(){ modalCase.style.display = "none"; }
 
     CASES.forEach(item=>{
       const div = document.createElement("div");
@@ -247,22 +296,75 @@
           <p class="cdesc">${item.desc}</p>
         </div>
       `;
-      div.addEventListener("click", ()=>openModal(item));
+      div.addEventListener("click", ()=>openCase(item));
       casesEl.appendChild(div);
     });
 
-    document.getElementById("mClose").addEventListener("click", closeModal);
-    modal.addEventListener("click", (e)=>{ if(e.target === modal) closeModal(); });
+    mClose.addEventListener("click", closeCase);
+    modalCase.addEventListener("click", (e)=>{ if(e.target === modalCase) closeCase(); });
 
-    document.getElementById("btnLead").addEventListener("click", ()=>{
-      // В WebApp лучше вести в бота (там форма заявки и отправка админу)
-      if (tg) {
-        tg.openTelegramLink("https://t.me/Ecosystem_portfolio_bot");
-      } else {
-        window.open("https://t.me/Ecosystem_portfolio_bot", "_blank");
+    // --- Lead modal logic ---
+    const modalLead = document.getElementById("modalLead");
+    const btnLead = document.getElementById("btnLead");
+    const lClose = document.getElementById("lClose");
+    const lSend = document.getElementById("lSend");
+    const lHint = document.getElementById("lHint");
+
+    const lName = document.getElementById("lName");
+    const lContact = document.getElementById("lContact");
+    const lTask = document.getElementById("lTask");
+    const lBudget = document.getElementById("lBudget");
+    const lDeadline = document.getElementById("lDeadline");
+
+    function openLead(){
+      lHint.textContent = "";
+      modalLead.style.display = "flex";
+      setTimeout(()=>lName.focus(), 50);
+    }
+    function closeLead(){ modalLead.style.display = "none"; }
+
+    btnLead.addEventListener("click", openLead);
+    lClose.addEventListener("click", closeLead);
+    modalLead.addEventListener("click", (e)=>{ if(e.target === modalLead) closeLead(); });
+
+    function isValid(){
+      if(!lName.value.trim()) return "Укажи имя";
+      if(!lContact.value.trim()) return "Укажи контакт";
+      if(!lTask.value.trim()) return "Опиши задачу";
+      return "";
+    }
+
+    lSend.addEventListener("click", ()=>{
+      const err = isValid();
+      if(err){ lHint.textContent = "⚠️ " + err; return; }
+
+      const payload = {
+        source: "webapp",
+        name: lName.value.trim(),
+        contact: lContact.value.trim(),
+        task: lTask.value.trim(),
+        budget: lBudget.value.trim(),
+        deadline: lDeadline.value.trim(),
+        ts: Date.now()
+      };
+
+      if (!tg) {
+        lHint.textContent = "⚠️ Открой это в Telegram, чтобы отправить заявку.";
+        return;
+      }
+
+      try{
+        tg.sendData(JSON.stringify(payload));
+        // Можно показать подтверждение и закрыть
+        tg.HapticFeedback?.notificationOccurred?.("success");
+        lHint.textContent = "✅ Отправлено!";
+        setTimeout(()=>{ closeLead(); }, 450);
+      }catch(e){
+        lHint.textContent = "⚠️ Не удалось отправить. Попробуй ещё раз.";
       }
     });
 
+    // --- Share ---
     document.getElementById("btnShare").addEventListener("click", async ()=>{
       const text = "TG Studio — professional Telegram bot and WebApp solution 👇";
       const url = location.href;
