@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>TG Studio — Portfolio WebApp</title>
+  <title>TG Studio — Personal Bot</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
@@ -11,28 +11,34 @@
       --bg0:#05070c;
       --bg1:#0a1020;
 
-      --glass: rgba(255,255,255,.06);
-      --stroke: rgba(255,255,255,.10);
-
       --text:#f6f8ff;
-      --muted: rgba(246,248,255,.70);
+      --muted: rgba(246,248,255,.72);
       --muted2: rgba(246,248,255,.55);
+
+      --glass: rgba(255,255,255,.07);
+      --glass2: rgba(255,255,255,.045);
+      --stroke: rgba(255,255,255,.12);
+      --stroke2: rgba(255,255,255,.18);
 
       --blue:#2b6cff;
       --blue2:#1d4ed8;
 
-      --shadow: 0 18px 44px rgba(0,0,0,.45);
+      --shadow: 0 20px 55px rgba(0,0,0,.48);
+      --shadow2: 0 14px 34px rgba(0,0,0,.35);
 
+      --r-xl:30px;
       --r-lg:26px;
       --r-md:20px;
+      --r-sm:16px;
+
+      --tap: 48px;
 
       --safeT: env(safe-area-inset-top, 0px);
       --safeB: env(safe-area-inset-bottom, 0px);
       --safeL: env(safe-area-inset-left, 0px);
       --safeR: env(safe-area-inset-right, 0px);
 
-      --tap: 48px;
-      --sidebarW: 250px;
+      --sideW: 260px;
     }
 
     *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
@@ -41,407 +47,645 @@
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
       color:var(--text);
-      background:
-        radial-gradient(1200px 650px at 10% 0%, rgba(43,108,255,.18), transparent 60%),
-        radial-gradient(900px 650px at 90% 10%, rgba(255,255,255,.05), transparent 55%),
-        linear-gradient(180deg, var(--bg1), var(--bg0));
+      overflow-x:hidden;
       padding:
         calc(14px + var(--safeT))
         calc(14px + var(--safeR))
         calc(14px + var(--safeB))
         calc(14px + var(--safeL));
-      overflow-x:hidden;
+      background:
+        radial-gradient(1200px 650px at 18% 4%, rgba(43,108,255,.22), transparent 62%),
+        radial-gradient(900px 650px at 88% 12%, rgba(255,255,255,.07), transparent 56%),
+        radial-gradient(800px 520px at 60% 78%, rgba(43,108,255,.12), transparent 58%),
+        linear-gradient(180deg, var(--bg1), var(--bg0));
+    }
+
+    /* subtle "bokeh" layer */
+    body:before{
+      content:"";
+      position:fixed; inset:-80px;
+      pointer-events:none;
+      background:
+        radial-gradient(120px 120px at 14% 18%, rgba(255,255,255,.08), transparent 60%),
+        radial-gradient(160px 160px at 28% 34%, rgba(43,108,255,.10), transparent 62%),
+        radial-gradient(140px 140px at 78% 22%, rgba(255,255,255,.07), transparent 62%),
+        radial-gradient(220px 220px at 84% 48%, rgba(43,108,255,.12), transparent 62%),
+        radial-gradient(180px 180px at 62% 74%, rgba(255,255,255,.06), transparent 62%),
+        radial-gradient(120px 120px at 36% 82%, rgba(43,108,255,.10), transparent 62%);
+      filter: blur(2px);
+      opacity:.9;
     }
 
     .app{
-      max-width: 1100px;
+      max-width: 1120px;
       margin: 0 auto;
       display:grid;
-      grid-template-columns: var(--sidebarW) 1fr;
+      grid-template-columns: var(--sideW) 1fr;
       gap:14px;
       min-height: calc(100vh - 28px - var(--safeT) - var(--safeB));
-    }
-    @media (max-width: 860px){
-      .app{grid-template-columns: 1fr;}
-      :root{ --sidebarW: 100%; }
+      position:relative;
+      z-index:1;
     }
 
-    /* TOPBAR */
+    @media (max-width: 920px){
+      .app{grid-template-columns:1fr;}
+      :root{ --sideW: 100%; }
+    }
+
+    /* ====== GLASS PANEL ====== */
+    .panel{
+      border:1px solid var(--stroke);
+      background: linear-gradient(180deg, var(--glass), var(--glass2));
+      border-radius: var(--r-xl);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      overflow:hidden;
+      position:relative;
+    }
+    .panel:after{
+      content:"";
+      position:absolute; inset:-2px;
+      pointer-events:none;
+      border-radius: inherit;
+      background:
+        radial-gradient(700px 240px at 50% -10%, rgba(255,255,255,.10), transparent 60%),
+        radial-gradient(520px 260px at 30% 120%, rgba(43,108,255,.14), transparent 60%);
+      opacity:.7;
+      mix-blend-mode: screen;
+    }
+    .panel > *{position:relative; z-index:1;}
+
+    /* ====== TOPBAR (as in screenshot: logo centered inside long pill) ====== */
     .topbar{
       grid-column: 1 / -1;
+      padding: 16px 16px;
+      min-height: 98px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .brand-left{
+      line-height:1.1;
+      min-width: 180px;
+    }
+    .brand-left .b1{
+      font-weight: 1000;
+      font-size: 22px;
+      letter-spacing:.2px;
+    }
+    .brand-left .b2{
+      margin-top: 6px;
+      color: var(--muted);
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .brand-pill{
+      flex:1;
+      display:flex;
+      justify-content:center;
+      pointer-events:none;
+    }
+
+    .pill-wrap{
+      width:min(560px, 100%);
+      padding: 10px 14px;
+      border-radius: 28px;
+      border:1px solid rgba(255,255,255,.16);
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+      box-shadow: var(--shadow2);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+    }
+
+    .logoMark{
+      width: 34px; height: 34px;
+      border-radius: 12px;
+      display:grid; place-items:center;
+      background: radial-gradient(18px 18px at 35% 30%, rgba(255,255,255,.28), transparent 60%),
+                  linear-gradient(180deg, rgba(43,108,255,.92), rgba(29,78,216,.80));
+      border:1px solid rgba(43,108,255,.55);
+      box-shadow: 0 12px 26px rgba(43,108,255,.22);
+      font-weight:1000;
+      letter-spacing:.2px;
+    }
+    .pill-title{
+      font-weight: 1000;
+      font-size: 28px;
+      letter-spacing:.2px;
+      white-space:nowrap;
+    }
+
+    .top-actions{
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      min-width: 180px;
+    }
+
+    .btn{
+      min-height: var(--tap);
       border:1px solid var(--stroke);
-      background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.045));
-      border-radius: var(--r-lg);
-      box-shadow: var(--shadow);
-      padding: 18px 14px;
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 18px;
+      font-weight: 1000;
+      font-size: 14px;
+      cursor:pointer;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      white-space:nowrap;
+      user-select:none;
+    }
+    .btn.primary{
+      background: linear-gradient(180deg, rgba(43,108,255,.95), rgba(29,78,216,.85));
+      border-color: rgba(43,108,255,.55);
+      color:#fff;
+      box-shadow: 0 14px 30px rgba(43,108,255,.20);
+    }
+    .btn:active{transform: translateY(1px);}
+
+    /* ====== SIDEBAR (icons + chevrons) ====== */
+    .sidebar{
+      padding: 14px;
+      height: fit-content;
+      position: sticky;
+      top: calc(14px + var(--safeT));
+    }
+    @media (max-width: 920px){
+      .sidebar{position:relative; top:auto;}
+    }
+
+    .sideHead{
+      padding: 12px 12px;
+      border-radius: 22px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.18);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom: 12px;
+    }
+    .sideHead .s1{font-weight:1000;}
+    .sideHead .s2{color:var(--muted); font-weight:900; font-size:12px;}
+
+    .menu{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      padding: 6px 2px 2px;
+    }
+    .mi{
+      width:100%;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      backdrop-filter: blur(14px);
-      position: relative;
-      min-height: 92px;
-    }
-
-    .top-left{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      min-width: 170px;
-    }
-
-    .brandtxt{line-height:1.05;}
-    .brandtxt .t1{font-weight:1000; font-size:16px;}
-    .brandtxt .t2{margin-top:5px; color:var(--muted); font-weight:900; font-size:12px; max-width: 240px;}
-
-    /* ✅ Logo centered + bigger + framed */
-    .top-center{
-      position:absolute;
-      left:50%;
-      top:50%;
-      transform: translate(-50%, -50%);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      pointer-events:none;
-      width: min(74%, 360px);
-    }
-
-    .logo-frame{
-      border-radius: 22px;
-      padding: 10px 14px;
-      border: 1px solid rgba(255,255,255,.16);
-      background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.05));
-      box-shadow: 0 18px 40px rgba(0,0,0,.35);
-      backdrop-filter: blur(14px);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-
-    .brand-logo{
-      height: 70px;            /* ✅ увеличили */
-      width: auto;
-      max-width: 320px;
-      object-fit: contain;
-      display:block;
-      filter: drop-shadow(0 14px 26px rgba(0,0,0,.40));
-    }
-
-    .top-right{
-      display:flex;
-      align-items:center;
-      justify-content:flex-end;
-      gap:10px;
-      min-width: 140px;
-    }
-
-    .tbtn{
       min-height: var(--tap);
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.06);
-      color:var(--text);
-      padding:10px 14px;
-      border-radius: 16px;
-      font-weight:900;
-      font-size:13px;
-      cursor:pointer;
-      backdrop-filter: blur(10px);
-      white-space:nowrap;
-    }
-
-    /* blue buttons: white text */
-    .tbtn.primary, .btn-blue{
-      background: linear-gradient(180deg, rgba(43,108,255,.95), rgba(29,78,216,.85));
-      border-color: rgba(43,108,255,.50);
-      color:#ffffff;
-      box-shadow: 0 12px 28px rgba(43,108,255,.22);
-    }
-
-    /* SIDEBAR */
-    .sidebar{
-      border:1px solid var(--stroke);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
-      border-radius: var(--r-lg);
-      box-shadow: var(--shadow);
-      padding:12px;
-      backdrop-filter: blur(12px);
-      position: sticky;
-      top: calc(14px + var(--safeT));
-      height: fit-content;
-    }
-    @media (max-width: 860px){
-      .sidebar{position:relative; top:auto;}
-    }
-
-    .side-head{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:10px 10px;
-      border:1px solid var(--stroke);
-      background: rgba(0,0,0,.18);
-      border-radius: 18px;
-      margin-bottom:10px;
-    }
-    .side-head .name{font-weight:1000;}
-    .side-head .tag{color:var(--muted); font-size:12px;}
-
-    .cat{
-      display:flex; flex-direction:column; gap:8px;
-      padding:6px 4px;
-    }
-    .cat button{
-      width:100%;
-      text-align:left;
-      border:none;
+      border-radius: 22px;
+      border:1px solid transparent;
       background: transparent;
       color: var(--muted);
-      font-weight:900;
-      font-size:14px;
-      padding:12px 12px;
-      border-radius: 18px;
+      font-weight:1000;
+      font-size: 15px;
+      padding: 12px 12px;
       cursor:pointer;
-      border:1px solid transparent;
-      min-height: var(--tap);
+      text-align:left;
     }
-    .cat button.active{
+    .mi.active{
       color: var(--text);
-      background: rgba(43,108,255,.16);
-      border-color: rgba(43,108,255,.28);
-      box-shadow: 0 12px 26px rgba(43,108,255,.10);
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.14);
+      box-shadow: 0 14px 32px rgba(0,0,0,.22);
+    }
+    .mi-left{
+      display:flex; align-items:center; gap:10px;
+      min-width: 0;
+    }
+    .ic{
+      width: 30px; height: 30px;
+      border-radius: 12px;
+      display:grid; place-items:center;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      box-shadow: 0 10px 20px rgba(0,0,0,.22);
+      flex:0 0 auto;
+    }
+    .mi span{
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .chev{
+      color: rgba(246,248,255,.55);
+      font-weight:1000;
+      flex:0 0 auto;
     }
 
-    /* MAIN */
+    /* ====== MAIN ====== */
     .main{
-      border:1px solid var(--stroke);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
-      border-radius: var(--r-lg);
-      box-shadow: var(--shadow);
-      padding:12px;
-      backdrop-filter: blur(12px);
+      padding: 14px;
+    }
+
+    .hero{
+      padding: 18px 16px 16px;
+      border-radius: var(--r-xl);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.14);
+      box-shadow: var(--shadow2);
+      position:relative;
       overflow:hidden;
     }
-
-    .pills{
-      display:flex; gap:10px;
-      padding:10px;
-      border:1px solid var(--stroke);
-      background: rgba(0,0,0,.16);
-      border-radius: 20px;
-      align-items:center;
-      overflow:auto;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
+    .hero:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(520px 260px at 30% 0%, rgba(43,108,255,.22), transparent 60%),
+        radial-gradient(460px 240px at 80% 30%, rgba(255,255,255,.10), transparent 58%);
+      opacity:.85;
+      pointer-events:none;
     }
-    .pills::-webkit-scrollbar{display:none;}
-    .pill{
-      min-height: var(--tap);
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.06);
+    .hero > *{position:relative; z-index:1;}
+
+    .heroTitle{
+      font-weight: 1000;
+      font-size: clamp(28px, 4.5vw, 44px);
+      letter-spacing: .2px;
+      line-height: 1.08;
+      margin: 0;
+    }
+    .heroTitle .soft{color: rgba(246,248,255,.82); font-weight:900;}
+    .heroSub{
+      margin: 10px 0 0;
       color: var(--muted);
-      padding:10px 14px;
-      border-radius: 18px;
+      font-size: 14px;
+      line-height: 1.4;
+      max-width: 62ch;
+    }
+    .heroActions{
+      margin-top: 14px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    /* section titles */
+    .sec{
+      margin-top: 14px;
+      padding: 0 2px;
+    }
+    .secTitle{
+      display:flex; align-items:center; justify-content:space-between;
+      margin: 14px 2px 10px;
+      gap:10px;
+    }
+    .secTitle h3{
+      margin:0;
       font-weight:1000;
-      font-size:13px;
-      cursor:pointer;
+      font-size: 22px;
+      letter-spacing:.2px;
+    }
+    .secTitle .hintSmall{
+      color: var(--muted2);
+      font-weight:900;
+      font-size: 12px;
       white-space:nowrap;
     }
-    .pill.active{
-      color: var(--text);
-      background: rgba(43,108,255,.18);
-      border-color: rgba(43,108,255,.30);
-    }
 
-    .grid{
+    /* cards grid like screenshot */
+    .grid2{
       display:grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap:12px;
-      margin-top:12px;
     }
-    @media (max-width: 560px){
-      .grid{grid-template-columns:1fr;}
+    @media (max-width: 640px){
+      .grid2{grid-template-columns:1fr;}
     }
 
-    .card{
-      border:1px solid var(--stroke);
+    .workCard{
+      border-radius: 26px;
+      border:1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.16);
-      border-radius: 24px;
-      padding:12px;
-      box-shadow: 0 18px 44px rgba(0,0,0,.35);
-      display:flex;
-      flex-direction:column;
-      gap:10px;
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+      position:relative;
     }
+    .workCard:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(380px 140px at 22% 0%, rgba(255,255,255,.10), transparent 60%),
+        radial-gradient(320px 160px at 80% 40%, rgba(43,108,255,.14), transparent 62%);
+      opacity:.8;
+      pointer-events:none;
+    }
+    .workCard > *{position:relative; z-index:1;}
 
-    .imgbox{
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.04);
-      border-radius: 22px;
-      height: 160px;
+    .wcHead{
+      padding: 12px 12px 10px;
       display:flex;
       align-items:center;
-      justify-content:center;
-      overflow:hidden;
-      position: relative;
+      justify-content:space-between;
+      gap:10px;
     }
-    .imgbox img{
+    .wcHead .ttl{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+    .badge{
+      width:30px;height:30px;border-radius:12px;
+      display:grid; place-items:center;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow: 0 10px 20px rgba(0,0,0,.22);
+      flex:0 0 auto;
+    }
+    .wcHead .name{
+      font-weight:1000;
+      font-size: 16px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .wcHead .sub{
+      margin-top:3px;
+      color: var(--muted);
+      font-weight:900;
+      font-size: 12px;
+    }
+
+    .wcMedia{
+      padding: 0 12px 12px;
+    }
+    .shots{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    .shot{
+      height: 120px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      overflow:hidden;
+      box-shadow: 0 18px 44px rgba(0,0,0,.28);
+      position:relative;
+    }
+    .shot img{
       width:100%;
       height:100%;
       object-fit:cover;
       transform: scale(1.02);
-      filter: drop-shadow(0 18px 28px rgba(0,0,0,.45));
+      filter: drop-shadow(0 18px 28px rgba(0,0,0,.35));
+      display:block;
     }
-
-    .pname{font-weight:1000; font-size:16px; margin:0;}
-    .chips{display:flex; gap:8px; flex-wrap:wrap;}
-    .chip{
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.05);
-      color: var(--muted);
-      padding:6px 10px;
+    .shotLabel{
+      position:absolute;
+      left:10px; top:10px;
+      font-size: 12px;
+      font-weight:1000;
+      color: rgba(246,248,255,.90);
+      padding: 6px 10px;
       border-radius: 999px;
-      font-weight:1000;
-      font-size:12px;
+      background: rgba(0,0,0,.26);
+      border:1px solid rgba(255,255,255,.14);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
 
-    .hint{color:var(--muted); font-size:12px; line-height:1.35;}
-    a.link{color:var(--blue); font-weight:1000; text-decoration:none;}
-
-    .price-row{
+    .wcFooter{
+      padding: 0 12px 12px;
       display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
       gap:10px;
+      justify-content:space-between;
+      flex-wrap:wrap;
     }
-    .price{
+    .miniBtns{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .mini{
+      min-height: 40px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
       font-weight:1000;
-      font-size:18px;
-      letter-spacing:.2px;
+      cursor:pointer;
+      font-size: 13px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
     }
-    .sum{color:var(--muted2); font-weight:900; font-size:12px;}
+    .mini.primary{
+      background: linear-gradient(180deg, rgba(43,108,255,.95), rgba(29,78,216,.85));
+      border-color: rgba(43,108,255,.55);
+      color:#fff;
+    }
 
-    /* ✅ убрали блок qty (+ -) и общий подсчет: cartbar оставим только кнопки */
-    .cartbar{
+    .chips{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .chip{
+      font-size: 12px;
+      font-weight:1000;
+      color: var(--muted);
+      padding: 6px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+    }
+
+    /* ====== bottom action bar (like your previous one, but in style) ====== */
+    .bar{
       position: sticky;
       bottom: 0;
-      margin-top:12px;
-      border:1px solid var(--stroke);
-      background: linear-gradient(180deg, rgba(0,0,0,.30), rgba(0,0,0,.18));
-      border-radius: 22px;
-      padding:10px;
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 24px;
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(0,0,0,.36), rgba(0,0,0,.18));
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       display:flex;
       gap:10px;
-      align-items:center;
       justify-content:flex-end;
-      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow2);
     }
-    .cartbar .btn{
-      min-height: var(--tap);
-      border:none;
-      cursor:pointer;
-      font-weight:1000;
-      border-radius: 18px;
-      padding:12px 14px;
-      font-size:14px;
-      white-space:nowrap;
-    }
-    .btn-ghost{
-      background: rgba(255,255,255,.06);
-      border:1px solid var(--stroke);
-      color:var(--text);
-    }
+    .bar .btn{border-radius: 18px;}
 
-    /* MODALS */
+    /* ====== MODALS (sheet from bottom) ====== */
     .modal{
       position:fixed; inset:0;
-      display:none; align-items:flex-end; justify-content:center;
+      display:none;
+      align-items:flex-end; justify-content:center;
       padding: 14px 14px calc(14px + var(--safeB));
       background: rgba(0,0,0,.55);
       z-index: 999;
     }
     .sheet{
       width:min(980px, 100%);
-      border:1px solid var(--stroke);
+      border:1px solid rgba(255,255,255,.14);
       background: rgba(10,12,18,.92);
-      border-radius: 24px;
+      border-radius: 26px;
       box-shadow: var(--shadow);
-      padding:12px;
-      backdrop-filter: blur(14px);
-      max-height: min(78vh, 700px);
+      padding: 12px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      max-height: min(78vh, 720px);
       overflow:auto;
       -webkit-overflow-scrolling: touch;
     }
-    .sheetTop{display:flex; justify-content:space-between; gap:10px; align-items:flex-start;}
+    .sheetTop{
+      display:flex; justify-content:space-between;
+      gap:12px; align-items:flex-start;
+      padding: 6px 4px 8px;
+    }
+    .sheetTop h3{margin:0; font-size:16px; font-weight:1000;}
+    .sheetTop p{margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.35;}
     .x{
-      width:40px;height:40px;border-radius:16px;border:1px solid var(--stroke);
-      background: rgba(255,255,255,.06); color:var(--text);
-      cursor:pointer; font-weight:1000;
+      width:44px; height:44px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      cursor:pointer;
+      font-weight:1000;
       flex:0 0 auto;
     }
-    .sheet h3{margin:0;font-size:16px;}
-    .sheet p{margin:6px 0 0;color:var(--muted);font-size:13px;line-height:1.35;}
 
     .form{margin-top:10px; display:flex; flex-direction:column; gap:10px;}
     .in{
       width:100%;
-      border:1px solid var(--stroke);
+      border:1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.06);
       color: var(--text);
-      border-radius: 16px;
+      border-radius: 18px;
       padding: 12px 12px;
       font-size: 14px;
       outline:none;
     }
-    textarea.in{min-height:92px; resize:none;}
-    .row{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
-    @media(max-width:520px){ .row{grid-template-columns:1fr;} }
+    textarea.in{min-height: 96px; resize:none;}
+    .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    @media (max-width:520px){ .row{grid-template-columns: 1fr;} }
+
+    .hint{
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+    a.link{color: rgba(110,160,255,1); font-weight:1000; text-decoration:none;}
   </style>
 </head>
 
 <body>
   <div class="app">
 
-    <!-- TOP BAR -->
-    <div class="topbar">
-      <div class="top-left">
-        <div class="brandtxt">
-          <div class="t1">TG Studio</div>
-          <div class="t2">Professional telegram bot and WebApp solution</div>
+    <!-- TOPBAR -->
+    <div class="panel topbar">
+      <div class="brand-left">
+        <div class="b1" id="brandNameLeft">TG Studio</div>
+        <div class="b2" id="brandTagLeft">Telegram WebApp</div>
+      </div>
+
+      <div class="brand-pill">
+        <div class="pill-wrap">
+          <div class="logoMark" aria-hidden="true">TG</div>
+          <div class="pill-title" id="brandNameCenter">Studio</div>
         </div>
       </div>
 
-      <div class="top-center">
-        <div class="logo-frame">
-          <img class="brand-logo" id="brandLogo" src="logo.png" alt="TG Studio Logo">
-        </div>
-      </div>
-
-      <div class="top-right">
-        <button class="tbtn primary" id="btnConsult">Консультация</button>
+      <div class="top-actions">
+        <button class="btn primary" id="btnConsult">Получить консультацию</button>
       </div>
     </div>
 
     <!-- SIDEBAR -->
-    <aside class="sidebar">
-      <div class="side-head">
+    <aside class="panel sidebar">
+      <div class="sideHead">
         <div>
-          <div class="name">TG Studio</div>
-          <div class="tag">Portfolio • WebApp</div>
+          <div class="s1" id="sideTitle">TG Studio</div>
+          <div class="s2">Personal Bot • Portfolio</div>
         </div>
-        <div class="tag" id="tgHint">Telegram</div>
+        <div class="s2" id="tgHint">Web</div>
       </div>
-      <div class="cat" id="catList"></div>
+
+      <div class="menu" id="menu"></div>
     </aside>
 
     <!-- MAIN -->
-    <main class="main">
-      <div class="pills" id="subPills"></div>
-      <div class="grid" id="cards"></div>
+    <main class="panel main">
 
-      <!-- ✅ убрали сумму/кол-во и подсчет -->
-      <div class="cartbar">
-        <button class="btn btn-ghost" id="btnShare">Поделиться</button>
-        <button class="btn btn-blue" id="btnSendRequest">Отправить запрос</button>
+      <!-- HERO -->
+      <section class="hero" id="hero">
+        <h1 class="heroTitle">
+          Создаю <span class="soft">Telegram-ботов</span><br/>
+          и <span class="soft">WebApps</span> под бизнес.
+        </h1>
+        <p class="heroSub">
+          Делаю заявки, каталоги, меню, запись, интеграции оплат (Click/Payme), Instagram и карты.
+          Всё адаптивно под iPhone/Android и работает в Telegram WebApp.
+        </p>
+
+        <div class="heroActions">
+          <button class="btn primary" id="btnHeroLead">Получить консультацию</button>
+          <button class="btn" id="btnOpenContacts">Контакты</button>
+          <button class="btn" id="btnShare">Поделиться</button>
+        </div>
+      </section>
+
+      <!-- BEFORE/AFTER -->
+      <section class="sec" id="secBeforeAfter">
+        <div class="secTitle">
+          <h3>До и После</h3>
+          <div class="hintSmall">Покажу примеры интерфейса</div>
+        </div>
+
+        <div class="grid2" id="beforeAfterGrid"></div>
+      </section>
+
+      <!-- WORK EXAMPLES -->
+      <section class="sec" id="secWorks">
+        <div class="secTitle">
+          <h3>Примеры работ</h3>
+          <div class="hintSmall">Каталоги • Меню • Запись</div>
+        </div>
+
+        <div class="grid2" id="worksGrid"></div>
+      </section>
+
+      <!-- SERVICES / PRICES -->
+      <section class="sec" id="secServices">
+        <div class="secTitle">
+          <h3 id="secTitleDynamic">Услуги</h3>
+          <div class="hintSmall" id="secHintDynamic">Выберите раздел слева</div>
+        </div>
+
+        <div class="grid2" id="dynamicGrid"></div>
+      </section>
+
+      <!-- Bottom action bar -->
+      <div class="bar">
+        <button class="btn" id="btnRequest">Отправить запрос</button>
       </div>
+
     </main>
   </div>
 
@@ -464,26 +708,26 @@
           <input class="in" id="cBudget" placeholder="Бюджет (примерно)" />
           <input class="in" id="cDeadline" placeholder="Сроки (когда нужно)" />
         </div>
-        <button class="tbtn primary" id="cSend">✅ Отправить</button>
+        <button class="btn primary" id="cSend">✅ Отправить</button>
         <div class="hint" id="cHint"></div>
       </div>
     </div>
   </div>
 
   <!-- REQUEST MODAL -->
-  <div class="modal" id="mCart">
+  <div class="modal" id="mRequest">
     <div class="sheet">
       <div class="sheetTop">
         <div>
           <h3>Запрос</h3>
-          <p id="cartSubtitle">Отправка запроса админу.</p>
+          <p>Опиши задачу — отправлю админу в Telegram.</p>
         </div>
-        <button class="x" data-close="mCart">✕</button>
+        <button class="x" data-close="mRequest">✕</button>
       </div>
 
       <div class="form">
         <textarea class="in" id="rText" placeholder="Опиши что нужно: бот / WebApp / интеграции, сроки, бюджет"></textarea>
-        <button class="tbtn primary" id="rSend">✅ Отправить запрос</button>
+        <button class="btn primary" id="rSend">✅ Отправить запрос</button>
         <div class="hint" id="rHint"></div>
       </div>
     </div>
@@ -507,14 +751,14 @@
           <div><b>Почта:</b> <a class="link" href="mailto:tahirov.dd@gmail.com">tahirov.dd@gmail.com</a></div>
         </div>
 
-        <button class="tbtn primary" id="btnWriteTG">Написать в Telegram</button>
+        <button class="btn primary" id="btnWriteTG">Написать в Telegram</button>
         <div class="hint">Нажмите кнопку — откроется чат.</div>
       </div>
     </div>
   </div>
 
 <script>
-  // Telegram WebApp init (полный экран)
+  // ===== Telegram WebApp init =====
   const tg = window.Telegram?.WebApp;
   const tgHint = document.getElementById('tgHint');
 
@@ -524,130 +768,13 @@
     try { tg.requestFullscreen(); } catch(e) {}
     try { tg.disableClosingConfirmation(); } catch(e) {}
     tgHint.textContent = "Telegram WebApp";
+    // Optional: set header color
+    try { tg.setHeaderColor?.("#0a1020"); } catch(e) {}
   } else {
     tgHint.textContent = "Web";
   }
 
-  // Fix logo: try png -> jpg -> webp
-  (function fixLogo(){
-    const img = document.getElementById('brandLogo');
-    const variants = ["logo.png", "logo.jpg", "logo.webp"];
-    let i = 0;
-    img.onerror = () => {
-      i++;
-      if(i < variants.length){
-        img.src = variants[i];
-      } else {
-        img.style.display = "none";
-        const holder = document.createElement("div");
-        holder.style.fontWeight = "1000";
-        holder.style.fontSize = "18px";
-        holder.style.color = "rgba(246,248,255,.92)";
-        holder.textContent = "TG Studio";
-        document.querySelector(".logo-frame").appendChild(holder);
-      }
-    };
-  })();
-
-  // Data
-  const DATA = {
-    categories: [
-      { id:"services", name:"Услуги", subs:["Боты","WebApp","Интеграции","Дизайн"] },
-      { id:"portfolio", name:"Портфолио", subs:["Боты","WebApp","Сайты"] },
-      { id:"prices", name:"Прайс", subs:["Старт","Бизнес","Премиум"] },
-      { id:"reviews", name:"Отзывы", subs:["Текст","Скрины"] },
-      { id:"contacts", name:"Контакты", subs:["Связь"] },
-    ],
-    cards: [
-      { id:"s_bot", cat:"services", sub:"Боты", title:"Telegram Bot", tags:["Leads","Admin"], price:0, img:"images/bot.jpg", desc:"Бот для заявок, продаж, меню, записи. Уведомления админу.", link:"https://t.me/Yaki_Tahirov" },
-      { id:"s_webapp", cat:"services", sub:"WebApp", title:"Telegram WebApp", tags:["Catalog","UI"], price:0, img:"images/webapp.jpg", desc:"Полноэкранное приложение в Telegram: каталог, карточки, поиск.", link:"https://tahirovdd-lang.github.io/Portfolio-bot/" },
-      { id:"s_integr", cat:"services", sub:"Интеграции", title:"Интеграции", tags:["Click/Payme","Maps"], price:0, img:"images/integr.jpg", desc:"Подключение оплат, QR, Instagram, Яндекс Карты, CRM.", link:"" },
-      { id:"s_ui", cat:"services", sub:"Дизайн", title:"UI/UX Design", tags:["Dark Glass","iOS"], price:0, img:"images/ui.jpg", desc:"Дизайн в стиле iOS / glass / dark, адаптив.", link:"" },
-
-      { id:"p_grandcru", cat:"portfolio", sub:"WebApp", title:"Grand Cru", tags:["Catalog","Search"], price:0, img:"images/grandcru.jpg", desc:"Каталог Fine Wine & Spirits + поиск + заявки менеджеру.", link:"" },
-      { id:"p_rest", cat:"portfolio", sub:"WebApp", title:"Restaurant Menu", tags:["Cart","Lang"], price:0, img:"images/restaurant.jpg", desc:"Меню, доставка/самовывоз, мультиязык.", link:"" },
-      { id:"p_booking", cat:"portfolio", sub:"Боты", title:"Booking Bot", tags:["Schedule","Admin"], price:0, img:"images/booking.jpg", desc:"Запись к мастерам, выходные, подтверждения.", link:"" },
-
-      { id:"pr_start", cat:"prices", sub:"Старт", title:"Start Pack", tags:["Bot","Basic"], price:0, img:"images/price1.jpg", desc:"Бот-визитка / портфолио / простые заявки.", link:"" },
-      { id:"pr_biz", cat:"prices", sub:"Бизнес", title:"Business Pack", tags:["WebApp"], price:0, img:"images/price2.jpg", desc:"WebApp + оформление заказа.", link:"" },
-
-      { id:"rv1", cat:"reviews", sub:"Текст", title:"Отзыв #1", tags:["5★"], price:0, img:"images/review1.jpg", desc:"Сюда вставишь текст отзыва клиента.", link:"" },
-      { id:"ct", cat:"contacts", sub:"Связь", title:"Связаться", tags:["Telegram","Email"], price:0, img:"images/contact.jpg", desc:"Открой окно контактов снизу и напиши мне.", link:"" },
-    ]
-  };
-
-  let activeCat = DATA.categories[0].id;
-  let activeSub = DATA.categories[0].subs[0];
-
-  const catList = document.getElementById('catList');
-  const subPills = document.getElementById('subPills');
-  const cardsEl = document.getElementById('cards');
-
-  function setActive(catId){
-    activeCat = catId;
-    const cat = DATA.categories.find(c=>c.id===catId);
-    activeSub = cat?.subs?.[0] || "";
-    renderCats(); renderSubs(); renderCards();
-  }
-
-  function renderCats(){
-    catList.innerHTML = "";
-    DATA.categories.forEach(c=>{
-      const b = document.createElement('button');
-      b.textContent = c.name;
-      b.className = (c.id===activeCat) ? "active" : "";
-      b.onclick = ()=> {
-        if(c.id === "contacts"){ openModal(document.getElementById('mContacts')); return; }
-        setActive(c.id);
-      };
-      catList.appendChild(b);
-    });
-  }
-
-  function renderSubs(){
-    subPills.innerHTML = "";
-    const cat = DATA.categories.find(c=>c.id===activeCat);
-    (cat?.subs || []).forEach(s=>{
-      const p = document.createElement('button');
-      p.className = "pill" + (s===activeSub ? " active" : "");
-      p.textContent = s;
-      p.onclick = ()=>{ activeSub = s; renderSubs(); renderCards(); };
-      subPills.appendChild(p);
-    });
-  }
-
-  function safeImg(img){
-    return img || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='360'><rect width='100%25' height='100%25' fill='rgba(255,255,255,0.04)'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='rgba(246,248,255,0.55)' font-family='Arial' font-size='18'>image</text></svg>";
-  }
-
-  function renderCards(){
-    cardsEl.innerHTML = "";
-    const list = DATA.cards.filter(p => p.cat===activeCat && p.sub===activeSub);
-
-    list.forEach(p=>{
-      const el = document.createElement('div');
-      el.className = "card";
-      el.innerHTML = `
-        <div class="imgbox">
-          <img src="${safeImg(p.img)}" alt="${p.title}"
-               onerror="this.src='${safeImg("")}'; this.style.opacity=.55;" />
-        </div>
-
-        <p class="pname">${p.title}</p>
-
-        <div class="chips">
-          ${(p.tags||[]).slice(0,3).map(x=>`<span class="chip">${x}</span>`).join('')}
-        </div>
-
-        <div class="hint" style="margin-top:-2px;">
-          ${p.desc ? p.desc : ""}
-          ${p.link ? `<div style="margin-top:6px;"><a class="link" href="${p.link}" target="_blank" rel="noreferrer">Открыть ссылку</a></div>` : ``}
-        </div>
-      `;
-      cardsEl.appendChild(el);
-    });
-  }
-
+  // ===== Helpers =====
   function openModal(m){ m.style.display="flex"; }
   function closeModalById(id){ document.getElementById(id).style.display="none"; }
 
@@ -660,9 +787,329 @@
     });
   });
 
-  // Consultation modal
-  document.getElementById('btnConsult').onclick = ()=> openModal(document.getElementById('mConsult'));
+  function safeImg(src){
+    if(!src) return "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='500'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='rgba(255,255,255,0.08)'/><stop offset='1' stop-color='rgba(43,108,255,0.10)'/></linearGradient></defs><rect width='100%25' height='100%25' fill='rgba(0,0,0,0.18)'/><rect x='16' y='16' width='calc(100%25 - 32px)' height='calc(100%25 - 32px)' rx='26' fill='url(%23g)' stroke='rgba(255,255,255,0.16)'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='rgba(246,248,255,0.62)' font-family='Arial' font-size='18'>image</text></svg>";
+    return src;
+  }
 
+  function iconSVG(kind){
+    const common = `fill="none" stroke="rgba(246,248,255,.88)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"`;
+    switch(kind){
+      case "services": return `<svg width="18" height="18" viewBox="0 0 24 24" ${common}><path d="M12 2l3 7h7l-5.6 4.1L18.8 21 12 16.8 5.2 21l2.4-7.9L2 9h7z"/></svg>`;
+      case "portfolio": return `<svg width="18" height="18" viewBox="0 0 24 24" ${common}><path d="M3 7h18v13H3z"/><path d="M8 7V5h8v2"/></svg>`;
+      case "prices": return `<svg width="18" height="18" viewBox="0 0 24 24" ${common}><path d="M7 7h10v14H7z"/><path d="M9 3h6v4H9z"/><path d="M9 11h6"/></svg>`;
+      case "reviews": return `<svg width="18" height="18" viewBox="0 0 24 24" ${common}><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>`;
+      case "contacts": return `<svg width="18" height="18" viewBox="0 0 24 24" ${common}><path d="M22 16.9v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 3 5.2 2 2 0 0 1 5 3h3a2 2 0 0 1 2 1.7l.6 3a2 2 0 0 1-.6 1.8l-1.3 1.3a16 16 0 0 0 6.6 6.6l1.3-1.3a2 2 0 0 1 1.8-.6l3 .6a2 2 0 0 1 1.7 2z"/></svg>`;
+      default: return `<svg width="18" height="18" viewBox="0 0 24 24" ${common}><path d="M12 3v18"/><path d="M3 12h18"/></svg>`;
+    }
+  }
+
+  // ===== Content (PUT YOUR IMAGES INTO /images) =====
+  // Рекомендация: изображения 1200x800 (или похожие), JPG/PNG.
+  const DATA = {
+    brand: {
+      left: "TG Studio",
+      center: "Studio",
+      tag: "Telegram WebApp",
+      telegram: "@Yaki_Tahirov",
+      phone: "+998 (93) 746-00-22",
+      email: "tahirov.dd@gmail.com",
+      adminLink: "https://t.me/Yaki_Tahirov"
+    },
+    menu: [
+      { id:"services",  name:"Услуги",    icon:"services" },
+      { id:"portfolio", name:"Портфолио", icon:"portfolio" },
+      { id:"prices",    name:"Прайс",     icon:"prices" },
+      { id:"reviews",   name:"Отзывы",    icon:"reviews" },
+      { id:"contacts",  name:"Контакты",  icon:"contacts" },
+    ],
+    beforeAfter: [
+      {
+        title: "Telegram Bot",
+        subtitle: "Заявка • Меню",
+        tags: ["Admin", "Leads"],
+        leftLabel: "До",
+        rightLabel: "После",
+        img1: "images/before_bot.jpg",
+        img2: "images/after_bot.jpg",
+        cta1: { text:"Подробнее", action:"openConsult" },
+        cta2: { text:"Написать", action:"openTG" }
+      },
+      {
+        title: "Telegram WebApp",
+        subtitle: "Каталог • Корзина",
+        tags: ["Catalog", "UI"],
+        leftLabel: "До",
+        rightLabel: "После",
+        img1: "images/before_webapp.jpg",
+        img2: "images/after_webapp.jpg",
+        cta1: { text:"Подробнее", action:"openConsult" },
+        cta2: { text:"Открыть", action:"openLink", url:"https://tahirovdd-lang.github.io/Portfolio-bot/" }
+      }
+    ],
+    works: [
+      {
+        title:"Grand Cru",
+        subtitle:"Fine Wine • Catalog",
+        tags:["Search","Leads"],
+        img1:"images/grandcru_1.jpg",
+        img2:"images/grandcru_2.jpg",
+        cta1:{ text:"Демо", action:"openLink", url:"" },
+        cta2:{ text:"Заказать", action:"openRequest" }
+      },
+      {
+        title:"Restaurant Menu",
+        subtitle:"Delivery • Lang",
+        tags:["Cart","3 Lang"],
+        img1:"images/rest_1.jpg",
+        img2:"images/rest_2.jpg",
+        cta1:{ text:"Демо", action:"openLink", url:"" },
+        cta2:{ text:"Заказать", action:"openRequest" }
+      }
+    ],
+    sections: {
+      services: [
+        {
+          title:"Боты под бизнес",
+          subtitle:"Заявки • продажи • запись",
+          tags:["Admin ID","Сценарии"],
+          img1:"images/service_bot_1.jpg",
+          img2:"images/service_bot_2.jpg",
+          cta1:{ text:"Консультация", action:"openConsult" },
+          cta2:{ text:"Запрос", action:"openRequest" }
+        },
+        {
+          title:"WebApp в Telegram",
+          subtitle:"Каталог • поиск • корзина",
+          tags:["iPhone/Android","Adaptive"],
+          img1:"images/service_webapp_1.jpg",
+          img2:"images/service_webapp_2.jpg",
+          cta1:{ text:"Консультация", action:"openConsult" },
+          cta2:{ text:"Запрос", action:"openRequest" }
+        }
+      ],
+      portfolio: [
+        {
+          title:"Booking Bot",
+          subtitle:"Запись • уведомления",
+          tags:["Schedule","Admin"],
+          img1:"images/booking_1.jpg",
+          img2:"images/booking_2.jpg",
+          cta1:{ text:"Запрос", action:"openRequest" },
+          cta2:{ text:"Написать", action:"openTG" }
+        },
+        {
+          title:"Portfolio WebApp",
+          subtitle:"Личный бот • витрина",
+          tags:["Glass UI","Modern"],
+          img1:"images/portfolio_1.jpg",
+          img2:"images/portfolio_2.jpg",
+          cta1:{ text:"Поделиться", action:"share" },
+          cta2:{ text:"Консультация", action:"openConsult" }
+        }
+      ],
+      prices: [
+        {
+          title:"Start",
+          subtitle:"Бот-визитка / заявки",
+          tags:["Быстро","Бюджетно"],
+          img1:"images/price_start_1.jpg",
+          img2:"images/price_start_2.jpg",
+          cta1:{ text:"Уточнить", action:"openConsult" },
+          cta2:{ text:"Запрос", action:"openRequest" }
+        },
+        {
+          title:"Business",
+          subtitle:"WebApp + оформление заказа",
+          tags:["Каталог","Корзина"],
+          img1:"images/price_biz_1.jpg",
+          img2:"images/price_biz_2.jpg",
+          cta1:{ text:"Уточнить", action:"openConsult" },
+          cta2:{ text:"Запрос", action:"openRequest" }
+        }
+      ],
+      reviews: [
+        {
+          title:"Отзыв клиента",
+          subtitle:"5★ сервис",
+          tags:["Рекомендация","Сроки"],
+          img1:"images/review_1.jpg",
+          img2:"images/review_2.jpg",
+          cta1:{ text:"Консультация", action:"openConsult" },
+          cta2:{ text:"Контакты", action:"openContacts" }
+        },
+        {
+          title:"Отзыв клиента",
+          subtitle:"5★ дизайн",
+          tags:["UI/UX","Качество"],
+          img1:"images/review_3.jpg",
+          img2:"images/review_4.jpg",
+          cta1:{ text:"Консультация", action:"openConsult" },
+          cta2:{ text:"Контакты", action:"openContacts" }
+        }
+      ]
+    }
+  };
+
+  // ===== brand text =====
+  document.getElementById("brandNameLeft").textContent = DATA.brand.left;
+  document.getElementById("brandNameCenter").textContent = DATA.brand.center;
+  document.getElementById("brandTagLeft").textContent = DATA.brand.tag;
+  document.getElementById("sideTitle").textContent = DATA.brand.left;
+
+  // ===== Render cards =====
+  function cardTemplate(item){
+    const tags = (item.tags||[]).map(t=>`<span class="chip">${t}</span>`).join("");
+    return `
+      <div class="workCard">
+        <div class="wcHead">
+          <div class="ttl">
+            <div class="badge">★</div>
+            <div style="min-width:0;">
+              <div class="name">${item.title}</div>
+              <div class="sub">${item.subtitle || ""}</div>
+            </div>
+          </div>
+          <div class="chips">${tags}</div>
+        </div>
+
+        <div class="wcMedia">
+          <div class="shots">
+            <div class="shot">
+              <span class="shotLabel">${item.leftLabel || "Preview 1"}</span>
+              <img src="${safeImg(item.img1)}" alt="${item.title} 1" onerror="this.src='${safeImg("")}'; this.style.opacity=.65;">
+            </div>
+            <div class="shot">
+              <span class="shotLabel">${item.rightLabel || "Preview 2"}</span>
+              <img src="${safeImg(item.img2)}" alt="${item.title} 2" onerror="this.src='${safeImg("")}'; this.style.opacity=.65;">
+            </div>
+          </div>
+        </div>
+
+        <div class="wcFooter">
+          <div class="miniBtns">
+            ${item.cta1 ? `<button class="mini" data-act="${item.cta1.action}" data-url="${item.cta1.url || ""}">${item.cta1.text}</button>` : ""}
+            ${item.cta2 ? `<button class="mini primary" data-act="${item.cta2.action}" data-url="${item.cta2.url || ""}">${item.cta2.text}</button>` : ""}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderBeforeAfter(){
+    const el = document.getElementById("beforeAfterGrid");
+    el.innerHTML = DATA.beforeAfter.map(cardTemplate).join("");
+  }
+
+  function renderWorks(){
+    const el = document.getElementById("worksGrid");
+    el.innerHTML = DATA.works.map(w=>{
+      return cardTemplate({
+        ...w,
+        leftLabel: "Проект 1",
+        rightLabel: "Проект 2"
+      });
+    }).join("");
+  }
+
+  let activeSection = "services";
+
+  function renderDynamic(){
+    const title = document.getElementById("secTitleDynamic");
+    const hint = document.getElementById("secHintDynamic");
+    const grid = document.getElementById("dynamicGrid");
+
+    const mapTitle = {
+      services: ["Услуги", "Что я делаю"],
+      portfolio:["Портфолио", "Подборка проектов"],
+      prices:   ["Прайс", "Пакеты и старт"],
+      reviews:  ["Отзывы", "Что говорят клиенты"]
+    };
+
+    const t = mapTitle[activeSection] || ["Раздел", ""];
+    title.textContent = t[0];
+    hint.textContent = t[1];
+
+    const list = (DATA.sections[activeSection] || []);
+    grid.innerHTML = list.map(x=>{
+      return cardTemplate({
+        ...x,
+        leftLabel: "Скрин 1",
+        rightLabel: "Скрин 2"
+      });
+    }).join("");
+
+    bindCardButtons(grid);
+  }
+
+  // ===== Sidebar menu =====
+  function renderMenu(){
+    const m = document.getElementById("menu");
+    m.innerHTML = "";
+    DATA.menu.forEach(item=>{
+      const b = document.createElement("button");
+      b.className = "mi" + (item.id===activeSection ? " active":"");
+      b.innerHTML = `
+        <div class="mi-left">
+          <div class="ic">${iconSVG(item.icon)}</div>
+          <span>${item.name}</span>
+        </div>
+        <div class="chev">›</div>
+      `;
+      b.onclick = ()=>{
+        if(item.id === "contacts"){
+          openModal(document.getElementById("mContacts"));
+          return;
+        }
+        activeSection = item.id;
+        renderMenu();
+        renderDynamic();
+        // scroll a bit to section
+        document.getElementById("secServices").scrollIntoView({behavior:"smooth", block:"start"});
+      };
+      m.appendChild(b);
+    });
+  }
+
+  // ===== Button actions (cards) =====
+  function bindCardButtons(root){
+    root.querySelectorAll("[data-act]").forEach(btn=>{
+      btn.onclick = ()=>{
+        const act = btn.getAttribute("data-act");
+        const url = btn.getAttribute("data-url") || "";
+
+        if(act === "openConsult") openModal(document.getElementById("mConsult"));
+        else if(act === "openRequest") openModal(document.getElementById("mRequest"));
+        else if(act === "openContacts") openModal(document.getElementById("mContacts"));
+        else if(act === "openTG") window.open(DATA.brand.adminLink, "_blank");
+        else if(act === "openLink"){
+          if(url) window.open(url, "_blank");
+          else openModal(document.getElementById("mRequest"));
+        }
+        else if(act === "share") doShare();
+      };
+    });
+  }
+
+  // ===== Top/hero buttons =====
+  document.getElementById("btnConsult").onclick = ()=> openModal(document.getElementById("mConsult"));
+  document.getElementById("btnHeroLead").onclick = ()=> openModal(document.getElementById("mConsult"));
+  document.getElementById("btnOpenContacts").onclick = ()=> openModal(document.getElementById("mContacts"));
+  document.getElementById("btnRequest").onclick = ()=> openModal(document.getElementById("mRequest"));
+
+  document.getElementById("btnWriteTG").onclick = ()=> window.open(DATA.brand.adminLink, "_blank");
+
+  async function doShare(){
+    const url = location.href;
+    if (navigator.share) { try { await navigator.share({ url }); } catch(e){} }
+    else {
+      try { await navigator.clipboard.writeText(url); alert("Ссылка скопирована ✅"); }
+      catch(e){ prompt("Скопируй ссылку:", url); }
+    }
+  }
+  document.getElementById("btnShare").onclick = doShare;
+
+  // ===== sendData (consult) =====
   const cHint = document.getElementById('cHint');
   document.getElementById('cSend').onclick = ()=>{
     cHint.textContent = "";
@@ -680,14 +1127,17 @@
       cHint.textContent = "⚠️ Открой в Telegram, чтобы отправить.";
       return;
     }
-    tg.sendData(JSON.stringify({ source:"consult", name, contact, task, budget, deadline, ts: Date.now() }));
+    tg.sendData(JSON.stringify({
+      source:"consult",
+      name, contact, task, budget, deadline,
+      ts: Date.now()
+    }));
     tg.HapticFeedback?.notificationOccurred?.("success");
     cHint.textContent = "✅ Отправлено!";
     setTimeout(()=>closeModalById("mConsult"), 450);
   };
 
-  // Request modal (simple text)
-  document.getElementById('btnSendRequest').onclick = ()=> openModal(document.getElementById('mCart'));
+  // ===== sendData (request) =====
   const rHint = document.getElementById('rHint');
   document.getElementById('rSend').onclick = ()=>{
     rHint.textContent = "";
@@ -700,24 +1150,25 @@
       rHint.textContent = "⚠️ Открой в Telegram, чтобы отправить.";
       return;
     }
-    tg.sendData(JSON.stringify({ source:"lead", task: text, ts: Date.now() }));
+    tg.sendData(JSON.stringify({
+      source:"lead",
+      task: text,
+      ts: Date.now()
+    }));
     tg.HapticFeedback?.notificationOccurred?.("success");
     rHint.textContent = "✅ Отправлено!";
-    setTimeout(()=>closeModalById("mCart"), 450);
+    setTimeout(()=>closeModalById("mRequest"), 450);
   };
 
-  document.getElementById('btnShare').onclick = async ()=>{
-    const url = location.href;
-    if (navigator.share) { try { await navigator.share({ url }); } catch(e){} }
-    else { try { await navigator.clipboard.writeText(url); alert("Ссылка скопирована ✅"); } catch(e){ prompt("Скопируй ссылку:", url); } }
-  };
+  // ===== Init render =====
+  renderMenu();
+  renderBeforeAfter();
+  renderWorks();
+  renderDynamic();
 
-  document.getElementById('btnWriteTG').onclick = ()=>{
-    window.open("https://t.me/Yaki_Tahirov", "_blank");
-  };
-
-  // init
-  renderCats(); renderSubs(); renderCards();
+  // bind buttons for already rendered sections
+  bindCardButtons(document.getElementById("beforeAfterGrid"));
+  bindCardButtons(document.getElementById("worksGrid"));
 </script>
 </body>
 </html>
