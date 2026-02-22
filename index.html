@@ -34,7 +34,8 @@
       --vh: 1vh;
       --maxW: 1180px;
 
-      --leftW: 190px;
+      /* ✅ шире меню слева */
+      --leftW: 230px;
       --gap: 14px;
 
       --blueA: rgba(77,163,255,.96);
@@ -204,8 +205,8 @@
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.16);
       box-shadow: 0 12px 26px rgba(0,0,0,.18);
-      padding: 8px 10px;
-      min-height: 48px;
+      padding: 10px 12px;            /* ✅ чуть больше */
+      min-height: 52px;               /* ✅ чуть выше для читаемости */
       cursor:pointer;
       user-select:none;
       text-align:left;
@@ -218,8 +219,8 @@
     .mi:active{ transform: translateY(1px); }
 
     .miBadge{
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
       border-radius: 999px;
       flex:0 0 auto;
       display:grid;
@@ -237,17 +238,17 @@
       min-width:0;
       display:flex;
       flex-direction:column;
-      gap:3px;
+      gap:4px;
     }
     .miText b{
-      font-size: 13px;
+      font-size: 14px;               /* ✅ крупнее */
       line-height:1.1;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
     }
     .miText small{
-      font-size: 10px;
+      font-size: 11px;               /* ✅ крупнее */
       font-weight: 900;
       color: var(--muted2);
       white-space:nowrap;
@@ -271,48 +272,49 @@
       gap: 12px;
       min-width:0;
     }
+
+    /* ✅ контент меньше */
     .main{
-      padding: 10px;
+      padding: 8px;                  /* было 10 */
     }
     .secHead{
       display:flex;
       align-items:baseline;
       justify-content:space-between;
       gap:10px;
-      padding: 6px 6px 10px;
+      padding: 4px 4px 8px;          /* меньше */
     }
     .secHead h2{
       margin:0;
-      font-size: 18px;
+      font-size: 16px;               /* меньше */
       font-weight: 1000;
       letter-spacing:.2px;
     }
     .secHead span{
       color: rgba(246,248,255,.50);
       font-weight:900;
-      font-size: 11px;
+      font-size: 10px;               /* меньше */
       white-space:nowrap;
     }
 
-    /* bots row */
     .botsRow{
       display:flex;
       flex-direction:row;
-      gap: 12px;
-      padding: 0 6px 8px;
+      gap: 10px;                     /* меньше */
+      padding: 0 4px 6px;            /* меньше */
       flex-wrap: nowrap;
     }
     .botTile{
       flex: 0 0 auto;
-      width: min(520px, 100%);
-      border-radius: 22px;
+      width: min(460px, 100%);       /* ✅ меньше */
+      border-radius: 20px;           /* меньше */
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(0,0,0,.16);
       box-shadow: var(--shadow2);
-      padding: 12px;
+      padding: 10px;                 /* меньше */
       display:flex;
       align-items:center;
-      gap:12px;
+      gap:10px;                      /* меньше */
       overflow:hidden;
       position:relative;
     }
@@ -321,34 +323,34 @@
       position:absolute; inset:-2px;
       pointer-events:none;
       background:
-        radial-gradient(360px 160px at 20% 0%, rgba(255,255,255,.08), transparent 62%),
-        radial-gradient(360px 200px at 85% 70%, rgba(77,163,255,.10), transparent 64%);
+        radial-gradient(320px 140px at 20% 0%, rgba(255,255,255,.08), transparent 62%),
+        radial-gradient(320px 180px at 85% 70%, rgba(77,163,255,.10), transparent 64%);
       opacity:.75;
     }
     .botTile > *{position:relative; z-index:1;}
 
     .botIcon{
-      width: 38px;
-      height: 38px;
-      border-radius: 14px;
+      width: 32px;                   /* ✅ меньше */
+      height: 32px;                  /* ✅ меньше */
+      border-radius: 12px;
       flex:0 0 auto;
       display:grid;
       place-items:center;
       font-weight: 1000;
-      font-size: 12px;
+      font-size: 11px;               /* меньше */
       color: rgba(255,255,255,.95);
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.06);
-      box-shadow: 0 14px 28px rgba(0,0,0,.22);
+      box-shadow: 0 12px 24px rgba(0,0,0,.20);
     }
     .botText{
       min-width:0;
       display:flex;
       flex-direction:column;
-      gap:4px;
+      gap:3px;
     }
     .botText b{
-      font-size: 14px;
+      font-size: 13px;               /* меньше */
       font-weight: 1000;
       white-space:nowrap;
       overflow:hidden;
@@ -359,25 +361,25 @@
       margin:0;
       color: rgba(246,248,255,.62);
       font-weight: 900;
-      font-size: 12px;
+      font-size: 11px;               /* меньше */
       line-height:1.35;
     }
 
     .ghost{
-      border-radius: 22px;
+      border-radius: 20px;           /* меньше */
       border: 1px dashed rgba(255,255,255,.16);
       background: rgba(0,0,0,.14);
-      padding: 14px;
-      margin: 0 6px 8px;
-      box-shadow: 0 12px 28px rgba(0,0,0,.18);
+      padding: 10px;                 /* меньше */
+      margin: 0 4px 6px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.18);
     }
-    .ghost b{display:block; font-size:14px; font-weight:1000; margin-bottom:6px;}
-    .ghost p{margin:0; color: rgba(246,248,255,.62); font-weight:900; font-size:12px; line-height:1.4;}
+    .ghost b{display:block; font-size:13px; font-weight:1000; margin-bottom:6px;}
+    .ghost p{margin:0; color: rgba(246,248,255,.62); font-weight:900; font-size:11px; line-height:1.4;}
 
-    /* ✅ АДАПТАЦИЯ ПОД ТЕЛЕФОН */
+    /* ✅ телефон: делаем LEFT шире, чтобы текст был читаемый */
     @media (max-width: 860px){
       :root{
-        --leftW: 78px;   /* узкая колонка */
+        --leftW: 170px;   /* ✅ шире на телефоне, чтобы читались разделы */
         --gap: 10px;
       }
 
@@ -394,7 +396,7 @@
       .brand p{ font-size: 12px; }
 
       .layout{
-        grid-template-columns: var(--leftW) 1fr; /* ✅ слева остается */
+        grid-template-columns: var(--leftW) 1fr; /* ✅ слева остается и шире */
         min-height: auto;
       }
 
@@ -404,65 +406,37 @@
         height: calc(var(--vh) * 100 - 20px - var(--safeT) - var(--safeB));
       }
       .leftTitle{
-        margin: 2px 2px 6px;
+        margin: 2px 4px 6px;
         font-size: 10px;
-        opacity: .8;
+        opacity: .85;
       }
+
       .menu{ gap: 8px; padding: 0 2px 2px; }
 
-      /* ✅ пункты меню компактнее */
       .mi{
-        padding: 8px;
+        padding: 10px 10px;
         min-height: 52px;
         border-radius: 18px;
-        justify-content:center;     /* центруем */
       }
 
-      /* ✅ на телефоне показываем только круг-иконку, текст скрываем */
-      .miText{ display:none; }
-      .miBadge{
-        width: 36px;
-        height: 36px;
-        font-size: 12px;
-      }
+      /* ✅ на телефоне НЕ скрываем текст, чтобы читалось */
+      .miBadge{ width: 32px; height: 32px; }
+      .miText b{ font-size: 13px; }
+      .miText small{ font-size: 10.5px; }
 
-      /* ✅ правая часть компактнее */
-      .main{ padding: 10px; border-radius: 22px; }
-      .secHead{ padding: 6px 4px 10px; }
-      .secHead h2{ font-size: 16px; }
+      /* ✅ контент еще меньше */
+      .main{ padding: 7px; }
+      .secHead h2{ font-size: 15px; }
       .secHead span{ font-size: 10px; }
 
-      /* ✅ 1 бот в ряд, чтобы не вылезало */
-      .botsRow{
-        padding: 0 4px 8px;
-        flex-wrap: wrap;     /* перенос */
-      }
-      .botTile{
-        width: 100%;
-        padding: 12px;
-        border-radius: 20px;
-      }
-      .botIcon{
-        width: 34px;
-        height: 34px;
-        border-radius: 13px;
-        font-size: 11px;
-      }
-      .botText b{ font-size: 13px; }
-      .botText p{ font-size: 11.5px; }
-
-      .ghost{
-        margin: 0 4px 6px;
-        padding: 12px;
-        border-radius: 20px;
-      }
+      .botsRow{ flex-wrap: wrap; }
+      .botTile{ width: 100%; }
     }
 
-    /* ✅ совсем маленькие экраны */
-    @media (max-width: 360px){
-      :root{ --leftW: 72px; }
-      .miBadge{ width: 34px; height: 34px; }
-      .brand h1{ font-size: 21px; }
+    @media (max-width: 380px){
+      :root{ --leftW: 158px; }
+      .miText b{ font-size: 12.5px; }
+      .miText small{ font-size: 10px; }
     }
   </style>
 </head>
@@ -493,9 +467,9 @@
 
           <div class="botsRow" id="botsRow"></div>
 
-          <div class="ghost" id="ghost">
+          <div class="ghost">
             <b>Настраиваем внешний вид</b>
-            <p>Слева разделы строго сверху вниз. На телефоне меню становится узкой колонкой (только кружки), контент справа.</p>
+            <p>Слева шире — чтобы разделы читались. Контент справа уменьшен.</p>
           </div>
         </section>
       </div>
@@ -564,7 +538,6 @@
     renderBotsForSection(id);
   }
 
-  // render left menu
   const menuList = document.getElementById("menuList");
   menuList.innerHTML = DATA.sections.map(s=>`
     <button class="mi" type="button" data-id="${s.id}">
