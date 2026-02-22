@@ -34,7 +34,7 @@
       --vh: 1vh;
       --maxW: 1180px;
 
-      --leftW: 230px; /* шире */
+      --leftW: 230px;
       --gap: 14px;
 
       --blueA: rgba(77,163,255,.96);
@@ -165,7 +165,7 @@
       min-height: calc(var(--vh) * 100 - 24px - var(--safeT) - var(--safeB));
     }
 
-    /* LEFT */
+    /* LEFT (без кружков и под-текста) */
     .left{
       position: sticky;
       top: calc(10px + var(--safeT));
@@ -195,7 +195,6 @@
     }
     .menu::-webkit-scrollbar{ display:none; }
 
-    /* ✅ без кружков — просто текстовая кнопка */
     .mi{
       width:100%;
       display:flex;
@@ -216,11 +215,7 @@
       transition: transform .08s ease, border-color .15s ease;
     }
     .mi:active{ transform: translateY(1px); }
-    .mi b{
-      font-size: 14px;
-      font-weight: 1000;
-      letter-spacing:.15px;
-    }
+    .mi b{ font-size: 14px; font-weight: 1000; letter-spacing:.15px; }
     .mi.active{
       border-color: rgba(120,190,255,.46);
       background:
@@ -230,17 +225,11 @@
     }
 
     /* RIGHT */
-    .right{
-      display:flex;
-      flex-direction:column;
-      gap: 12px;
-      min-width:0;
-    }
-
+    .right{ display:flex; flex-direction:column; gap: 12px; min-width:0; }
     .main{ padding: 8px; }
     .secHead{
       display:flex;
-      align-items:baseline;
+      align-items:center;
       justify-content:space-between;
       gap:10px;
       padding: 4px 4px 8px;
@@ -251,6 +240,38 @@
       font-weight: 1000;
       letter-spacing:.2px;
     }
+
+    /* ✅ CTA "Оставить заявку" */
+    .ctaRow{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:flex-end;
+    }
+    .btn{
+      min-height: 40px;
+      padding: 10px 12px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: rgba(246,248,255,.92);
+      font-weight:1000;
+      cursor:pointer;
+      box-shadow: 0 12px 24px rgba(0,0,0,.22);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      font-size: 13px;
+      user-select:none;
+    }
+    .btn.primary{
+      background: linear-gradient(180deg, var(--blueA), var(--blueB));
+      border-color: rgba(120,190,255,.48);
+      color:#fff;
+      box-shadow: 0 16px 34px rgba(60,140,255,.22);
+    }
+    .btn:active{ transform: translateY(1px); }
 
     .grid{
       display:grid;
@@ -290,10 +311,8 @@
       gap:10px;
       margin-bottom: 10px;
     }
-    .slotTop b{
-      font-size: 13px;
-      font-weight: 1000;
-    }
+    .slotTop b{ font-size: 13px; font-weight: 1000; }
+
     .pill{
       padding: 5px 9px;
       border-radius: 999px;
@@ -316,7 +335,7 @@
       line-height: 1.45;
     }
 
-    /* ✅ контакты */
+    /* Контакты */
     .contactBox{
       border-radius: 18px;
       border: 1px solid rgba(255,255,255,.12);
@@ -347,36 +366,62 @@
       flex-wrap:wrap;
       margin-top: 2px;
     }
-    .btn{
-      flex: 1;
-      min-height: 42px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: rgba(246,248,255,.92);
-      font-weight:1000;
-      cursor:pointer;
-      box-shadow: 0 12px 24px rgba(0,0,0,.22);
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      font-size: 13px;
-      user-select:none;
-    }
-    .btn.primary{
-      background: linear-gradient(180deg, var(--blueA), var(--blueB));
-      border-color: rgba(120,190,255,.48);
-      color:#fff;
-      box-shadow: 0 16px 34px rgba(60,140,255,.22);
-    }
-    .btn:active{ transform: translateY(1px); }
+    .btns .btn{ flex: 1; }
 
-    /* ✅ телефон */
+    /* ✅ MODAL (форма заявки) */
+    .modal{
+      position:fixed; inset:0;
+      display:none;
+      align-items:flex-end; justify-content:center;
+      padding: 14px 14px calc(14px + var(--safeB));
+      background: rgba(0,0,0,.60);
+      z-index: 999;
+    }
+    .sheet{
+      width:min(980px, 100%);
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(8,12,22,.92);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      padding: 12px;
+      max-height: min(82vh, 760px);
+      overflow:auto;
+    }
+    .sheetTop{
+      display:flex; justify-content:space-between; gap:12px; align-items:flex-start;
+      padding: 6px 6px 10px;
+    }
+    .sheetTop h3{margin:0; font-size:16px; font-weight:1000;}
+    .sheetTop p{margin:6px 0 0; color: rgba(246,248,255,.66); font-size:13px; line-height:1.35;}
+    .x{
+      width:44px; height:44px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      cursor:pointer;
+      font-weight:1000;
+    }
+    .form{margin-top:10px; display:flex; flex-direction:column; gap:10px;}
+    .in, .sel{
+      width:100%;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border-radius: 18px;
+      padding: 12px 12px;
+      font-size: 14px;
+      outline:none;
+      appearance:none;
+    }
+    textarea.in{min-height: 110px; resize:none;}
+    .hint{color: rgba(246,248,255,.62); font-size: 12px; line-height: 1.35;}
+
+    /* телефон */
     @media (max-width: 860px){
-      :root{
-        --leftW: 176px;
-        --gap: 10px;
-      }
+      :root{ --leftW: 176px; --gap: 10px; }
       body{
         padding:
           calc(8px + var(--safeT))
@@ -398,9 +443,8 @@
       .mi b{ font-size: 13px; }
       .main{ padding: 7px; }
       .secHead h2{ font-size: 15px; }
-      .btn{ flex: 1 1 100%; }
+      .btns .btn{ flex: 1 1 100%; }
     }
-
     @media (max-width: 380px){
       :root{ --leftW: 162px; }
       .mi b{ font-size: 12.5px; }
@@ -427,15 +471,64 @@
 
       <div class="right">
         <section class="panel main" id="secMain">
+
           <div class="secHead">
             <h2 id="secTitle">Услуги</h2>
+            <div class="ctaRow">
+              <button class="btn primary" id="btnLeadTop" type="button">✅ Оставить заявку</button>
+            </div>
           </div>
 
           <div class="grid" id="contentGrid"></div>
+
         </section>
       </div>
 
     </section>
+  </div>
+
+  <!-- ✅ MODAL: Заявка -->
+  <div class="modal" id="mLead">
+    <div class="sheet">
+      <div class="sheetTop">
+        <div>
+          <h3>Заявка</h3>
+          <p>Заполни форму — заявка уйдёт в бота через <b>tg.sendData()</b>.</p>
+        </div>
+        <button class="x" data-close="mLead" type="button">✕</button>
+      </div>
+
+      <div class="form">
+        <select class="sel" id="fType">
+          <option value="Telegram Bot">Telegram Bot</option>
+          <option value="Telegram WebApp">Telegram WebApp</option>
+          <option value="Bot + WebApp">Bot + WebApp</option>
+          <option value="Интеграции (Instagram/Maps/CRM)">Интеграции (Instagram/Maps/CRM)</option>
+        </select>
+
+        <select class="sel" id="fBudget">
+          <option value="До 1 млн">До 1 млн</option>
+          <option value="1–3 млн">1–3 млн</option>
+          <option value="3–7 млн">3–7 млн</option>
+          <option value="7+ млн">7+ млн</option>
+          <option value="Не знаю">Не знаю</option>
+        </select>
+
+        <select class="sel" id="fDeadline">
+          <option value="Срочно (1–3 дня)">Срочно (1–3 дня)</option>
+          <option value="1 неделя">1 неделя</option>
+          <option value="2–3 недели">2–3 недели</option>
+          <option value="1 месяц+">1 месяц+</option>
+          <option value="Без сроков">Без сроков</option>
+        </select>
+
+        <input class="in" id="fContact" placeholder="Контакт: @username или номер +998..." />
+        <textarea class="in" id="fText" placeholder="Опиши задачу: что нужно, какие разделы, платежи, языки, интеграции и т.д."></textarea>
+
+        <button class="btn primary" id="fSend" type="button" style="width:100%;">📩 Отправить</button>
+        <div class="hint" id="fHint"></div>
+      </div>
+    </div>
   </div>
 
 <script>
@@ -475,24 +568,35 @@
     ],
     content: {
       services: [
-        { title:"Рекламные материалы", tag:"Вставим баннеры/скрины", text:"Добавьте сюда карточки рекламных ботов, баннеры и промо-тексты." },
+        { title:"Рекламные материалы", tag:"Шаблон", text:"Сюда вставим рекламные карточки/баннеры/скрины." },
+        { title:"Примеры ботов", tag:"Шаблон", text:"Здесь можно показать 1–3 примера (карточки). Сейчас только внешний вид." },
       ],
       portfolio: [
-        { title:"Портфолио", tag:"Скрины/кейсы", text:"Сюда добавим кейсы: фото + короткое описание + кнопка на демо/чат." },
+        { title:"Кейсы", tag:"Шаблон", text:"Сюда вставим кейсы: скрин + что сделано + кнопка на демо." },
       ],
       prices: [
-        { title:"Прайс", tag:"Тарифы", text:"Сюда добавим тарифы и условия." },
+        { title:"Тарифы", tag:"Шаблон", text:"Сюда добавим тарифы и состав работ." },
       ],
       reviews: [
-        { title:"Отзывы", tag:"Скрины/текст", text:"Сюда вставим отзывы клиентов: скриншоты, текст, ссылки." },
+        { title:"Отзывы клиентов", tag:"Шаблон", text:"Сюда вставим отзывы: скриншоты/текст/ссылки." },
       ],
       contacts: [
-        { title:"Контакты", isContacts:true }
+        { isContacts:true }
       ]
     }
   };
 
   let activeId = "services";
+
+  function openModal(id){ document.getElementById(id).style.display="flex"; }
+  function closeModal(id){ document.getElementById(id).style.display="none"; }
+
+  document.querySelectorAll('[data-close]').forEach(b=>{
+    b.onclick = ()=> closeModal(b.getAttribute('data-close'));
+  });
+  document.querySelectorAll('.modal').forEach(modal=>{
+    modal.addEventListener('click', (e)=>{ if(e.target === modal) modal.style.display = "none"; });
+  });
 
   function setActive(id){
     activeId = id;
@@ -502,7 +606,6 @@
   }
 
   function slotTemplate(item){
-    // ✅ обычные секции: убрали под-разделы под разделами (в меню), но внутри контента оставили понятные заголовки
     return `
       <div class="slot">
         <div class="slotTop">
@@ -510,6 +613,9 @@
           ${item.tag ? `<span class="pill">${item.tag}</span>` : ""}
         </div>
         <div class="hintBox">${item.text || "Материал будет здесь."}</div>
+        <div style="margin-top:10px;">
+          <button class="btn primary" type="button" data-lead="1" style="width:100%;">✅ Оставить заявку</button>
+        </div>
       </div>
     `;
   }
@@ -539,10 +645,21 @@
           <div class="btns">
             <button class="btn primary" type="button" id="btnTG">Написать в Telegram</button>
             <button class="btn" type="button" id="btnCall">Позвонить</button>
+            <button class="btn" type="button" id="btnLeadContacts">✅ Оставить заявку</button>
           </div>
         </div>
       </div>
     `;
+  }
+
+  function bindLeadButtons(root){
+    root.querySelectorAll('[data-lead]').forEach(btn=>{
+      btn.onclick = ()=>{
+        // автоподстановка раздела
+        try { document.getElementById("fText").value = `Раздел: ${DATA.sections.find(s=>s.id===activeId)?.title || activeId}\n` + (document.getElementById("fText").value || ""); } catch(e){}
+        openModal("mLead");
+      };
+    });
   }
 
   function renderSection(id){
@@ -557,15 +674,20 @@
       return slotTemplate(item);
     }).join("");
 
-    // bind contact buttons
+    // bind contacts buttons
     const btnTG = document.getElementById("btnTG");
     if(btnTG) btnTG.onclick = ()=> window.open(CONTACTS.tg, "_blank");
 
     const btnCall = document.getElementById("btnCall");
     if(btnCall) btnCall.onclick = ()=> window.location.href = CONTACTS.phoneHref;
+
+    const btnLeadContacts = document.getElementById("btnLeadContacts");
+    if(btnLeadContacts) btnLeadContacts.onclick = ()=> openModal("mLead");
+
+    bindLeadButtons(grid);
   }
 
-  // ✅ render menu WITHOUT кружков и WITHOUT под-текста
+  // menu render
   const menuList = document.getElementById("menuList");
   menuList.innerHTML = DATA.sections.map(s=>`
     <button class="mi" type="button" data-id="${s.id}">
@@ -580,6 +702,51 @@
       renderSection(id);
     };
   });
+
+  // top CTA
+  document.getElementById("btnLeadTop").onclick = ()=> openModal("mLead");
+
+  // send lead
+  const fHint = document.getElementById("fHint");
+  document.getElementById("fSend").onclick = ()=>{
+    fHint.textContent = "";
+    const payload = {
+      source: "lead",
+      section: activeId,
+      project_type: document.getElementById("fType").value,
+      budget: document.getElementById("fBudget").value,
+      deadline: document.getElementById("fDeadline").value,
+      contact: document.getElementById("fContact").value.trim(),
+      task: document.getElementById("fText").value.trim(),
+      ts: Date.now()
+    };
+
+    if(!payload.contact){
+      fHint.textContent = "⚠️ Укажи контакт (@username или номер).";
+      return;
+    }
+    if(!payload.task){
+      fHint.textContent = "⚠️ Опиши задачу хотя бы в 1–2 строках.";
+      return;
+    }
+
+    if(!tg){
+      fHint.textContent = "⚠️ Открой в Telegram, чтобы отправить (tg.sendData).";
+      return;
+    }
+
+    try{
+      tg.sendData(JSON.stringify(payload));
+      tg.HapticFeedback?.notificationOccurred?.("success");
+      fHint.textContent = "✅ Отправлено!";
+      setTimeout(()=> closeModal("mLead"), 450);
+      // очистка
+      document.getElementById("fContact").value = "";
+      document.getElementById("fText").value = "";
+    }catch(e){
+      fHint.textContent = "⚠️ Ошибка отправки. Проверь, что WebApp открыт в Telegram.";
+    }
+  };
 
   setActive(activeId);
   renderSection(activeId);
