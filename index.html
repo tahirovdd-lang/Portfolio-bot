@@ -34,8 +34,7 @@
       --vh: 1vh;
       --maxW: 1180px;
 
-      /* ✅ шире меню слева */
-      --leftW: 230px;
+      --leftW: 230px; /* шире */
       --gap: 14px;
 
       --blueA: rgba(77,163,255,.96);
@@ -205,8 +204,8 @@
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.16);
       box-shadow: 0 12px 26px rgba(0,0,0,.18);
-      padding: 10px 12px;            /* ✅ чуть больше */
-      min-height: 52px;               /* ✅ чуть выше для читаемости */
+      padding: 10px 12px;
+      min-height: 52px;
       cursor:pointer;
       user-select:none;
       text-align:left;
@@ -241,14 +240,14 @@
       gap:4px;
     }
     .miText b{
-      font-size: 14px;               /* ✅ крупнее */
+      font-size: 14px;
       line-height:1.1;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
     }
     .miText small{
-      font-size: 11px;               /* ✅ крупнее */
+      font-size: 11px;
       font-weight: 900;
       color: var(--muted2);
       white-space:nowrap;
@@ -273,84 +272,115 @@
       min-width:0;
     }
 
-    /* ✅ контент меньше */
-    .main{
-      padding: 8px;                  /* было 10 */
-    }
+    .main{ padding: 8px; }
     .secHead{
       display:flex;
       align-items:baseline;
       justify-content:space-between;
       gap:10px;
-      padding: 4px 4px 8px;          /* меньше */
+      padding: 4px 4px 8px;
     }
     .secHead h2{
       margin:0;
-      font-size: 16px;               /* меньше */
+      font-size: 16px;
       font-weight: 1000;
       letter-spacing:.2px;
     }
     .secHead span{
       color: rgba(246,248,255,.50);
       font-weight:900;
-      font-size: 10px;               /* меньше */
+      font-size: 10px;
       white-space:nowrap;
     }
 
-    .botsRow{
-      display:flex;
-      flex-direction:row;
-      gap: 10px;                     /* меньше */
-      padding: 0 4px 6px;            /* меньше */
-      flex-wrap: nowrap;
+    /* ✅ блоки под рекламные материалы/портфолио/отзывы */
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      padding: 0 4px 6px;
     }
-    .botTile{
-      flex: 0 0 auto;
-      width: min(460px, 100%);       /* ✅ меньше */
-      border-radius: 20px;           /* меньше */
+    @media (min-width: 980px){
+      .grid{ grid-template-columns: 1fr 1fr; }
+    }
+
+    .slot{
+      border-radius: 20px;
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(0,0,0,.16);
       box-shadow: var(--shadow2);
-      padding: 10px;                 /* меньше */
-      display:flex;
-      align-items:center;
-      gap:10px;                      /* меньше */
+      padding: 10px;
       overflow:hidden;
       position:relative;
+      min-height: 120px;
     }
-    .botTile:before{
+    .slot:before{
       content:"";
       position:absolute; inset:-2px;
       pointer-events:none;
       background:
-        radial-gradient(320px 140px at 20% 0%, rgba(255,255,255,.08), transparent 62%),
-        radial-gradient(320px 180px at 85% 70%, rgba(77,163,255,.10), transparent 64%);
+        radial-gradient(360px 150px at 20% 0%, rgba(255,255,255,.08), transparent 62%),
+        radial-gradient(360px 190px at 85% 70%, rgba(77,163,255,.10), transparent 64%);
       opacity:.75;
     }
-    .botTile > *{position:relative; z-index:1;}
+    .slot > *{position:relative; z-index:1;}
 
+    .slotTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 10px;
+    }
+    .slotTop b{
+      font-size: 13px;
+      font-weight: 1000;
+    }
+    .pill{
+      padding: 5px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: rgba(246,248,255,.66);
+      font-weight:1000;
+      font-size: 11px;
+      white-space:nowrap;
+    }
+
+    .slotBody{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    /* ✅ карточка "1 бот" (компактно) */
+    .botTile{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      padding: 10px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
     .botIcon{
-      width: 32px;                   /* ✅ меньше */
-      height: 32px;                  /* ✅ меньше */
+      width: 32px;
+      height: 32px;
       border-radius: 12px;
-      flex:0 0 auto;
       display:grid;
       place-items:center;
       font-weight: 1000;
-      font-size: 11px;               /* меньше */
+      font-size: 11px;
       color: rgba(255,255,255,.95);
       border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
+      background: rgba(0,0,0,.18);
       box-shadow: 0 12px 24px rgba(0,0,0,.20);
+      flex:0 0 auto;
     }
-    .botText{
-      min-width:0;
-      display:flex;
-      flex-direction:column;
-      gap:3px;
-    }
+    .botText{ min-width:0; }
     .botText b{
-      font-size: 13px;               /* меньше */
+      display:block;
+      font-size: 13px;
       font-weight: 1000;
       white-space:nowrap;
       overflow:hidden;
@@ -358,31 +388,30 @@
       line-height:1.1;
     }
     .botText p{
-      margin:0;
+      margin:4px 0 0;
       color: rgba(246,248,255,.62);
       font-weight: 900;
-      font-size: 11px;               /* меньше */
+      font-size: 11px;
       line-height:1.35;
     }
 
-    .ghost{
-      border-radius: 20px;           /* меньше */
+    .hintBox{
+      border-radius: 18px;
       border: 1px dashed rgba(255,255,255,.16);
       background: rgba(0,0,0,.14);
-      padding: 10px;                 /* меньше */
-      margin: 0 4px 6px;
-      box-shadow: 0 10px 24px rgba(0,0,0,.18);
+      padding: 10px;
+      color: rgba(246,248,255,.70);
+      font-weight:900;
+      font-size: 11.5px;
+      line-height: 1.45;
     }
-    .ghost b{display:block; font-size:13px; font-weight:1000; margin-bottom:6px;}
-    .ghost p{margin:0; color: rgba(246,248,255,.62); font-weight:900; font-size:11px; line-height:1.4;}
 
-    /* ✅ телефон: делаем LEFT шире, чтобы текст был читаемый */
+    /* ✅ телефон */
     @media (max-width: 860px){
       :root{
-        --leftW: 170px;   /* ✅ шире на телефоне, чтобы читались разделы */
+        --leftW: 176px; /* читаемо */
         --gap: 10px;
       }
-
       body{
         padding:
           calc(8px + var(--safeT))
@@ -390,51 +419,30 @@
           calc(10px + var(--safeB))
           calc(8px + var(--safeL));
       }
-
       .top{ padding: 10px 12px; border-radius: 22px; }
       .brand h1{ font-size: 22px; }
       .brand p{ font-size: 12px; }
-
-      .layout{
-        grid-template-columns: var(--leftW) 1fr; /* ✅ слева остается и шире */
-        min-height: auto;
-      }
-
       .left{
         padding: 8px;
         border-radius: 22px;
         height: calc(var(--vh) * 100 - 20px - var(--safeT) - var(--safeB));
       }
-      .leftTitle{
-        margin: 2px 4px 6px;
-        font-size: 10px;
-        opacity: .85;
-      }
-
+      .leftTitle{ margin: 2px 4px 6px; font-size: 10px; }
       .menu{ gap: 8px; padding: 0 2px 2px; }
-
-      .mi{
-        padding: 10px 10px;
-        min-height: 52px;
-        border-radius: 18px;
-      }
-
-      /* ✅ на телефоне НЕ скрываем текст, чтобы читалось */
+      .mi{ padding: 10px 10px; min-height: 52px; border-radius: 18px; }
       .miBadge{ width: 32px; height: 32px; }
       .miText b{ font-size: 13px; }
       .miText small{ font-size: 10.5px; }
 
-      /* ✅ контент еще меньше */
       .main{ padding: 7px; }
       .secHead h2{ font-size: 15px; }
       .secHead span{ font-size: 10px; }
 
-      .botsRow{ flex-wrap: wrap; }
-      .botTile{ width: 100%; }
+      .slot{ min-height: 110px; }
     }
 
     @media (max-width: 380px){
-      :root{ --leftW: 158px; }
+      :root{ --leftW: 162px; }
       .miText b{ font-size: 12.5px; }
       .miText small{ font-size: 10px; }
     }
@@ -462,15 +470,11 @@
         <section class="panel main" id="secMain">
           <div class="secHead">
             <h2 id="secTitle">Услуги</h2>
-            <span id="secSub">Внешний вид</span>
+            <span id="secSub">Материалы</span>
           </div>
 
-          <div class="botsRow" id="botsRow"></div>
-
-          <div class="ghost">
-            <b>Настраиваем внешний вид</b>
-            <p>Слева шире — чтобы разделы читались. Контент справа уменьшен.</p>
-          </div>
+          <!-- сюда будем встраивать рекламные материалы / портфолио / отзывы -->
+          <div class="grid" id="contentGrid"></div>
         </section>
       </div>
 
@@ -497,11 +501,42 @@
 
   const DATA = {
     sections: [
-      { id:"services",  title:"Услуги",    sub:"Внешний вид", badge:"У" },
-      { id:"portfolio", title:"Портфолио", sub:"Внешний вид", badge:"П" },
-      { id:"prices",    title:"Прайс",     sub:"Внешний вид", badge:"ПР" },
-      { id:"contacts",  title:"Контакты",  sub:"Внешний вид", badge:"К" },
-    ]
+      { id:"services",  title:"Услуги",    sub:"Рекламные боты",  badge:"У" },
+      { id:"portfolio", title:"Портфолио", sub:"Кейсы/скрины",    badge:"П" },
+      { id:"prices",    title:"Прайс",     sub:"Тарифы",         badge:"ПР" },
+      { id:"reviews",   title:"Отзывы",    sub:"Скрины/текст",    badge:"О" },   // ✅ добавили
+      { id:"contacts",  title:"Контакты",  sub:"Связаться",      badge:"К" },
+    ],
+
+    // ✅ сюда потом просто подставишь свои материалы (img/video/text/links)
+    content: {
+      services: [
+        { type:"slot", title:"Рекламный бот", tag:"1 бот", bodyType:"bot" },
+        { type:"slot", title:"Как вставлять материалы", tag:"Подсказка", bodyType:"hint",
+          text:"В этом блоке можно показывать скрины/баннеры/текст и кнопку. Сейчас стоит 1 рекламный бот (компактно)."
+        },
+      ],
+      portfolio: [
+        { type:"slot", title:"Портфолио", tag:"Материалы", bodyType:"hint",
+          text:"Сюда вставим ваши кейсы: 1-2 карточки, внутри фото/описание/кнопка «Открыть». Пока это шаблон."
+        },
+      ],
+      prices: [
+        { type:"slot", title:"Прайс", tag:"Тарифы", bodyType:"hint",
+          text:"Сюда добавим тарифы: «Старт / Стандарт / Премиум» или ваши цены. Пока это шаблон."
+        },
+      ],
+      reviews: [
+        { type:"slot", title:"Отзывы клиентов", tag:"Материалы", bodyType:"hint",
+          text:"Сюда вставим отзывы: скриншоты, текст, ссылки. Пока это шаблон."
+        },
+      ],
+      contacts: [
+        { type:"slot", title:"Контакты", tag:"Telegram", bodyType:"hint",
+          text:"Контакты можно сделать кнопками или карточкой. Пока шаблон."
+        },
+      ],
+    }
   };
 
   let activeId = "services";
@@ -513,31 +548,44 @@
     if(el) el.classList.add('active');
   }
 
-  function renderBotsForSection(id){
-    const row = document.getElementById("botsRow");
-    row.innerHTML = "";
-
-    // ✅ 1 рекламный бот только в "Услуги"
-    if(id === "services"){
-      row.innerHTML = `
-        <div class="botTile">
-          <div class="botIcon">BOT</div>
-          <div class="botText">
-            <b>Рекламный бот</b>
-            <p>1 бот • компактная карточка</p>
+  function slotTemplate(item){
+    const body = (() => {
+      if(item.bodyType === "bot"){
+        return `
+          <div class="botTile">
+            <div class="botIcon">BOT</div>
+            <div class="botText">
+              <b>Рекламный бот</b>
+              <p>Компактная карточка • 1 элемент</p>
+            </div>
           </div>
+        `;
+      }
+      return `<div class="hintBox">${item.text || "Материал будет здесь."}</div>`;
+    })();
+
+    return `
+      <div class="slot">
+        <div class="slotTop">
+          <b>${item.title || ""}</b>
+          <span class="pill">${item.tag || ""}</span>
         </div>
-      `;
-    }
+        <div class="slotBody">${body}</div>
+      </div>
+    `;
   }
 
   function renderSection(id){
     const sec = DATA.sections.find(s=>s.id===id);
     document.getElementById("secTitle").textContent = sec?.title || "";
-    document.getElementById("secSub").textContent = sec?.sub || "Внешний вид";
-    renderBotsForSection(id);
+    document.getElementById("secSub").textContent = sec?.sub || "Материалы";
+
+    const grid = document.getElementById("contentGrid");
+    const arr = DATA.content[id] || [];
+    grid.innerHTML = arr.map(slotTemplate).join("");
   }
 
+  // render left menu
   const menuList = document.getElementById("menuList");
   menuList.innerHTML = DATA.sections.map(s=>`
     <button class="mi" type="button" data-id="${s.id}">
