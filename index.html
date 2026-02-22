@@ -195,17 +195,17 @@
     }
     .menu::-webkit-scrollbar{ display:none; }
 
+    /* ✅ без кружков — просто текстовая кнопка */
     .mi{
       width:100%;
       display:flex;
       align-items:center;
-      gap:10px;
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.16);
       box-shadow: 0 12px 26px rgba(0,0,0,.18);
-      padding: 10px 12px;
-      min-height: 52px;
+      padding: 12px 12px;
+      min-height: 48px;
       cursor:pointer;
       user-select:none;
       text-align:left;
@@ -216,50 +216,15 @@
       transition: transform .08s ease, border-color .15s ease;
     }
     .mi:active{ transform: translateY(1px); }
-
-    .miBadge{
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      flex:0 0 auto;
-      display:grid;
-      place-items:center;
-      font-weight: 1000;
-      font-size: 12px;
-      color: rgba(255,255,255,.96);
-      border: 1px solid rgba(120,190,255,.48);
-      background:
-        radial-gradient(18px 18px at 35% 30%, rgba(255,255,255,.22), transparent 62%),
-        linear-gradient(180deg, var(--blueA), var(--blueB));
-      box-shadow: 0 14px 28px rgba(60,140,255,.18);
-    }
-    .miText{
-      min-width:0;
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-    }
-    .miText b{
+    .mi b{
       font-size: 14px;
-      line-height:1.1;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
+      font-weight: 1000;
+      letter-spacing:.15px;
     }
-    .miText small{
-      font-size: 11px;
-      font-weight: 900;
-      color: var(--muted2);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      line-height:1.1;
-    }
-
     .mi.active{
       border-color: rgba(120,190,255,.46);
       background:
-        radial-gradient(160px 90px at 20% 20%, rgba(77,163,255,.18), transparent 60%),
+        radial-gradient(180px 90px at 20% 20%, rgba(77,163,255,.18), transparent 60%),
         linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
       box-shadow: 0 18px 34px rgba(60,140,255,.14), 0 12px 26px rgba(0,0,0,.22);
     }
@@ -286,14 +251,7 @@
       font-weight: 1000;
       letter-spacing:.2px;
     }
-    .secHead span{
-      color: rgba(246,248,255,.50);
-      font-weight:900;
-      font-size: 10px;
-      white-space:nowrap;
-    }
 
-    /* ✅ блоки под рекламные материалы/портфолио/отзывы */
     .grid{
       display:grid;
       grid-template-columns: 1fr;
@@ -312,7 +270,7 @@
       padding: 10px;
       overflow:hidden;
       position:relative;
-      min-height: 120px;
+      min-height: 110px;
     }
     .slot:before{
       content:"";
@@ -347,54 +305,6 @@
       white-space:nowrap;
     }
 
-    .slotBody{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 8px;
-    }
-
-    /* ✅ карточка "1 бот" (компактно) */
-    .botTile{
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
-      padding: 10px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .botIcon{
-      width: 32px;
-      height: 32px;
-      border-radius: 12px;
-      display:grid;
-      place-items:center;
-      font-weight: 1000;
-      font-size: 11px;
-      color: rgba(255,255,255,.95);
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
-      box-shadow: 0 12px 24px rgba(0,0,0,.20);
-      flex:0 0 auto;
-    }
-    .botText{ min-width:0; }
-    .botText b{
-      display:block;
-      font-size: 13px;
-      font-weight: 1000;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      line-height:1.1;
-    }
-    .botText p{
-      margin:4px 0 0;
-      color: rgba(246,248,255,.62);
-      font-weight: 900;
-      font-size: 11px;
-      line-height:1.35;
-    }
-
     .hintBox{
       border-radius: 18px;
       border: 1px dashed rgba(255,255,255,.16);
@@ -406,10 +316,65 @@
       line-height: 1.45;
     }
 
+    /* ✅ контакты */
+    .contactBox{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      padding: 12px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .row b{ font-size: 12px; font-weight:1000; color: rgba(246,248,255,.86); }
+    .row a{
+      color: rgba(140,190,255,.98);
+      font-weight:1000;
+      text-decoration:none;
+      font-size: 12px;
+      word-break: break-word;
+    }
+    .btns{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 2px;
+    }
+    .btn{
+      flex: 1;
+      min-height: 42px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: rgba(246,248,255,.92);
+      font-weight:1000;
+      cursor:pointer;
+      box-shadow: 0 12px 24px rgba(0,0,0,.22);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size: 13px;
+      user-select:none;
+    }
+    .btn.primary{
+      background: linear-gradient(180deg, var(--blueA), var(--blueB));
+      border-color: rgba(120,190,255,.48);
+      color:#fff;
+      box-shadow: 0 16px 34px rgba(60,140,255,.22);
+    }
+    .btn:active{ transform: translateY(1px); }
+
     /* ✅ телефон */
     @media (max-width: 860px){
       :root{
-        --leftW: 176px; /* читаемо */
+        --leftW: 176px;
         --gap: 10px;
       }
       body{
@@ -429,22 +394,16 @@
       }
       .leftTitle{ margin: 2px 4px 6px; font-size: 10px; }
       .menu{ gap: 8px; padding: 0 2px 2px; }
-      .mi{ padding: 10px 10px; min-height: 52px; border-radius: 18px; }
-      .miBadge{ width: 32px; height: 32px; }
-      .miText b{ font-size: 13px; }
-      .miText small{ font-size: 10.5px; }
-
+      .mi{ padding: 12px 10px; min-height: 50px; border-radius: 18px; }
+      .mi b{ font-size: 13px; }
       .main{ padding: 7px; }
       .secHead h2{ font-size: 15px; }
-      .secHead span{ font-size: 10px; }
-
-      .slot{ min-height: 110px; }
+      .btn{ flex: 1 1 100%; }
     }
 
     @media (max-width: 380px){
       :root{ --leftW: 162px; }
-      .miText b{ font-size: 12.5px; }
-      .miText small{ font-size: 10px; }
+      .mi b{ font-size: 12.5px; }
     }
   </style>
 </head>
@@ -470,10 +429,8 @@
         <section class="panel main" id="secMain">
           <div class="secHead">
             <h2 id="secTitle">Услуги</h2>
-            <span id="secSub">Материалы</span>
           </div>
 
-          <!-- сюда будем встраивать рекламные материалы / портфолио / отзывы -->
           <div class="grid" id="contentGrid"></div>
         </section>
       </div>
@@ -499,43 +456,39 @@
     try { tg.disableClosingConfirmation?.(); } catch(e) {}
   }
 
+  const CONTACTS = {
+    tg: "https://t.me/Yaki_Tahirov",
+    tgUser: "@Yaki_Tahirov",
+    phone: "+998 (93) 746-00-22",
+    phoneHref: "tel:+998937460022",
+    email: "tahirov.dd@gmail.com",
+    emailHref: "mailto:tahirov.dd@gmail.com"
+  };
+
   const DATA = {
     sections: [
-      { id:"services",  title:"Услуги",    sub:"Рекламные боты",  badge:"У" },
-      { id:"portfolio", title:"Портфолио", sub:"Кейсы/скрины",    badge:"П" },
-      { id:"prices",    title:"Прайс",     sub:"Тарифы",         badge:"ПР" },
-      { id:"reviews",   title:"Отзывы",    sub:"Скрины/текст",    badge:"О" },   // ✅ добавили
-      { id:"contacts",  title:"Контакты",  sub:"Связаться",      badge:"К" },
+      { id:"services",  title:"Услуги" },
+      { id:"portfolio", title:"Портфолио" },
+      { id:"prices",    title:"Прайс" },
+      { id:"reviews",   title:"Отзывы" },
+      { id:"contacts",  title:"Контакты" },
     ],
-
-    // ✅ сюда потом просто подставишь свои материалы (img/video/text/links)
     content: {
       services: [
-        { type:"slot", title:"Рекламный бот", tag:"1 бот", bodyType:"bot" },
-        { type:"slot", title:"Как вставлять материалы", tag:"Подсказка", bodyType:"hint",
-          text:"В этом блоке можно показывать скрины/баннеры/текст и кнопку. Сейчас стоит 1 рекламный бот (компактно)."
-        },
+        { title:"Рекламные материалы", tag:"Вставим баннеры/скрины", text:"Добавьте сюда карточки рекламных ботов, баннеры и промо-тексты." },
       ],
       portfolio: [
-        { type:"slot", title:"Портфолио", tag:"Материалы", bodyType:"hint",
-          text:"Сюда вставим ваши кейсы: 1-2 карточки, внутри фото/описание/кнопка «Открыть». Пока это шаблон."
-        },
+        { title:"Портфолио", tag:"Скрины/кейсы", text:"Сюда добавим кейсы: фото + короткое описание + кнопка на демо/чат." },
       ],
       prices: [
-        { type:"slot", title:"Прайс", tag:"Тарифы", bodyType:"hint",
-          text:"Сюда добавим тарифы: «Старт / Стандарт / Премиум» или ваши цены. Пока это шаблон."
-        },
+        { title:"Прайс", tag:"Тарифы", text:"Сюда добавим тарифы и условия." },
       ],
       reviews: [
-        { type:"slot", title:"Отзывы клиентов", tag:"Материалы", bodyType:"hint",
-          text:"Сюда вставим отзывы: скриншоты, текст, ссылки. Пока это шаблон."
-        },
+        { title:"Отзывы", tag:"Скрины/текст", text:"Сюда вставим отзывы клиентов: скриншоты, текст, ссылки." },
       ],
       contacts: [
-        { type:"slot", title:"Контакты", tag:"Telegram", bodyType:"hint",
-          text:"Контакты можно сделать кнопками или карточкой. Пока шаблон."
-        },
-      ],
+        { title:"Контакты", isContacts:true }
+      ]
     }
   };
 
@@ -549,28 +502,45 @@
   }
 
   function slotTemplate(item){
-    const body = (() => {
-      if(item.bodyType === "bot"){
-        return `
-          <div class="botTile">
-            <div class="botIcon">BOT</div>
-            <div class="botText">
-              <b>Рекламный бот</b>
-              <p>Компактная карточка • 1 элемент</p>
-            </div>
-          </div>
-        `;
-      }
-      return `<div class="hintBox">${item.text || "Материал будет здесь."}</div>`;
-    })();
-
+    // ✅ обычные секции: убрали под-разделы под разделами (в меню), но внутри контента оставили понятные заголовки
     return `
       <div class="slot">
         <div class="slotTop">
           <b>${item.title || ""}</b>
-          <span class="pill">${item.tag || ""}</span>
+          ${item.tag ? `<span class="pill">${item.tag}</span>` : ""}
         </div>
-        <div class="slotBody">${body}</div>
+        <div class="hintBox">${item.text || "Материал будет здесь."}</div>
+      </div>
+    `;
+  }
+
+  function contactsTemplate(){
+    return `
+      <div class="slot">
+        <div class="slotTop">
+          <b>Контакты</b>
+          <span class="pill">Связаться</span>
+        </div>
+
+        <div class="contactBox">
+          <div class="row">
+            <b>Telegram</b>
+            <a href="${CONTACTS.tg}" target="_blank" rel="noreferrer">${CONTACTS.tgUser}</a>
+          </div>
+          <div class="row">
+            <b>Телефон</b>
+            <a href="${CONTACTS.phoneHref}">${CONTACTS.phone}</a>
+          </div>
+          <div class="row">
+            <b>Почта</b>
+            <a href="${CONTACTS.emailHref}">${CONTACTS.email}</a>
+          </div>
+
+          <div class="btns">
+            <button class="btn primary" type="button" id="btnTG">Написать в Telegram</button>
+            <button class="btn" type="button" id="btnCall">Позвонить</button>
+          </div>
+        </div>
       </div>
     `;
   }
@@ -578,22 +548,28 @@
   function renderSection(id){
     const sec = DATA.sections.find(s=>s.id===id);
     document.getElementById("secTitle").textContent = sec?.title || "";
-    document.getElementById("secSub").textContent = sec?.sub || "Материалы";
 
     const grid = document.getElementById("contentGrid");
     const arr = DATA.content[id] || [];
-    grid.innerHTML = arr.map(slotTemplate).join("");
+
+    grid.innerHTML = arr.map(item=>{
+      if(item.isContacts) return contactsTemplate();
+      return slotTemplate(item);
+    }).join("");
+
+    // bind contact buttons
+    const btnTG = document.getElementById("btnTG");
+    if(btnTG) btnTG.onclick = ()=> window.open(CONTACTS.tg, "_blank");
+
+    const btnCall = document.getElementById("btnCall");
+    if(btnCall) btnCall.onclick = ()=> window.location.href = CONTACTS.phoneHref;
   }
 
-  // render left menu
+  // ✅ render menu WITHOUT кружков и WITHOUT под-текста
   const menuList = document.getElementById("menuList");
   menuList.innerHTML = DATA.sections.map(s=>`
     <button class="mi" type="button" data-id="${s.id}">
-      <span class="miBadge">${s.badge}</span>
-      <span class="miText">
-        <b>${s.title}</b>
-        <small>${s.sub}</small>
-      </span>
+      <b>${s.title}</b>
     </button>
   `).join("");
 
