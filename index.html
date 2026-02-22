@@ -1,4 +1,3 @@
-```html
 <!doctype html>
 <html lang="ru">
 <head>
@@ -14,17 +13,14 @@
       --bg2:#0f1c33;
 
       --stroke: rgba(255,255,255,.12);
-      --stroke2: rgba(255,255,255,.18);
       --text:#f6f8ff;
       --muted: rgba(246,248,255,.68);
-      --muted2: rgba(246,248,255,.52);
 
       --shadow: 0 22px 58px rgba(0,0,0,.52);
       --shadow2: 0 14px 34px rgba(0,0,0,.34);
 
       --r-xl: 24px;
       --r-lg: 20px;
-      --r-md: 16px;
 
       --safeT: env(safe-area-inset-top, 0px);
       --safeB: env(safe-area-inset-bottom, 0px);
@@ -34,20 +30,11 @@
       --vh: 1vh;
       --maxW: 1180px;
 
-      /* sidebar */
-      --leftW: 150px;
+      --leftW: 160px;
       --gap: 14px;
 
       --blueA: rgba(77,163,255,.96);
       --blueB: rgba(43,108,255,.88);
-
-      /* ✅ превью работ */
-      --shotH: 92px;
-
-      /* ✅ УЗКИЕ ИКОНКИ (превью) ДЛЯ КАРТОЧЕК:
-         "До и После", "Telegram WebApp", "Примеры работ", "Restaurant Menu" */
-      --shotW: 120px;   /* ширина каждой иконки */
-      --shotWm: 104px;  /* на телефоне */
     }
 
     *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
@@ -58,6 +45,7 @@
       color:var(--text);
       overflow-x:hidden;
       -webkit-overflow-scrolling: touch;
+
       padding:
         calc(10px + var(--safeT))
         calc(10px + var(--safeR))
@@ -109,6 +97,7 @@
       gap: 12px;
     }
 
+    /* header */
     .top{
       border: 1px solid var(--stroke);
       background: linear-gradient(180deg, rgba(255,255,255,.085), rgba(255,255,255,.03));
@@ -138,7 +127,7 @@
     }
     .brand h1{
       margin:0;
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 1000;
       letter-spacing:.2px;
       line-height:1;
@@ -149,47 +138,8 @@
       font-weight: 900;
       font-size: 13px;
     }
-    .logoPill{
-      border-radius: 999px;
-      padding: 8px 10px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.035));
-      box-shadow: 0 18px 40px rgba(0,0,0,.28), inset 0 0 0 1px rgba(255,255,255,.05);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex:0 0 auto;
-    }
-    .tgDot{
-      width: 32px; height: 32px;
-      border-radius: 14px;
-      display:grid; place-items:center;
-      background:
-        radial-gradient(18px 18px at 35% 30%, rgba(255,255,255,.30), transparent 62%),
-        linear-gradient(180deg, var(--blueA), var(--blueB));
-      border:1px solid rgba(120,190,255,.60);
-      box-shadow: 0 16px 34px rgba(60,140,255,.24);
-      font-weight: 1000;
-      color: rgba(255,255,255,.95);
-      font-size: 13px;
-    }
-    .logoPill b{
-      font-size: 17px;
-      font-weight: 1000;
-      letter-spacing:.2px;
-      white-space:nowrap;
-    }
 
-    .layout{
-      display:grid;
-      grid-template-columns: var(--leftW) 1fr;
-      gap: var(--gap);
-      align-items:start;
-      min-height: calc(var(--vh) * 100 - 24px - var(--safeT) - var(--safeB));
-    }
-
+    /* panels */
     .panel{
       border: 1px solid var(--stroke);
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.028));
@@ -197,7 +147,7 @@
       box-shadow: var(--shadow2);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      padding: 6px;
+      padding: 10px;
       overflow:hidden;
       position:relative;
     }
@@ -212,115 +162,84 @@
     }
     .panel > *{position:relative; z-index:1;}
 
+    /* layout */
+    .layout{
+      display:grid;
+      grid-template-columns: var(--leftW) 1fr;
+      gap: var(--gap);
+      align-items:start;
+      min-height: calc(var(--vh) * 100 - 24px - var(--safeT) - var(--safeB));
+    }
+
+    /* left menu (NO icons) */
     .left{
       position: sticky;
       top: calc(10px + var(--safeT));
       width: var(--leftW);
+      padding: 10px;
     }
-
     .leftTitle{
-      margin: 4px 6px 6px;
+      margin: 0 0 8px;
       font-weight: 900;
       font-size: 12px;
       opacity:.85;
       letter-spacing:.18px;
     }
-
     .menu{
       display:flex;
       flex-direction:column;
       gap: 8px;
-      padding: 0 4px 4px;
     }
-
     .mi{
       width:100%;
-      display:flex;
-      align-items:center;
-      gap:10px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.16);
       box-shadow: 0 12px 26px rgba(0,0,0,.18);
-      padding: 6px 8px;
-      min-height: 36px;
+      padding: 10px 10px;
+      min-height: 42px;
       cursor:pointer;
       user-select:none;
+      text-align:left;
+      color: var(--text);
+      font-weight: 1000;
+      font-size: 13px;
       position:relative;
       overflow:hidden;
-      transition: transform .08s ease, filter .15s ease, border-color .15s ease;
+      transition: transform .08s ease, border-color .15s ease;
     }
     .mi:active{ transform: translateY(1px); }
+    .mi small{
+      display:block;
+      margin-top:4px;
+      color: rgba(246,248,255,.58);
+      font-weight: 900;
+      font-size: 11px;
+    }
     .mi.active{
       border-color: rgba(120,190,255,.46);
       background:
         radial-gradient(160px 80px at 20% 20%, rgba(77,163,255,.18), transparent 60%),
         linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
-      box-shadow: 0 18px 34px rgba(60,140,255,.14), 0 12px 26px rgba(0,0,0,.22);
-    }
-    .mi.active:before{
-      content:"";
-      position:absolute; inset:-2px;
-      pointer-events:none;
-      background:
-        radial-gradient(220px 120px at 30% 0%, rgba(255,255,255,.12), transparent 62%),
-        radial-gradient(240px 140px at 90% 120%, rgba(77,163,255,.16), transparent 62%);
-      opacity:.9;
     }
 
-    .miIcon{
-      width: 20px; height: 20px;
-      border-radius: 999px;
-      display:grid; place-items:center;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      box-shadow: 0 10px 20px rgba(0,0,0,.16);
-      flex:0 0 auto;
-    }
-    .miIcon svg{ width: 12px; height: 12px; opacity:.92; }
-
-    .miText{
-      min-width:0;
-      display:flex;
-      flex-direction:column;
-      gap:3px;
-      text-align:left;
-    }
-    .miText b{
-      font-size: 11.5px;
-      font-weight: 1000;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      line-height:1.05;
-    }
-    .miText small{
-      font-size: 9px;
-      font-weight: 900;
-      color: var(--muted2);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      line-height:1.05;
-    }
-
+    /* right */
     .right{
       display:flex;
       flex-direction:column;
       gap: 12px;
       min-width:0;
     }
-
     .secHead{
       display:flex;
       align-items:baseline;
       justify-content:space-between;
       gap:10px;
-      padding: 8px 10px 10px;
+      padding: 4px 2px 10px;
     }
     .secHead h2{
       margin:0;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 1000;
       letter-spacing:.2px;
     }
@@ -331,139 +250,41 @@
       white-space:nowrap;
     }
 
+    /* cards (NO icons / NO images) */
     .grid{
       display:grid;
       grid-template-columns: 1fr;
       gap:12px;
-      padding: 0 8px 8px;
     }
     @media (min-width: 980px){
       .grid{ grid-template-columns: 1fr 1fr; }
     }
 
     .card{
-      border-radius: 24px;
+      border-radius: 22px;
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(0,0,0,.16);
       box-shadow: var(--shadow2);
-      overflow:hidden;
-      position:relative;
+      padding: 14px;
     }
-    .card:before{
-      content:"";
-      position:absolute; inset:-2px;
-      pointer-events:none;
-      background:
-        radial-gradient(420px 160px at 22% 0%, rgba(255,255,255,.10), transparent 62%),
-        radial-gradient(420px 200px at 86% 52%, rgba(77,163,255,.12), transparent 64%);
-      opacity:.70;
-    }
-    .card > *{position:relative; z-index:1;}
-
-    .cardHead{
-      padding: 12px 12px 10px;
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .cardTitle{
-      min-width:0;
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-    }
-    .star{
-      width: 32px; height: 32px;
-      border-radius: 14px;
-      display:grid; place-items:center;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      box-shadow: 0 14px 28px rgba(0,0,0,.22);
-      flex:0 0 auto;
-      font-size: 14px;
-    }
-    .twrap{min-width:0;}
-    .twrap b{
+    .card b{
+      display:block;
       font-size: 15px;
       font-weight: 1000;
-      display:block;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
     }
-    .twrap small{
-      margin-top:4px;
-      display:block;
-      color: rgba(246,248,255,.62);
-      font-weight:900;
-      font-size:11.5px;
-    }
-
-    .chips{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-    .chip{
-      padding: 5px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
+    .card p{
+      margin:6px 0 10px;
       color: rgba(246,248,255,.66);
-      font-weight:1000;
-      font-size: 11px;
-      white-space:nowrap;
+      font-weight: 900;
+      font-size: 12px;
+      line-height: 1.35;
     }
-
-    /* ✅ ДВА превью становятся "узкими иконками" */
-    .shots{
-      padding: 0 12px 12px;
-      display:flex;
-      gap: 10px;
-      align-items:flex-start;
-      flex-wrap: wrap; /* чтобы не ломалось на узких экранах */
-    }
-    .shot{
-      width: var(--shotW);
-      height: var(--shotH);
-      flex: 0 0 auto;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.05);
-      overflow:hidden;
-      box-shadow: 0 18px 44px rgba(0,0,0,.26);
-      position:relative;
-    }
-    .shot img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      transform: scale(1.02);
-      display:block;
-    }
-    .shotLabel{
-      position:absolute;
-      left:8px; top:8px;
-      padding: 5px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.28);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      font-size: 10px;
-      font-weight:1000;
-      color: rgba(246,248,255,.92);
-    }
-
-    .cardFoot{
-      padding: 0 12px 12px;
+    .actions{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
     }
-    .mini{
+    .btn{
       min-height: 42px;
       padding: 10px 12px;
       border-radius: 18px;
@@ -476,20 +297,18 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      gap:8px;
       font-size: 13px;
       user-select:none;
       flex:1;
-      transition: transform .08s ease;
     }
-    .mini:active{ transform: translateY(1px); }
-    .mini.primary{
+    .btn.primary{
       background: linear-gradient(180deg, var(--blueA), var(--blueB));
       border-color: rgba(120,190,255,.48);
       color:#fff;
       box-shadow: 0 16px 34px rgba(60,140,255,.22);
     }
 
+    /* modal */
     .modal{
       position:fixed; inset:0;
       display:none;
@@ -540,25 +359,19 @@
     .hint{color: rgba(246,248,255,.62); font-size: 12px; line-height: 1.35;}
     a.link{color: rgba(140,190,255,.98); font-weight:1000; text-decoration:none;}
 
+    /* mobile: left becomes horizontal */
     @media (max-width: 860px){
       .layout{ grid-template-columns: 1fr; }
       .left{ width: 100%; position: relative; top:auto; }
       .menu{
         flex-direction: row;
         overflow:auto;
-        padding: 6px 4px 8px;
         gap:10px;
+        padding-bottom: 2px;
         scrollbar-width: none;
       }
       .menu::-webkit-scrollbar{ display:none; }
-      .mi{
-        min-width: 168px;
-        border-radius: 16px;
-      }
-
-      /* ✅ ещё уже иконки на телефоне */
-      .shot{ width: var(--shotWm); }
-      :root{ --shotH: 86px; }
+      .mi{ min-width: 170px; }
     }
   </style>
 </head>
@@ -566,27 +379,26 @@
 <body>
   <div class="wrap">
 
+    <!-- HEADER -->
     <section class="top">
       <div class="brandRow">
         <div class="brand">
           <h1>TG Studio</h1>
           <p>Telegram WebApp</p>
         </div>
-
-        <div class="logoPill" aria-hidden="true">
-          <div class="tgDot">TG</div>
-          <b>Studio</b>
-        </div>
       </div>
     </section>
 
+    <!-- LAYOUT -->
     <section class="layout">
 
+      <!-- LEFT: Разделы (без иконок) -->
       <aside class="panel left">
         <div class="leftTitle">Разделы</div>
         <div class="menu" id="menuList"></div>
       </aside>
 
+      <!-- RIGHT -->
       <div class="right">
 
         <section class="panel" id="secBeforeAfter">
@@ -607,7 +419,6 @@
 
       </div>
     </section>
-
   </div>
 
   <!-- REQUEST MODAL -->
@@ -618,12 +429,12 @@
           <h3>Запрос</h3>
           <p>Опиши задачу — отправлю админу в Telegram.</p>
         </div>
-        <button class="x" data-close="mRequest">✕</button>
+        <button class="x" data-close="mRequest">X</button>
       </div>
 
       <div class="form">
         <textarea class="in" id="rText" placeholder="Опиши что нужно: бот / WebApp / интеграции, сроки, бюджет"></textarea>
-        <button class="mini primary" id="rSend" style="width:100%;">✅ Отправить запрос</button>
+        <button class="btn primary" id="rSend" style="width:100%;">Отправить</button>
         <div class="hint" id="rHint"></div>
       </div>
     </div>
@@ -637,7 +448,7 @@
           <h3>Контакты</h3>
           <p>Свяжитесь со мной удобным способом:</p>
         </div>
-        <button class="x" data-close="mContacts">✕</button>
+        <button class="x" data-close="mContacts">X</button>
       </div>
 
       <div class="form">
@@ -646,7 +457,7 @@
           <div><b>Телефон:</b> <a class="link" href="tel:+998937460022">+998 (93) 746-00-22</a></div>
           <div><b>Почта:</b> <a class="link" href="mailto:tahirov.dd@gmail.com">tahirov.dd@gmail.com</a></div>
         </div>
-        <button class="mini primary" id="btnWriteTG" style="width:100%;">Написать в Telegram</button>
+        <button class="btn primary" id="btnWriteTG" style="width:100%;">Написать в Telegram</button>
         <div class="hint">Нажмите кнопку — откроется чат.</div>
       </div>
     </div>
@@ -670,70 +481,22 @@
     try { tg.disableClosingConfirmation?.(); } catch(e) {}
   }
 
-  const ICONS = {
-    services:  `<svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 6.9H22l-5.8 4.2 2.2 6.7L12 15.8 5.6 19.8l2.2-6.7L2 8.9h7.6L12 2z" stroke="rgba(246,248,255,.92)" stroke-width="1.7" stroke-linejoin="round"/></svg>`,
-    portfolio: `<svg viewBox="0 0 24 24" fill="none"><path d="M4 7.5h6l1.6-2h8.4a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9.5a2 2 0 0 1 2-2z" stroke="rgba(246,248,255,.92)" stroke-width="1.7" stroke-linejoin="round"/></svg>`,
-    prices:    `<svg viewBox="0 0 24 24" fill="none"><path d="M7 4h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" stroke="rgba(246,248,255,.92)" stroke-width="1.7"/><path d="M8 9h8M8 13h8M8 17h5" stroke="rgba(246,248,255,.75)" stroke-width="1.7" stroke-linecap="round"/></svg>`,
-    reviews:   `<svg viewBox="0 0 24 24" fill="none"><path d="M5 6h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H10l-4.5 3V17H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" stroke="rgba(246,248,255,.92)" stroke-width="1.7" stroke-linejoin="round"/></svg>`,
-    contacts:  `<svg viewBox="0 0 24 24" fill="none"><path d="M7.5 3h9A2.5 2.5 0 0 1 19 5.5v13A2.5 2.5 0 0 1 16.5 21h-9A2.5 2.5 0 0 1 5 18.5v-13A2.5 2.5 0 0 1 7.5 3z" stroke="rgba(246,248,255,.92)" stroke-width="1.7"/><path d="M9 7h6M9 11h6M9 15h4" stroke="rgba(246,248,255,.75)" stroke-width="1.7" stroke-linecap="round"/></svg>`
-  };
-
   const DATA = {
     adminLink: "https://t.me/Yaki_Tahirov",
     menu: [
-      { id:"services",  title:"Услуги",    sub:"Боты • WebApp",               icon: ICONS.services,  action:"openRequest" },
-      { id:"portfolio", title:"Портфолио", sub:"Кейсы/примеры",               icon: ICONS.portfolio, action:"scrollWorks" },
-      { id:"prices",    title:"Прайс",     sub:"Ориентиры",                  icon: ICONS.prices,    action:"openRequest" },
-      { id:"reviews",   title:"Отзывы",    sub:"Скрины/текст",               icon: ICONS.reviews,   action:"openRequest" },
-      { id:"contacts",  title:"Контакты",  sub:"Telegram • Телефон • Email", icon: ICONS.contacts,  action:"openContacts" },
+      { id:"services",  title:"Услуги",    sub:"Боты • WebApp",               action:"openRequest" },
+      { id:"portfolio", title:"Портфолио", sub:"Кейсы/примеры",               action:"scrollWorks" },
+      { id:"prices",    title:"Прайс",     sub:"Ориентиры",                  action:"openRequest" },
+      { id:"reviews",   title:"Отзывы",    sub:"Скрины/текст",               action:"openRequest" },
+      { id:"contacts",  title:"Контакты",  sub:"Telegram • Телефон • Email", action:"openContacts" },
     ],
     beforeAfter: [
-      {
-        title: "Telegram Bot",
-        subtitle: "Заявка • Меню",
-        tags: ["Admin", "Leads"],
-        leftLabel: "До",
-        rightLabel: "После",
-        img1: "images/bot_1.jpg",
-        img2: "images/bot_2.jpg",
-        cta1: { text:"Открыть", action:"openTG" },
-        cta2: { text:"Запрос", action:"openRequest" }
-      },
-      {
-        title: "Telegram WebApp",
-        subtitle: "Каталог • UI",
-        tags: ["Catalog", "UI"],
-        leftLabel: "До",
-        rightLabel: "После",
-        img1: "images/webapp_1.jpg",
-        img2: "images/webapp_2.jpg",
-        cta1: { text:"Демо", action:"openLink", url:"https://tahirovdd-lang.github.io/Portfolio-bot/" },
-        cta2: { text:"Запрос", action:"openRequest" }
-      }
+      { title:"Telegram Bot",   subtitle:"Заявка • Меню",           cta1:{text:"Открыть", action:"openTG"}, cta2:{text:"Запрос", action:"openRequest"} },
+      { title:"Telegram WebApp",subtitle:"Каталог • UI",            cta1:{text:"Демо",   action:"openLink", url:"https://tahirovdd-lang.github.io/Portfolio-bot/"}, cta2:{text:"Запрос", action:"openRequest"} },
     ],
     works: [
-      {
-        title:"Grand Cru",
-        subtitle:"Catalog • Search • Leads",
-        tags:["Search","Leads"],
-        leftLabel:"Экран 1",
-        rightLabel:"Экран 2",
-        img1:"images/grandcru_1.jpg",
-        img2:"images/grandcru_2.jpg",
-        cta1:{ text:"Запрос", action:"openRequest" },
-        cta2:{ text:"Написать", action:"openTG" }
-      },
-      {
-        title:"Restaurant Menu",
-        subtitle:"Menu • Delivery • Lang",
-        tags:["Cart","3 Lang"],
-        leftLabel:"Экран 1",
-        rightLabel:"Экран 2",
-        img1:"images/rest_1.jpg",
-        img2:"images/rest_2.jpg",
-        cta1:{ text:"Запрос", action:"openRequest" },
-        cta2:{ text:"Написать", action:"openTG" }
-      }
+      { title:"Grand Cru",      subtitle:"Catalog • Search • Leads", cta1:{text:"Запрос", action:"openRequest"}, cta2:{text:"Написать", action:"openTG"} },
+      { title:"Restaurant Menu",subtitle:"Menu • Delivery • Lang",   cta1:{text:"Запрос", action:"openRequest"}, cta2:{text:"Написать", action:"openTG"} },
     ]
   };
 
@@ -749,35 +512,21 @@
     modal.addEventListener('click', (e)=>{ if(e.target === modal) modal.style.display = "none"; });
   });
 
+  function setActive(id){
+    activeId = id;
+    document.querySelectorAll('.mi').forEach(x=>x.classList.remove('active'));
+    const el = document.querySelector(`.mi[data-id="${id}"]`);
+    if(el) el.classList.add('active');
+  }
+
   function cardTemplate(item){
-    const tags = (item.tags||[]).map(t=>`<span class="chip">${t}</span>`).join("");
     return `
       <div class="card">
-        <div class="cardHead">
-          <div class="cardTitle">
-            <div class="star">★</div>
-            <div class="twrap">
-              <b>${item.title}</b>
-              <small>${item.subtitle || ""}</small>
-            </div>
-          </div>
-          <div class="chips">${tags}</div>
-        </div>
-
-        <div class="shots">
-          <div class="shot">
-            <span class="shotLabel">${item.leftLabel || "Preview 1"}</span>
-            <img src="${item.img1 || ""}" alt="" onerror="this.style.display='none'">
-          </div>
-          <div class="shot">
-            <span class="shotLabel">${item.rightLabel || "Preview 2"}</span>
-            <img src="${item.img2 || ""}" alt="" onerror="this.style.display='none'">
-          </div>
-        </div>
-
-        <div class="cardFoot">
-          ${item.cta1 ? `<button class="mini" data-act="${item.cta1.action}" data-url="${item.cta1.url || ""}">${item.cta1.text}</button>` : ""}
-          ${item.cta2 ? `<button class="mini primary" data-act="${item.cta2.action}" data-url="${item.cta2.url || ""}">${item.cta2.text}</button>` : ""}
+        <b>${item.title}</b>
+        <p>${item.subtitle || ""}</p>
+        <div class="actions">
+          ${item.cta1 ? `<button class="btn" data-act="${item.cta1.action}" data-url="${item.cta1.url || ""}">${item.cta1.text}</button>` : ""}
+          ${item.cta2 ? `<button class="btn primary" data-act="${item.cta2.action}" data-url="${item.cta2.url || ""}">${item.cta2.text}</button>` : ""}
         </div>
       </div>
     `;
@@ -796,21 +545,12 @@
     });
   }
 
-  function setActive(id){
-    activeId = id;
-    document.querySelectorAll('.mi').forEach(x=>x.classList.remove('active'));
-    const el = document.querySelector(`.mi[data-id="${id}"]`);
-    if(el) el.classList.add('active');
-  }
-
+  // render menu (NO icons)
   const menuList = document.getElementById("menuList");
   menuList.innerHTML = DATA.menu.map(m=>`
     <button class="mi" type="button" data-id="${m.id}" data-action="${m.action}">
-      <span class="miIcon">${m.icon}</span>
-      <span class="miText">
-        <b>${m.title}</b>
-        <small>${m.sub}</small>
-      </span>
+      ${m.title}
+      <small>${m.sub}</small>
     </button>
   `).join("");
 
@@ -830,6 +570,7 @@
 
   setActive(activeId);
 
+  // render sections
   const beforeEl = document.getElementById("beforeAfterGrid");
   beforeEl.innerHTML = DATA.beforeAfter.map(cardTemplate).join("");
   bindActions(beforeEl);
@@ -845,19 +586,18 @@
     rHint.textContent = "";
     const text = document.getElementById('rText').value.trim();
     if(!text){
-      rHint.textContent = "⚠️ Напиши текст запроса.";
+      rHint.textContent = "Напиши текст запроса.";
       return;
     }
     if(!tg){
-      rHint.textContent = "⚠️ Открой в Telegram, чтобы отправить.";
+      rHint.textContent = "Открой в Telegram, чтобы отправить.";
       return;
     }
     tg.sendData(JSON.stringify({ source:"lead", task: text, ts: Date.now() }));
     tg.HapticFeedback?.notificationOccurred?.("success");
-    rHint.textContent = "✅ Отправлено!";
+    rHint.textContent = "Отправлено!";
     setTimeout(()=>closeModal("mRequest"), 450);
   };
 </script>
 </body>
 </html>
-```
