@@ -12,11 +12,8 @@
       --bg1:#0a1020;
       --bg2:#0f1c33;
 
-      --glass: rgba(255,255,255,.07);
       --stroke: rgba(255,255,255,.12);
-
       --text:#f6f8ff;
-      --muted: rgba(246,248,255,.70);
 
       --shadow: 0 22px 58px rgba(0,0,0,.52);
       --shadow2: 0 14px 34px rgba(0,0,0,.34);
@@ -25,15 +22,17 @@
       --r-lg: 22px;
       --r-md: 18px;
 
-      --tap: 50px;
-
       --safeT: env(safe-area-inset-top, 0px);
       --safeB: env(safe-area-inset-bottom, 0px);
       --safeL: env(safe-area-inset-left, 0px);
       --safeR: env(safe-area-inset-right, 0px);
 
       --vh: 1vh;
-      --maxW: 980px;
+      --maxW: 1180px;
+
+      /* ✅ двухколоночный лэйаут как на фото */
+      --leftW: 220px;     /* ширина блока "Разделы" */
+      --gap: 14px;
     }
 
     *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
@@ -59,6 +58,7 @@
         linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 45%, var(--bg2) 100%);
     }
 
+    /* дымка */
     body:before{
       content:"";
       position:fixed; inset:-140px;
@@ -74,6 +74,7 @@
       transform: translateZ(0);
     }
 
+    /* зерно */
     body:after{
       content:"";
       position:fixed; inset:0;
@@ -93,10 +94,10 @@
       z-index:1;
       display:flex;
       flex-direction:column;
-      gap:12px;
+      gap: 12px;
     }
 
-    /* ✅ шапка меньше, без текста и кнопок */
+    /* шапка компактная */
     .top{
       border: 1px solid var(--stroke);
       background: linear-gradient(180deg, rgba(255,255,255,.085), rgba(255,255,255,.03));
@@ -118,7 +119,6 @@
       opacity:.75;
     }
     .top > *{position:relative; z-index:1;}
-
     .brandRow{
       display:flex;
       align-items:center;
@@ -132,7 +132,12 @@
       letter-spacing:.2px;
       line-height:1;
     }
-
+    .brand p{
+      margin:6px 0 0;
+      color: rgba(140,190,255,.90);
+      font-weight: 900;
+      font-size: 13px;
+    }
     .logoPill{
       flex:0 0 auto;
       border-radius: 999px;
@@ -147,7 +152,7 @@
       gap:10px;
     }
     .tgDot{
-      width: 34px; height: 34px;
+      width: 32px; height: 32px;
       border-radius: 14px;
       display:grid; place-items:center;
       background:
@@ -157,15 +162,25 @@
       box-shadow: 0 16px 34px rgba(60,140,255,.24);
       font-weight: 1000;
       color: rgba(255,255,255,.95);
-      font-size: 14px;
+      font-size: 13px;
     }
     .logoPill b{
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 1000;
       letter-spacing:.2px;
       white-space:nowrap;
     }
 
+    /* ✅ ОСНОВНОЙ ЛЭЙАУТ: слева Разделы, справа контент/скролл */
+    .layout{
+      display:grid;
+      grid-template-columns: var(--leftW) 1fr;
+      gap: var(--gap);
+      align-items:start;
+      min-height: calc(var(--vh) * 100 - 24px - var(--safeT) - var(--safeB));
+    }
+
+    /* стеклянные панели */
     .panel{
       border: 1px solid var(--stroke);
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.028));
@@ -173,46 +188,54 @@
       box-shadow: var(--shadow2);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      padding: 12px;
+      padding: 10px;
       overflow:hidden;
       position:relative;
     }
+    .panel:before{
+      content:"";
+      position:absolute; inset:-2px;
+      pointer-events:none;
+      background:
+        radial-gradient(720px 240px at 52% 0%, rgba(255,255,255,.10), transparent 62%),
+        radial-gradient(720px 320px at 70% 120%, rgba(77,163,255,.12), transparent 62%);
+      opacity:.55;
+    }
     .panel > *{position:relative; z-index:1;}
 
-    .secHead{
-      display:flex;
-      align-items:baseline;
-      justify-content:space-between;
-      gap:10px;
-      padding: 4px 4px 10px;
+    /* ✅ ЛЕВАЯ ПАНЕЛЬ (Разделы) – меньше иконки и контент */
+    .left{
+      position: sticky;
+      top: calc(10px + var(--safeT));
     }
-    .secHead h2{
-      margin:0;
-      font-size: 22px;
+    .leftTitle{
+      margin: 6px 8px 10px;
       font-weight: 1000;
+      font-size: 14px; /* меньше */
       letter-spacing:.2px;
+      opacity:.95;
     }
 
-    /* ✅ разделы слева + уменьшенная иконка */
     .list{
       display:flex;
       flex-direction:column;
-      gap:10px;
+      gap: 8px;
+      padding: 0 6px 6px;
     }
     .cell{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:12px;
-      border-radius: 20px;
+      gap:10px;
+      border-radius: 18px;
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(0,0,0,.16);
-      box-shadow: 0 16px 34px rgba(0,0,0,.20);
-      padding: 12px 12px;
-      min-height: 54px;
+      box-shadow: 0 12px 26px rgba(0,0,0,.18);
+      padding: 10px 10px;
+      min-height: 46px; /* меньше */
       cursor:pointer;
       user-select:none;
-      transition: transform .08s ease, filter .15s ease, background .15s ease;
+      transition: transform .08s ease, filter .15s ease;
     }
     .cell:active{ transform: translateY(1px); }
 
@@ -222,23 +245,23 @@
       gap:10px;
       min-width:0;
     }
+
+    /* ✅ иконка меньше */
     .ico{
-      width: 30px; height: 30px;  /* ✅ уменьшил */
-      border-radius: 12px;
+      width: 24px; height: 24px;
+      border-radius: 10px;
       display:grid; place-items:center;
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.06);
-      box-shadow: 0 10px 22px rgba(0,0,0,.18);
+      box-shadow: 0 10px 20px rgba(0,0,0,.16);
       flex:0 0 auto;
-      font-size: 14px; /* ✅ уменьшил */
+      font-size: 12px;
     }
-    .cellTxt{
-      min-width:0;
-      text-align:left; /* ✅ слева */
-    }
+
+    .cellTxt{min-width:0; text-align:left;}
     .cellTxt b{
       display:block;
-      font-size: 16px;
+      font-size: 13px; /* меньше */
       font-weight: 1000;
       white-space:nowrap;
       overflow:hidden;
@@ -249,26 +272,53 @@
       margin-top:3px;
       color: rgba(246,248,255,.60);
       font-weight:900;
-      font-size: 12px;
+      font-size: 10.5px; /* меньше */
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
     }
     .chev{
-      color: rgba(246,248,255,.38);
-      font-size: 18px;
+      color: rgba(246,248,255,.35);
+      font-size: 16px;
       font-weight: 1000;
       flex:0 0 auto;
     }
 
-    /* cards */
+    /* ✅ ПРАВАЯ ЧАСТЬ – весь контент и скролл */
+    .right{
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+      min-width:0;
+    }
+
+    .secHead{
+      display:flex;
+      align-items:baseline;
+      justify-content:space-between;
+      gap:10px;
+      padding: 6px 8px 10px;
+    }
+    .secHead h2{
+      margin:0;
+      font-size: 20px;
+      font-weight: 1000;
+      letter-spacing:.2px;
+    }
+    .secHead span{
+      color: rgba(246,248,255,.50);
+      font-weight:900;
+      font-size: 11px;
+      white-space:nowrap;
+    }
+
     .grid{
       display:grid;
       grid-template-columns: 1fr;
       gap:12px;
-      padding: 4px;
+      padding: 0 6px 6px;
     }
-    @media (min-width: 860px){
+    @media (min-width: 980px){
       .grid{ grid-template-columns: 1fr 1fr; }
     }
 
@@ -280,8 +330,19 @@
       overflow:hidden;
       position:relative;
     }
+    .card:before{
+      content:"";
+      position:absolute; inset:-2px;
+      pointer-events:none;
+      background:
+        radial-gradient(420px 160px at 22% 0%, rgba(255,255,255,.10), transparent 62%),
+        radial-gradient(420px 200px at 86% 52%, rgba(77,163,255,.12), transparent 64%);
+      opacity:.70;
+    }
+    .card > *{position:relative; z-index:1;}
+
     .cardHead{
-      padding: 14px 14px 10px;
+      padding: 12px 12px 10px;
       display:flex;
       align-items:flex-start;
       justify-content:space-between;
@@ -294,17 +355,18 @@
       align-items:flex-start;
     }
     .star{
-      width: 34px; height: 34px;
+      width: 32px; height: 32px;
       border-radius: 14px;
       display:grid; place-items:center;
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.06);
       box-shadow: 0 14px 28px rgba(0,0,0,.22);
       flex:0 0 auto;
+      font-size: 14px;
     }
     .twrap{min-width:0;}
     .twrap b{
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 1000;
       display:block;
       white-space:nowrap;
@@ -316,7 +378,7 @@
       display:block;
       color: rgba(246,248,255,.62);
       font-weight:900;
-      font-size:12px;
+      font-size:11.5px;
     }
 
     .chips{
@@ -326,27 +388,27 @@
       justify-content:flex-end;
     }
     .chip{
-      padding: 6px 10px;
+      padding: 5px 9px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.05);
       color: rgba(246,248,255,.66);
       font-weight:1000;
-      font-size: 12px;
+      font-size: 11px;
       white-space:nowrap;
     }
 
     .shots{
-      padding: 0 14px 14px;
+      padding: 0 12px 12px;
       display:grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 10px;
     }
     @media (max-width: 420px){
       .shots{ grid-template-columns: 1fr; }
     }
     .shot{
-      height: 140px;
+      height: 132px;
       border-radius: 20px;
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.05);
@@ -370,20 +432,20 @@
       background: rgba(0,0,0,.28);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      font-size: 12px;
+      font-size: 11px;
       font-weight:1000;
       color: rgba(246,248,255,.92);
     }
 
     .cardFoot{
-      padding: 0 14px 14px;
+      padding: 0 12px 12px;
       display:flex;
       gap:10px;
       flex-wrap:wrap;
     }
     .mini{
-      min-height: 44px;
-      padding: 10px 14px;
+      min-height: 42px;
+      padding: 10px 12px;
       border-radius: 18px;
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.06);
@@ -395,10 +457,12 @@
       align-items:center;
       justify-content:center;
       gap:8px;
-      font-size: 14px;
+      font-size: 13px;
       user-select:none;
       flex:1;
+      transition: transform .08s ease;
     }
+    .mini:active{ transform: translateY(1px); }
     .mini.primary{
       background: linear-gradient(180deg, rgba(77,163,255,.96), rgba(43,108,255,.88));
       border-color: rgba(120,190,255,.48);
@@ -456,6 +520,18 @@
     textarea.in{min-height: 96px; resize:none;}
     .hint{color: rgba(246,248,255,.62); font-size: 12px; line-height: 1.35;}
     a.link{color: rgba(140,190,255,.98); font-weight:1000; text-decoration:none;}
+
+    /* ✅ МОБИЛЬНАЯ АДАПТАЦИЯ: слева блок становится сверху, справа контент ниже */
+    @media (max-width: 860px){
+      :root{ --leftW: 100%; }
+      .layout{
+        grid-template-columns: 1fr;
+      }
+      .left{
+        position: relative;
+        top: auto;
+      }
+    }
   </style>
 </head>
 
@@ -467,6 +543,7 @@
       <div class="brandRow">
         <div class="brand">
           <h1>TG Studio</h1>
+          <p>Telegram WebApp</p>
         </div>
 
         <div class="logoPill" aria-hidden="true">
@@ -476,30 +553,35 @@
       </div>
     </section>
 
-    <!-- MENU -->
-    <section class="panel">
-      <div class="secHead">
-        <h2>Разделы</h2>
-      </div>
-      <div class="list" id="menuList"></div>
-    </section>
+    <!-- ✅ LAYOUT -->
+    <section class="layout">
 
-    <!-- BEFORE/AFTER -->
-    <section class="panel">
-      <div class="secHead">
-        <h2>До и После</h2>
-        <span style="color: rgba(246,248,255,.50); font-weight:900; font-size:12px;">Примеры интерфейса</span>
-      </div>
-      <div class="grid" id="beforeAfterGrid"></div>
-    </section>
+      <!-- LEFT: Разделы -->
+      <aside class="panel left">
+        <div class="leftTitle">Разделы</div>
+        <div class="list" id="menuList"></div>
+      </aside>
 
-    <!-- WORKS -->
-    <section class="panel">
-      <div class="secHead">
-        <h2>Примеры работ</h2>
-        <span style="color: rgba(246,248,255,.50); font-weight:900; font-size:12px;">Каталоги • Меню • Запись</span>
+      <!-- RIGHT: контент и скролл -->
+      <div class="right">
+
+        <section class="panel">
+          <div class="secHead">
+            <h2>До и После</h2>
+            <span>Примеры интерфейса</span>
+          </div>
+          <div class="grid" id="beforeAfterGrid"></div>
+        </section>
+
+        <section class="panel">
+          <div class="secHead">
+            <h2>Примеры работ</h2>
+            <span>Каталоги • Меню • Запись</span>
+          </div>
+          <div class="grid" id="worksGrid"></div>
+        </section>
+
       </div>
-      <div class="grid" id="worksGrid"></div>
     </section>
 
   </div>
@@ -567,11 +649,11 @@
   const DATA = {
     adminLink: "https://t.me/Yaki_Tahirov",
     menu: [
-      { id:"services",  title:"Услуги",    sub:"Боты • WebApp • Интеграции", icon:"⭐", action:"openRequest" },
-      { id:"portfolio", title:"Портфолио", sub:"Кейсы и примеры",            icon:"📁", action:"scrollPortfolio" },
-      { id:"prices",    title:"Прайс",     sub:"Пакеты и ориентиры",         icon:"💳", action:"openRequest" },
-      { id:"reviews",   title:"Отзывы",    sub:"Скрины/текст",               icon:"💬", action:"openRequest" },
-      { id:"contacts",  title:"Контакты",  sub:"Телефон • Telegram • Email", icon:"☎️", action:"openContacts" },
+      { id:"services",  title:"Услуги",    sub:"Боты • WebApp",              icon:"⭐", action:"openRequest" },
+      { id:"portfolio", title:"Портфолио", sub:"Кейсы/примеры",              icon:"📁", action:"scrollPortfolio" },
+      { id:"prices",    title:"Прайс",     sub:"Ориентиры",                 icon:"💳", action:"openRequest" },
+      { id:"reviews",   title:"Отзывы",    sub:"Скрины/текст",              icon:"💬", action:"openRequest" },
+      { id:"contacts",  title:"Контакты",  sub:"Telegram • Телефон • Email", icon:"☎️", action:"openContacts" },
     ],
     beforeAfter: [
       {
@@ -680,7 +762,7 @@
     });
   }
 
-  // Render menu
+  // Render menu (левый блок)
   const menuList = document.getElementById("menuList");
   menuList.innerHTML = DATA.menu.map(m=>`
     <div class="cell" data-action="${m.action}">
@@ -706,7 +788,7 @@
     };
   });
 
-  // Render grids
+  // Render grids (правый блок)
   const beforeEl = document.getElementById("beforeAfterGrid");
   beforeEl.innerHTML = DATA.beforeAfter.map(cardTemplate).join("");
   bindActions(beforeEl);
