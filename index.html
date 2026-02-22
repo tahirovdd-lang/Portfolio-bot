@@ -8,31 +8,22 @@
 
   <style>
     :root{
-      /* Палитра как на фото */
       --bg0:#05070c;
       --bg1:#0a1020;
       --bg2:#0f1c33;
 
       --glass: rgba(255,255,255,.07);
-      --glass2: rgba(255,255,255,.04);
       --stroke: rgba(255,255,255,.12);
-      --stroke2: rgba(255,255,255,.20);
 
       --text:#f6f8ff;
       --muted: rgba(246,248,255,.70);
-      --muted2: rgba(246,248,255,.55);
-
-      --blue:#2b6cff;
-      --blueSoft:#4da3ff;
-      --blueDeep:#1d4ed8;
 
       --shadow: 0 22px 58px rgba(0,0,0,.52);
       --shadow2: 0 14px 34px rgba(0,0,0,.34);
 
-      --r-xl: 28px;
-      --r-lg: 24px;
-      --r-md: 20px;
-      --r-sm: 16px;
+      --r-xl: 26px;
+      --r-lg: 22px;
+      --r-md: 18px;
 
       --tap: 50px;
 
@@ -55,10 +46,10 @@
       -webkit-overflow-scrolling: touch;
 
       padding:
-        calc(12px + var(--safeT))
-        calc(12px + var(--safeR))
-        calc(14px + var(--safeB))
-        calc(12px + var(--safeL));
+        calc(10px + var(--safeT))
+        calc(10px + var(--safeR))
+        calc(12px + var(--safeB))
+        calc(10px + var(--safeL));
 
       background:
         radial-gradient(1200px 720px at 18% 12%, rgba(77,163,255,.22), transparent 60%),
@@ -68,7 +59,6 @@
         linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 45%, var(--bg2) 100%);
     }
 
-    /* дымка/боке */
     body:before{
       content:"";
       position:fixed; inset:-140px;
@@ -84,7 +74,6 @@
       transform: translateZ(0);
     }
 
-    /* зерно */
     body:after{
       content:"";
       position:fixed; inset:0;
@@ -96,11 +85,10 @@
       transform: translateZ(0);
     }
 
-    /* контейнер */
     .wrap{
       max-width: var(--maxW);
       margin: 0 auto;
-      min-height: calc(var(--vh) * 100 - 26px - var(--safeT) - var(--safeB));
+      min-height: calc(var(--vh) * 100 - 24px - var(--safeT) - var(--safeB));
       position:relative;
       z-index:1;
       display:flex;
@@ -108,15 +96,15 @@
       gap:12px;
     }
 
-    /* шапка */
+    /* ✅ шапка меньше, без текста и кнопок */
     .top{
       border: 1px solid var(--stroke);
       background: linear-gradient(180deg, rgba(255,255,255,.085), rgba(255,255,255,.03));
       border-radius: var(--r-xl);
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow2);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
-      padding: 16px;
+      padding: 12px 14px;
       position:relative;
       overflow:hidden;
     }
@@ -127,41 +115,31 @@
       background:
         radial-gradient(620px 220px at 50% 0%, rgba(255,255,255,.14), transparent 62%),
         radial-gradient(520px 260px at 30% 120%, rgba(77,163,255,.18), transparent 62%);
-      opacity:.8;
+      opacity:.75;
     }
     .top > *{position:relative; z-index:1;}
 
     .brandRow{
       display:flex;
-      align-items:flex-start;
+      align-items:center;
       justify-content:space-between;
       gap:12px;
     }
-    .brand{
-      min-width:0;
-    }
     .brand h1{
       margin:0;
-      font-size: 34px;
+      font-size: 28px;
       font-weight: 1000;
       letter-spacing:.2px;
-      line-height:1.05;
-    }
-    .brand p{
-      margin:8px 0 0;
-      color: rgba(140,190,255,.92);
-      font-weight: 900;
-      font-size: 14px;
-      line-height:1.25;
+      line-height:1;
     }
 
     .logoPill{
       flex:0 0 auto;
       border-radius: 999px;
-      padding: 10px 14px;
+      padding: 8px 10px;
       border: 1px solid rgba(255,255,255,.14);
       background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.035));
-      box-shadow: 0 20px 48px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.05);
+      box-shadow: 0 18px 40px rgba(0,0,0,.28), inset 0 0 0 1px rgba(255,255,255,.05);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
       display:flex;
@@ -169,59 +147,25 @@
       gap:10px;
     }
     .tgDot{
-      width: 40px; height: 40px;
-      border-radius: 16px;
+      width: 34px; height: 34px;
+      border-radius: 14px;
       display:grid; place-items:center;
       background:
         radial-gradient(18px 18px at 35% 30%, rgba(255,255,255,.30), transparent 62%),
         linear-gradient(180deg, rgba(77,163,255,1), rgba(43,108,255,.82));
       border:1px solid rgba(120,190,255,.60);
-      box-shadow: 0 18px 40px rgba(60,140,255,.28);
+      box-shadow: 0 16px 34px rgba(60,140,255,.24);
       font-weight: 1000;
       color: rgba(255,255,255,.95);
+      font-size: 14px;
     }
     .logoPill b{
-      font-size: 22px;
+      font-size: 18px;
       font-weight: 1000;
       letter-spacing:.2px;
       white-space:nowrap;
     }
 
-    .ctaRow{
-      margin-top: 14px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-
-    .btn{
-      min-height: var(--tap);
-      width:100%;
-      border-radius: 22px;
-      padding: 14px 16px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      font-weight: 1000;
-      cursor:pointer;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      box-shadow: 0 14px 34px rgba(0,0,0,.25);
-      font-size: 16px;
-      user-select:none;
-      transition: transform .08s ease, filter .15s ease;
-    }
-    .btn:hover{ filter: brightness(1.03); }
-    .btn:active{transform: translateY(1px);}
-
-    .btn.primary{
-      background: linear-gradient(180deg, rgba(77,163,255,.96), rgba(43,108,255,.88));
-      border-color: rgba(120,190,255,.48);
-      color:#fff;
-      box-shadow: 0 18px 44px rgba(60,140,255,.26);
-    }
-
-    /* блок секций */
     .panel{
       border: 1px solid var(--stroke);
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.028));
@@ -229,18 +173,9 @@
       box-shadow: var(--shadow2);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      padding: 14px;
+      padding: 12px;
       overflow:hidden;
       position:relative;
-    }
-    .panel:before{
-      content:"";
-      position:absolute; inset:-2px;
-      pointer-events:none;
-      background:
-        radial-gradient(720px 260px at 52% 0%, rgba(255,255,255,.10), transparent 62%),
-        radial-gradient(720px 340px at 70% 120%, rgba(77,163,255,.12), transparent 62%);
-      opacity:.65;
     }
     .panel > *{position:relative; z-index:1;}
 
@@ -253,18 +188,12 @@
     }
     .secHead h2{
       margin:0;
-      font-size: 26px;
+      font-size: 22px;
       font-weight: 1000;
       letter-spacing:.2px;
     }
-    .secHead span{
-      color: rgba(246,248,255,.50);
-      font-weight:900;
-      font-size: 12px;
-      white-space:nowrap;
-    }
 
-    /* меню (iOS cells) */
+    /* ✅ разделы слева + уменьшенная иконка */
     .list{
       display:flex;
       flex-direction:column;
@@ -275,41 +204,41 @@
       align-items:center;
       justify-content:space-between;
       gap:12px;
-      border-radius: 22px;
+      border-radius: 20px;
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(0,0,0,.16);
       box-shadow: 0 16px 34px rgba(0,0,0,.20);
-      padding: 14px 14px;
-      min-height: 58px;
+      padding: 12px 12px;
+      min-height: 54px;
       cursor:pointer;
       user-select:none;
       transition: transform .08s ease, filter .15s ease, background .15s ease;
     }
-    .cell:hover{ filter: brightness(1.03); }
     .cell:active{ transform: translateY(1px); }
 
     .cellL{
       display:flex;
       align-items:center;
-      gap:12px;
+      gap:10px;
       min-width:0;
     }
     .ico{
-      width: 40px; height: 40px;
-      border-radius: 16px;
+      width: 30px; height: 30px;  /* ✅ уменьшил */
+      border-radius: 12px;
       display:grid; place-items:center;
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.06);
-      box-shadow: 0 14px 28px rgba(0,0,0,.22);
+      box-shadow: 0 10px 22px rgba(0,0,0,.18);
       flex:0 0 auto;
-      font-size: 18px;
+      font-size: 14px; /* ✅ уменьшил */
     }
     .cellTxt{
       min-width:0;
+      text-align:left; /* ✅ слева */
     }
     .cellTxt b{
       display:block;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 1000;
       white-space:nowrap;
       overflow:hidden;
@@ -317,7 +246,7 @@
     }
     .cellTxt small{
       display:block;
-      margin-top:4px;
+      margin-top:3px;
       color: rgba(246,248,255,.60);
       font-weight:900;
       font-size: 12px;
@@ -327,12 +256,12 @@
     }
     .chev{
       color: rgba(246,248,255,.38);
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 1000;
       flex:0 0 auto;
     }
 
-    /* cards grid */
+    /* cards */
     .grid{
       display:grid;
       grid-template-columns: 1fr;
@@ -341,8 +270,6 @@
     }
     @media (min-width: 860px){
       .grid{ grid-template-columns: 1fr 1fr; }
-      .ctaRow{ flex-direction:row; }
-      .btn{ width:auto; flex:1; }
     }
 
     .card{
@@ -353,17 +280,6 @@
       overflow:hidden;
       position:relative;
     }
-    .card:before{
-      content:"";
-      position:absolute; inset:-2px;
-      pointer-events:none;
-      background:
-        radial-gradient(420px 160px at 22% 0%, rgba(255,255,255,.10), transparent 62%),
-        radial-gradient(420px 200px at 86% 52%, rgba(77,163,255,.12), transparent 64%);
-      opacity:.75;
-    }
-    .card > *{position:relative; z-index:1;}
-
     .cardHead{
       padding: 14px 14px 10px;
       display:flex;
@@ -481,10 +397,8 @@
       gap:8px;
       font-size: 14px;
       user-select:none;
-      transition: transform .08s ease, filter .15s ease;
       flex:1;
     }
-    .mini:active{ transform: translateY(1px); }
     .mini.primary{
       background: linear-gradient(180deg, rgba(77,163,255,.96), rgba(43,108,255,.88));
       border-color: rgba(120,190,255,.48);
@@ -492,7 +406,7 @@
       box-shadow: 0 16px 34px rgba(60,140,255,.22);
     }
 
-    /* MODAL снизу */
+    /* MODAL */
     .modal{
       position:fixed; inset:0;
       display:none;
@@ -540,10 +454,7 @@
       outline:none;
     }
     textarea.in{min-height: 96px; resize:none;}
-    .row{display:grid; grid-template-columns: 1fr 1fr; gap:10px;}
-    @media (max-width:520px){ .row{grid-template-columns:1fr;} }
     .hint{color: rgba(246,248,255,.62); font-size: 12px; line-height: 1.35;}
-
     a.link{color: rgba(140,190,255,.98); font-weight:1000; text-decoration:none;}
   </style>
 </head>
@@ -556,7 +467,6 @@
       <div class="brandRow">
         <div class="brand">
           <h1>TG Studio</h1>
-          <p>Professional Telegram bot<br/>and WebApp solution</p>
         </div>
 
         <div class="logoPill" aria-hidden="true">
@@ -564,20 +474,13 @@
           <b>Studio</b>
         </div>
       </div>
-
-      <div class="ctaRow">
-        <button class="btn primary" id="btnConsult">Получить консультацию</button>
-        <button class="btn" id="btnContacts">Контакты</button>
-      </div>
     </section>
 
     <!-- MENU -->
     <section class="panel">
       <div class="secHead">
         <h2>Разделы</h2>
-        <span>быстро и красиво</span>
       </div>
-
       <div class="list" id="menuList"></div>
     </section>
 
@@ -585,9 +488,8 @@
     <section class="panel">
       <div class="secHead">
         <h2>До и После</h2>
-        <span>примеры интерфейса</span>
+        <span style="color: rgba(246,248,255,.50); font-weight:900; font-size:12px;">Примеры интерфейса</span>
       </div>
-
       <div class="grid" id="beforeAfterGrid"></div>
     </section>
 
@@ -595,37 +497,11 @@
     <section class="panel">
       <div class="secHead">
         <h2>Примеры работ</h2>
-        <span>каталоги • меню • запись</span>
+        <span style="color: rgba(246,248,255,.50); font-weight:900; font-size:12px;">Каталоги • Меню • Запись</span>
       </div>
-
       <div class="grid" id="worksGrid"></div>
     </section>
 
-  </div>
-
-  <!-- CONSULT MODAL -->
-  <div class="modal" id="mConsult">
-    <div class="sheet">
-      <div class="sheetTop">
-        <div>
-          <h3>Консультация</h3>
-          <p>Заполни данные — отправлю админу в Telegram.</p>
-        </div>
-        <button class="x" data-close="mConsult">✕</button>
-      </div>
-
-      <div class="form">
-        <input class="in" id="cName" placeholder="Имя" />
-        <input class="in" id="cContact" placeholder="Контакт (телефон или @username)" />
-        <textarea class="in" id="cTask" placeholder="Что нужно сделать? (бот / WebApp / интеграции)"></textarea>
-        <div class="row">
-          <input class="in" id="cBudget" placeholder="Бюджет (примерно)" />
-          <input class="in" id="cDeadline" placeholder="Сроки (когда нужно)" />
-        </div>
-        <button class="btn primary" id="cSend">✅ Отправить</button>
-        <div class="hint" id="cHint"></div>
-      </div>
-    </div>
   </div>
 
   <!-- REQUEST MODAL -->
@@ -641,7 +517,7 @@
 
       <div class="form">
         <textarea class="in" id="rText" placeholder="Опиши что нужно: бот / WebApp / интеграции, сроки, бюджет"></textarea>
-        <button class="btn primary" id="rSend">✅ Отправить запрос</button>
+        <button class="mini primary" id="rSend" style="width:100%;">✅ Отправить запрос</button>
         <div class="hint" id="rHint"></div>
       </div>
     </div>
@@ -664,15 +540,13 @@
           <div><b>Телефон:</b> <a class="link" href="tel:+998937460022">+998 (93) 746-00-22</a></div>
           <div><b>Почта:</b> <a class="link" href="mailto:tahirov.dd@gmail.com">tahirov.dd@gmail.com</a></div>
         </div>
-
-        <button class="btn primary" id="btnWriteTG">Написать в Telegram</button>
+        <button class="mini primary" id="btnWriteTG" style="width:100%;">Написать в Telegram</button>
         <div class="hint">Нажмите кнопку — откроется чат.</div>
       </div>
     </div>
   </div>
 
 <script>
-  // ===== Telegram WebApp init + VH fix =====
   const tg = window.Telegram?.WebApp;
 
   function setVH(){
@@ -684,16 +558,14 @@
 
   if (tg){
     tg.ready();
-    tg.expand(); // ✅ важно
+    tg.expand();
     try { tg.setHeaderColor?.("#0a1020"); } catch(e) {}
     try { tg.setBackgroundColor?.("#05070c"); } catch(e) {}
     try { tg.disableClosingConfirmation?.(); } catch(e) {}
   }
 
-  // ===== Data (картинки положи в /images) =====
   const DATA = {
     adminLink: "https://t.me/Yaki_Tahirov",
-
     menu: [
       { id:"services",  title:"Услуги",    sub:"Боты • WebApp • Интеграции", icon:"⭐", action:"openRequest" },
       { id:"portfolio", title:"Портфолио", sub:"Кейсы и примеры",            icon:"📁", action:"scrollPortfolio" },
@@ -701,7 +573,6 @@
       { id:"reviews",   title:"Отзывы",    sub:"Скрины/текст",               icon:"💬", action:"openRequest" },
       { id:"contacts",  title:"Контакты",  sub:"Телефон • Telegram • Email", icon:"☎️", action:"openContacts" },
     ],
-
     beforeAfter: [
       {
         title: "Telegram Bot",
@@ -726,7 +597,6 @@
         cta2: { text:"Запрос", action:"openRequest" }
       }
     ],
-
     works: [
       {
         title:"Grand Cru",
@@ -753,7 +623,6 @@
     ]
   };
 
-  // ===== UI helpers =====
   function openModal(id){ document.getElementById(id).style.display="flex"; }
   function closeModal(id){ document.getElementById(id).style.display="none"; }
 
@@ -763,11 +632,6 @@
   document.querySelectorAll('.modal').forEach(modal=>{
     modal.addEventListener('click', (e)=>{ if(e.target === modal) modal.style.display = "none"; });
   });
-
-  function safeImg(src){
-    if(!src) return "";
-    return src;
-  }
 
   function cardTemplate(item){
     const tags = (item.tags||[]).map(t=>`<span class="chip">${t}</span>`).join("");
@@ -787,13 +651,11 @@
         <div class="shots">
           <div class="shot">
             <span class="shotLabel">${item.leftLabel || "Preview 1"}</span>
-            <img src="${safeImg(item.img1)}" alt=""
-                 onerror="this.style.display='none'">
+            <img src="${item.img1 || ""}" alt="" onerror="this.style.display='none'">
           </div>
           <div class="shot">
             <span class="shotLabel">${item.rightLabel || "Preview 2"}</span>
-            <img src="${safeImg(item.img2)}" alt=""
-                 onerror="this.style.display='none'">
+            <img src="${item.img2 || ""}" alt="" onerror="this.style.display='none'">
           </div>
         </div>
 
@@ -811,7 +673,6 @@
         const act = btn.getAttribute("data-act");
         const url = btn.getAttribute("data-url") || "";
         if(act === "openRequest") openModal("mRequest");
-        if(act === "openConsult") openModal("mConsult");
         if(act === "openContacts") openModal("mContacts");
         if(act === "openTG") window.open(DATA.adminLink, "_blank");
         if(act === "openLink") window.open(url || DATA.adminLink, "_blank");
@@ -819,10 +680,10 @@
     });
   }
 
-  // ===== Render menu =====
+  // Render menu
   const menuList = document.getElementById("menuList");
   menuList.innerHTML = DATA.menu.map(m=>`
-    <div class="cell" data-menu="${m.id}" data-action="${m.action}">
+    <div class="cell" data-action="${m.action}">
       <div class="cellL">
         <div class="ico">${m.icon}</div>
         <div class="cellTxt">
@@ -840,13 +701,12 @@
       if(action === "openContacts") openModal("mContacts");
       else if(action === "openRequest") openModal("mRequest");
       else if(action === "scrollPortfolio"){
-        // просто скроллим вниз к работам
         document.getElementById("worksGrid").scrollIntoView({behavior:"smooth", block:"start"});
       }
     };
   });
 
-  // ===== Render grids =====
+  // Render grids
   const beforeEl = document.getElementById("beforeAfterGrid");
   beforeEl.innerHTML = DATA.beforeAfter.map(cardTemplate).join("");
   bindActions(beforeEl);
@@ -855,35 +715,10 @@
   worksEl.innerHTML = DATA.works.map(cardTemplate).join("");
   bindActions(worksEl);
 
-  // ===== Top buttons =====
-  document.getElementById("btnConsult").onclick = ()=> openModal("mConsult");
-  document.getElementById("btnContacts").onclick = ()=> openModal("mContacts");
+  // Contacts button in modal
   document.getElementById("btnWriteTG").onclick = ()=> window.open(DATA.adminLink, "_blank");
 
-  // ===== sendData =====
-  const cHint = document.getElementById('cHint');
-  document.getElementById('cSend').onclick = ()=>{
-    cHint.textContent = "";
-    const name = document.getElementById('cName').value.trim();
-    const contact = document.getElementById('cContact').value.trim();
-    const task = document.getElementById('cTask').value.trim();
-    const budget = document.getElementById('cBudget').value.trim();
-    const deadline = document.getElementById('cDeadline').value.trim();
-
-    if(!name || !contact || !task){
-      cHint.textContent = "⚠️ Заполни: имя, контакт, задача.";
-      return;
-    }
-    if(!tg){
-      cHint.textContent = "⚠️ Открой в Telegram, чтобы отправить.";
-      return;
-    }
-    tg.sendData(JSON.stringify({ source:"consult", name, contact, task, budget, deadline, ts: Date.now() }));
-    tg.HapticFeedback?.notificationOccurred?.("success");
-    cHint.textContent = "✅ Отправлено!";
-    setTimeout(()=>closeModal("mConsult"), 450);
-  };
-
+  // sendData request
   const rHint = document.getElementById('rHint');
   document.getElementById('rSend').onclick = ()=>{
     rHint.textContent = "";
