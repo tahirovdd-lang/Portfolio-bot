@@ -34,11 +34,14 @@
       --maxW: 1180px;
 
       /* ✅ премиум sidebar */
-      --leftW: 150px;     /* узкий блок слева */
+      --leftW: 150px;
       --gap: 14px;
 
       --blueA: rgba(77,163,255,.96);
       --blueB: rgba(43,108,255,.88);
+
+      /* ✅ меньше иконки (превью) работ */
+      --shotH: 102px; /* было 132px */
     }
 
     *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
@@ -193,7 +196,7 @@
       box-shadow: var(--shadow2);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      padding: 6px; /* ✅ меньше */
+      padding: 6px;
       overflow:hidden;
       position:relative;
     }
@@ -239,8 +242,8 @@
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.16);
       box-shadow: 0 12px 26px rgba(0,0,0,.18);
-      padding: 6px 8px;         /* ✅ меньше */
-      min-height: 36px;         /* ✅ меньше */
+      padding: 6px 8px;
+      min-height: 36px;
       cursor:pointer;
       user-select:none;
       position:relative;
@@ -249,7 +252,6 @@
     }
     .mi:active{ transform: translateY(1px); }
 
-    /* подсветка активного */
     .mi.active{
       border-color: rgba(120,190,255,.46);
       background:
@@ -267,7 +269,6 @@
       opacity:.9;
     }
 
-    /* ✅ маленькая иконка в круге */
     .miIcon{
       width: 20px; height: 20px;
       border-radius: 999px;
@@ -287,7 +288,7 @@
       text-align:left;
     }
     .miText b{
-      font-size: 11.5px; /* ✅ меньше */
+      font-size: 11.5px;
       font-weight: 1000;
       white-space:nowrap;
       overflow:hidden;
@@ -295,7 +296,7 @@
       line-height:1.05;
     }
     .miText small{
-      font-size: 9px; /* ✅ меньше */
+      font-size: 9px;
       font-weight: 900;
       color: var(--muted2);
       white-space:nowrap;
@@ -427,9 +428,11 @@
     @media (max-width: 420px){
       .shots{ grid-template-columns: 1fr; }
     }
+
+    /* ✅ уменьшили превью работ + немного компактнее лейбл */
     .shot{
-      height: 132px;
-      border-radius: 20px;
+      height: var(--shotH);
+      border-radius: 18px; /* было 20px */
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.05);
       overflow:hidden;
@@ -445,14 +448,14 @@
     }
     .shotLabel{
       position:absolute;
-      left:10px; top:10px;
-      padding: 6px 10px;
+      left:8px; top:8px;
+      padding: 5px 9px;     /* было 6px 10px */
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.28);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      font-size: 11px;
+      font-size: 10px;      /* было 11px */
       font-weight:1000;
       color: rgba(246,248,255,.92);
     }
@@ -541,8 +544,7 @@
     .hint{color: rgba(246,248,255,.62); font-size: 12px; line-height: 1.35;}
     a.link{color: rgba(140,190,255,.98); font-weight:1000; text-decoration:none;}
 
-    /* ✅ МОБИЛЬНАЯ АДАПТАЦИЯ:
-       Sidebar становится горизонтальной полосой (премиум как iOS), контент ниже */
+    /* ✅ МОБИЛЬНАЯ АДАПТАЦИЯ */
     @media (max-width: 860px){
       .layout{ grid-template-columns: 1fr; }
       .left{ width: 100%; position: relative; top:auto; }
@@ -558,6 +560,9 @@
         min-width: 168px;
         border-radius: 16px;
       }
+
+      /* ✅ ещё чуть меньше превью на телефоне */
+      :root{ --shotH: 92px; }
     }
   </style>
 </head>
@@ -583,7 +588,7 @@
     <!-- ✅ LAYOUT -->
     <section class="layout">
 
-      <!-- LEFT: Разделы (уменьшены + премиум) -->
+      <!-- LEFT: Разделы -->
       <aside class="panel left">
         <div class="leftTitle">Разделы</div>
         <div class="menu" id="menuList"></div>
@@ -658,7 +663,6 @@
 <script>
   const tg = window.Telegram?.WebApp;
 
-  // фикс vh на iOS (чтобы не "закрывалось на 50%")
   function setVH(){
     const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -674,7 +678,6 @@
     try { tg.disableClosingConfirmation?.(); } catch(e) {}
   }
 
-  // маленькие inline-svg иконки (премиум вместо эмодзи)
   const ICONS = {
     services:  `<svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 6.9H22l-5.8 4.2 2.2 6.7L12 15.8 5.6 19.8l2.2-6.7L2 8.9h7.6L12 2z" stroke="rgba(246,248,255,.92)" stroke-width="1.7" stroke-linejoin="round"/></svg>`,
     portfolio: `<svg viewBox="0 0 24 24" fill="none"><path d="M4 7.5h6l1.6-2h8.4a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9.5a2 2 0 0 1 2-2z" stroke="rgba(246,248,255,.92)" stroke-width="1.7" stroke-linejoin="round"/></svg>`,
@@ -808,7 +811,6 @@
     if(el) el.classList.add('active');
   }
 
-  // Render menu (премиум sidebar)
   const menuList = document.getElementById("menuList");
   menuList.innerHTML = DATA.menu.map(m=>`
     <button class="mi" type="button" data-id="${m.id}" data-action="${m.action}">
@@ -836,7 +838,6 @@
 
   setActive(activeId);
 
-  // Render grids (right)
   const beforeEl = document.getElementById("beforeAfterGrid");
   beforeEl.innerHTML = DATA.beforeAfter.map(cardTemplate).join("");
   bindActions(beforeEl);
@@ -845,10 +846,8 @@
   worksEl.innerHTML = DATA.works.map(cardTemplate).join("");
   bindActions(worksEl);
 
-  // Contacts button
   document.getElementById("btnWriteTG").onclick = ()=> window.open(DATA.adminLink, "_blank");
 
-  // sendData request
   const rHint = document.getElementById('rHint');
   document.getElementById('rSend').onclick = ()=>{
     rHint.textContent = "";
