@@ -13,14 +13,17 @@
       --bg2:#0f1c33;
 
       --stroke: rgba(255,255,255,.12);
+      --stroke2: rgba(255,255,255,.18);
       --text:#f6f8ff;
+      --muted: rgba(246,248,255,.68);
+      --muted2: rgba(246,248,255,.52);
 
       --shadow: 0 22px 58px rgba(0,0,0,.52);
       --shadow2: 0 14px 34px rgba(0,0,0,.34);
 
-      --r-xl: 26px;
-      --r-lg: 22px;
-      --r-md: 18px;
+      --r-xl: 24px;
+      --r-lg: 20px;
+      --r-md: 16px;
 
       --safeT: env(safe-area-inset-top, 0px);
       --safeB: env(safe-area-inset-bottom, 0px);
@@ -30,9 +33,12 @@
       --vh: 1vh;
       --maxW: 1180px;
 
-      /* ✅ двухколоночный лэйаут как на фото */
-      --leftW: 220px;     /* ширина блока "Разделы" */
+      /* ✅ премиум sidebar */
+      --leftW: 150px;     /* узкий блок слева */
       --gap: 14px;
+
+      --blueA: rgba(77,163,255,.96);
+      --blueB: rgba(43,108,255,.88);
     }
 
     *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
@@ -43,7 +49,6 @@
       color:var(--text);
       overflow-x:hidden;
       -webkit-overflow-scrolling: touch;
-
       padding:
         calc(10px + var(--safeT))
         calc(10px + var(--safeR))
@@ -97,7 +102,7 @@
       gap: 12px;
     }
 
-    /* шапка компактная */
+    /* ✅ шапка компактная (без кнопок) */
     .top{
       border: 1px solid var(--stroke);
       background: linear-gradient(180deg, rgba(255,255,255,.085), rgba(255,255,255,.03));
@@ -139,7 +144,6 @@
       font-size: 13px;
     }
     .logoPill{
-      flex:0 0 auto;
       border-radius: 999px;
       padding: 8px 10px;
       border: 1px solid rgba(255,255,255,.14);
@@ -150,6 +154,7 @@
       display:flex;
       align-items:center;
       gap:10px;
+      flex:0 0 auto;
     }
     .tgDot{
       width: 32px; height: 32px;
@@ -157,7 +162,7 @@
       display:grid; place-items:center;
       background:
         radial-gradient(18px 18px at 35% 30%, rgba(255,255,255,.30), transparent 62%),
-        linear-gradient(180deg, rgba(77,163,255,1), rgba(43,108,255,.82));
+        linear-gradient(180deg, var(--blueA), var(--blueB));
       border:1px solid rgba(120,190,255,.60);
       box-shadow: 0 16px 34px rgba(60,140,255,.24);
       font-weight: 1000;
@@ -171,7 +176,7 @@
       white-space:nowrap;
     }
 
-    /* ✅ ОСНОВНОЙ ЛЭЙАУТ: слева Разделы, справа контент/скролл */
+    /* ✅ ЛЭЙАУТ: слева Разделы, справа контент */
     .layout{
       display:grid;
       grid-template-columns: var(--leftW) 1fr;
@@ -188,7 +193,7 @@
       box-shadow: var(--shadow2);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      padding: 10px;
+      padding: 6px; /* ✅ меньше */
       overflow:hidden;
       position:relative;
     }
@@ -203,88 +208,103 @@
     }
     .panel > *{position:relative; z-index:1;}
 
-    /* ✅ ЛЕВАЯ ПАНЕЛЬ (Разделы) – меньше иконки и контент */
+    /* ✅ ПРЕМИУМ SIDEBAR */
     .left{
       position: sticky;
       top: calc(10px + var(--safeT));
-    }
-    .leftTitle{
-      margin: 6px 8px 10px;
-      font-weight: 1000;
-      font-size: 14px; /* меньше */
-      letter-spacing:.2px;
-      opacity:.95;
+      width: var(--leftW);
     }
 
-    .list{
+    .leftTitle{
+      margin: 4px 6px 6px;
+      font-weight: 900;
+      font-size: 12px;
+      opacity:.85;
+      letter-spacing:.18px;
+    }
+
+    .menu{
       display:flex;
       flex-direction:column;
       gap: 8px;
-      padding: 0 6px 6px;
+      padding: 0 4px 4px;
     }
-    .cell{
+
+    .mi{
+      width:100%;
       display:flex;
       align-items:center;
-      justify-content:space-between;
       gap:10px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.16);
       box-shadow: 0 12px 26px rgba(0,0,0,.18);
-      padding: 10px 10px;
-      min-height: 46px; /* меньше */
+      padding: 6px 8px;         /* ✅ меньше */
+      min-height: 36px;         /* ✅ меньше */
       cursor:pointer;
       user-select:none;
-      transition: transform .08s ease, filter .15s ease;
+      position:relative;
+      overflow:hidden;
+      transition: transform .08s ease, filter .15s ease, border-color .15s ease;
     }
-    .cell:active{ transform: translateY(1px); }
+    .mi:active{ transform: translateY(1px); }
 
-    .cellL{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width:0;
+    /* подсветка активного */
+    .mi.active{
+      border-color: rgba(120,190,255,.46);
+      background:
+        radial-gradient(160px 80px at 20% 20%, rgba(77,163,255,.18), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      box-shadow: 0 18px 34px rgba(60,140,255,.14), 0 12px 26px rgba(0,0,0,.22);
+    }
+    .mi.active:before{
+      content:"";
+      position:absolute; inset:-2px;
+      pointer-events:none;
+      background:
+        radial-gradient(220px 120px at 30% 0%, rgba(255,255,255,.12), transparent 62%),
+        radial-gradient(240px 140px at 90% 120%, rgba(77,163,255,.16), transparent 62%);
+      opacity:.9;
     }
 
-    /* ✅ иконка меньше */
-    .ico{
-      width: 24px; height: 24px;
-      border-radius: 10px;
+    /* ✅ маленькая иконка в круге */
+    .miIcon{
+      width: 20px; height: 20px;
+      border-radius: 999px;
       display:grid; place-items:center;
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.06);
       box-shadow: 0 10px 20px rgba(0,0,0,.16);
       flex:0 0 auto;
-      font-size: 12px;
     }
+    .miIcon svg{ width: 12px; height: 12px; opacity:.92; }
 
-    .cellTxt{min-width:0; text-align:left;}
-    .cellTxt b{
-      display:block;
-      font-size: 13px; /* меньше */
+    .miText{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+      text-align:left;
+    }
+    .miText b{
+      font-size: 11.5px; /* ✅ меньше */
       font-weight: 1000;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
+      line-height:1.05;
     }
-    .cellTxt small{
-      display:block;
-      margin-top:3px;
-      color: rgba(246,248,255,.60);
-      font-weight:900;
-      font-size: 10.5px; /* меньше */
+    .miText small{
+      font-size: 9px; /* ✅ меньше */
+      font-weight: 900;
+      color: var(--muted2);
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-    }
-    .chev{
-      color: rgba(246,248,255,.35);
-      font-size: 16px;
-      font-weight: 1000;
-      flex:0 0 auto;
+      line-height:1.05;
     }
 
-    /* ✅ ПРАВАЯ ЧАСТЬ – весь контент и скролл */
+    /* ПРАВАЯ ЧАСТЬ */
     .right{
       display:flex;
       flex-direction:column;
@@ -297,7 +317,7 @@
       align-items:baseline;
       justify-content:space-between;
       gap:10px;
-      padding: 6px 8px 10px;
+      padding: 8px 10px 10px;
     }
     .secHead h2{
       margin:0;
@@ -316,7 +336,7 @@
       display:grid;
       grid-template-columns: 1fr;
       gap:12px;
-      padding: 0 6px 6px;
+      padding: 0 8px 8px;
     }
     @media (min-width: 980px){
       .grid{ grid-template-columns: 1fr 1fr; }
@@ -464,7 +484,7 @@
     }
     .mini:active{ transform: translateY(1px); }
     .mini.primary{
-      background: linear-gradient(180deg, rgba(77,163,255,.96), rgba(43,108,255,.88));
+      background: linear-gradient(180deg, var(--blueA), var(--blueB));
       border-color: rgba(120,190,255,.48);
       color:#fff;
       box-shadow: 0 16px 34px rgba(60,140,255,.22);
@@ -521,15 +541,22 @@
     .hint{color: rgba(246,248,255,.62); font-size: 12px; line-height: 1.35;}
     a.link{color: rgba(140,190,255,.98); font-weight:1000; text-decoration:none;}
 
-    /* ✅ МОБИЛЬНАЯ АДАПТАЦИЯ: слева блок становится сверху, справа контент ниже */
+    /* ✅ МОБИЛЬНАЯ АДАПТАЦИЯ:
+       Sidebar становится горизонтальной полосой (премиум как iOS), контент ниже */
     @media (max-width: 860px){
-      :root{ --leftW: 100%; }
-      .layout{
-        grid-template-columns: 1fr;
+      .layout{ grid-template-columns: 1fr; }
+      .left{ width: 100%; position: relative; top:auto; }
+      .menu{
+        flex-direction: row;
+        overflow:auto;
+        padding: 6px 4px 8px;
+        gap:10px;
+        scrollbar-width: none;
       }
-      .left{
-        position: relative;
-        top: auto;
+      .menu::-webkit-scrollbar{ display:none; }
+      .mi{
+        min-width: 168px;
+        border-radius: 16px;
       }
     }
   </style>
@@ -556,16 +583,16 @@
     <!-- ✅ LAYOUT -->
     <section class="layout">
 
-      <!-- LEFT: Разделы -->
+      <!-- LEFT: Разделы (уменьшены + премиум) -->
       <aside class="panel left">
         <div class="leftTitle">Разделы</div>
-        <div class="list" id="menuList"></div>
+        <div class="menu" id="menuList"></div>
       </aside>
 
       <!-- RIGHT: контент и скролл -->
       <div class="right">
 
-        <section class="panel">
+        <section class="panel" id="secBeforeAfter">
           <div class="secHead">
             <h2>До и После</h2>
             <span>Примеры интерфейса</span>
@@ -573,7 +600,7 @@
           <div class="grid" id="beforeAfterGrid"></div>
         </section>
 
-        <section class="panel">
+        <section class="panel" id="secWorks">
           <div class="secHead">
             <h2>Примеры работ</h2>
             <span>Каталоги • Меню • Запись</span>
@@ -631,6 +658,7 @@
 <script>
   const tg = window.Telegram?.WebApp;
 
+  // фикс vh на iOS (чтобы не "закрывалось на 50%")
   function setVH(){
     const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -646,14 +674,23 @@
     try { tg.disableClosingConfirmation?.(); } catch(e) {}
   }
 
+  // маленькие inline-svg иконки (премиум вместо эмодзи)
+  const ICONS = {
+    services:  `<svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 6.9H22l-5.8 4.2 2.2 6.7L12 15.8 5.6 19.8l2.2-6.7L2 8.9h7.6L12 2z" stroke="rgba(246,248,255,.92)" stroke-width="1.7" stroke-linejoin="round"/></svg>`,
+    portfolio: `<svg viewBox="0 0 24 24" fill="none"><path d="M4 7.5h6l1.6-2h8.4a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9.5a2 2 0 0 1 2-2z" stroke="rgba(246,248,255,.92)" stroke-width="1.7" stroke-linejoin="round"/></svg>`,
+    prices:    `<svg viewBox="0 0 24 24" fill="none"><path d="M7 4h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" stroke="rgba(246,248,255,.92)" stroke-width="1.7"/><path d="M8 9h8M8 13h8M8 17h5" stroke="rgba(246,248,255,.75)" stroke-width="1.7" stroke-linecap="round"/></svg>`,
+    reviews:   `<svg viewBox="0 0 24 24" fill="none"><path d="M5 6h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H10l-4.5 3V17H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" stroke="rgba(246,248,255,.92)" stroke-width="1.7" stroke-linejoin="round"/></svg>`,
+    contacts:  `<svg viewBox="0 0 24 24" fill="none"><path d="M7.5 3h9A2.5 2.5 0 0 1 19 5.5v13A2.5 2.5 0 0 1 16.5 21h-9A2.5 2.5 0 0 1 5 18.5v-13A2.5 2.5 0 0 1 7.5 3z" stroke="rgba(246,248,255,.92)" stroke-width="1.7"/><path d="M9 7h6M9 11h6M9 15h4" stroke="rgba(246,248,255,.75)" stroke-width="1.7" stroke-linecap="round"/></svg>`
+  };
+
   const DATA = {
     adminLink: "https://t.me/Yaki_Tahirov",
     menu: [
-      { id:"services",  title:"Услуги",    sub:"Боты • WebApp",              icon:"⭐", action:"openRequest" },
-      { id:"portfolio", title:"Портфолио", sub:"Кейсы/примеры",              icon:"📁", action:"scrollPortfolio" },
-      { id:"prices",    title:"Прайс",     sub:"Ориентиры",                 icon:"💳", action:"openRequest" },
-      { id:"reviews",   title:"Отзывы",    sub:"Скрины/текст",              icon:"💬", action:"openRequest" },
-      { id:"contacts",  title:"Контакты",  sub:"Telegram • Телефон • Email", icon:"☎️", action:"openContacts" },
+      { id:"services",  title:"Услуги",    sub:"Боты • WebApp",               icon: ICONS.services,  action:"openRequest" },
+      { id:"portfolio", title:"Портфолио", sub:"Кейсы/примеры",               icon: ICONS.portfolio, action:"scrollWorks" },
+      { id:"prices",    title:"Прайс",     sub:"Ориентиры",                  icon: ICONS.prices,    action:"openRequest" },
+      { id:"reviews",   title:"Отзывы",    sub:"Скрины/текст",               icon: ICONS.reviews,   action:"openRequest" },
+      { id:"contacts",  title:"Контакты",  sub:"Telegram • Телефон • Email", icon: ICONS.contacts,  action:"openContacts" },
     ],
     beforeAfter: [
       {
@@ -704,6 +741,8 @@
       }
     ]
   };
+
+  let activeId = "services";
 
   function openModal(id){ document.getElementById(id).style.display="flex"; }
   function closeModal(id){ document.getElementById(id).style.display="none"; }
@@ -762,33 +801,42 @@
     });
   }
 
-  // Render menu (левый блок)
+  function setActive(id){
+    activeId = id;
+    document.querySelectorAll('.mi').forEach(x=>x.classList.remove('active'));
+    const el = document.querySelector(`.mi[data-id="${id}"]`);
+    if(el) el.classList.add('active');
+  }
+
+  // Render menu (премиум sidebar)
   const menuList = document.getElementById("menuList");
   menuList.innerHTML = DATA.menu.map(m=>`
-    <div class="cell" data-action="${m.action}">
-      <div class="cellL">
-        <div class="ico">${m.icon}</div>
-        <div class="cellTxt">
-          <b>${m.title}</b>
-          <small>${m.sub}</small>
-        </div>
-      </div>
-      <div class="chev">›</div>
-    </div>
+    <button class="mi" type="button" data-id="${m.id}" data-action="${m.action}">
+      <span class="miIcon">${m.icon}</span>
+      <span class="miText">
+        <b>${m.title}</b>
+        <small>${m.sub}</small>
+      </span>
+    </button>
   `).join("");
 
-  menuList.querySelectorAll(".cell").forEach(c=>{
-    c.onclick = ()=>{
-      const action = c.getAttribute("data-action");
+  menuList.querySelectorAll(".mi").forEach(btn=>{
+    btn.onclick = ()=>{
+      const id = btn.getAttribute("data-id");
+      const action = btn.getAttribute("data-action");
+      setActive(id);
+
       if(action === "openContacts") openModal("mContacts");
       else if(action === "openRequest") openModal("mRequest");
-      else if(action === "scrollPortfolio"){
-        document.getElementById("worksGrid").scrollIntoView({behavior:"smooth", block:"start"});
+      else if(action === "scrollWorks"){
+        document.getElementById("secWorks").scrollIntoView({behavior:"smooth", block:"start"});
       }
     };
   });
 
-  // Render grids (правый блок)
+  setActive(activeId);
+
+  // Render grids (right)
   const beforeEl = document.getElementById("beforeAfterGrid");
   beforeEl.innerHTML = DATA.beforeAfter.map(cardTemplate).join("");
   bindActions(beforeEl);
@@ -797,7 +845,7 @@
   worksEl.innerHTML = DATA.works.map(cardTemplate).join("");
   bindActions(worksEl);
 
-  // Contacts button in modal
+  // Contacts button
   document.getElementById("btnWriteTG").onclick = ()=> window.open(DATA.adminLink, "_blank");
 
   // sendData request
