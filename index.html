@@ -30,7 +30,7 @@
       --vh: 1vh;
       --maxW: 1180px;
 
-      --leftW: 160px;
+      --leftW: 150px;
       --gap: 14px;
 
       --blueA: rgba(77,163,255,.96);
@@ -119,12 +119,6 @@
       opacity:.75;
     }
     .top > *{position:relative; z-index:1;}
-    .brandRow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-    }
     .brand h1{
       margin:0;
       font-size: 26px;
@@ -171,7 +165,7 @@
       min-height: calc(var(--vh) * 100 - 24px - var(--safeT) - var(--safeB));
     }
 
-    /* left menu (NO icons) */
+    /* ✅ LEFT menu: ИКОНКИ УДАЛЕНЫ ПОЛНОСТЬЮ (только текст) */
     .left{
       position: sticky;
       top: calc(10px + var(--safeT));
@@ -209,13 +203,6 @@
       transition: transform .08s ease, border-color .15s ease;
     }
     .mi:active{ transform: translateY(1px); }
-    .mi small{
-      display:block;
-      margin-top:4px;
-      color: rgba(246,248,255,.58);
-      font-weight: 900;
-      font-size: 11px;
-    }
     .mi.active{
       border-color: rgba(120,190,255,.46);
       background:
@@ -250,7 +237,6 @@
       white-space:nowrap;
     }
 
-    /* cards (NO icons / NO images) */
     .grid{
       display:grid;
       grid-template-columns: 1fr;
@@ -260,6 +246,7 @@
       .grid{ grid-template-columns: 1fr 1fr; }
     }
 
+    /* ✅ cards: ИКОНКИ УДАЛЕНЫ ПОЛНОСТЬЮ */
     .card{
       border-radius: 22px;
       border: 1px solid rgba(255,255,255,.12);
@@ -300,7 +287,9 @@
       font-size: 13px;
       user-select:none;
       flex:1;
+      transition: transform .08s ease;
     }
+    .btn:active{ transform: translateY(1px); }
     .btn.primary{
       background: linear-gradient(180deg, var(--blueA), var(--blueB));
       border-color: rgba(120,190,255,.48);
@@ -359,7 +348,7 @@
     .hint{color: rgba(246,248,255,.62); font-size: 12px; line-height: 1.35;}
     a.link{color: rgba(140,190,255,.98); font-weight:1000; text-decoration:none;}
 
-    /* mobile: left becomes horizontal */
+    /* mobile */
     @media (max-width: 860px){
       .layout{ grid-template-columns: 1fr; }
       .left{ width: 100%; position: relative; top:auto; }
@@ -371,7 +360,7 @@
         scrollbar-width: none;
       }
       .menu::-webkit-scrollbar{ display:none; }
-      .mi{ min-width: 170px; }
+      .mi{ min-width: 160px; }
     }
   </style>
 </head>
@@ -381,40 +370,31 @@
 
     <!-- HEADER -->
     <section class="top">
-      <div class="brandRow">
-        <div class="brand">
-          <h1>TG Studio</h1>
-          <p>Telegram WebApp</p>
-        </div>
+      <div class="brand">
+        <h1>TG Studio</h1>
+        <p>Telegram WebApp</p>
       </div>
     </section>
 
     <!-- LAYOUT -->
     <section class="layout">
 
-      <!-- LEFT: Разделы (без иконок) -->
+      <!-- LEFT: Разделы (текстом, без иконок) -->
       <aside class="panel left">
         <div class="leftTitle">Разделы</div>
         <div class="menu" id="menuList"></div>
       </aside>
 
-      <!-- RIGHT -->
+      <!-- RIGHT: Контент -->
       <div class="right">
 
-        <section class="panel" id="secBeforeAfter">
+        <section class="panel" id="secMain">
           <div class="secHead">
-            <h2>До и После</h2>
-            <span>Примеры интерфейса</span>
+            <h2 id="secTitle">Услуги</h2>
+            <span id="secSub">Боты • WebApp</span>
           </div>
-          <div class="grid" id="beforeAfterGrid"></div>
-        </section>
 
-        <section class="panel" id="secWorks">
-          <div class="secHead">
-            <h2>Примеры работ</h2>
-            <span>Каталоги • Меню • Запись</span>
-          </div>
-          <div class="grid" id="worksGrid"></div>
+          <div class="grid" id="cardsGrid"></div>
         </section>
 
       </div>
@@ -483,21 +463,28 @@
 
   const DATA = {
     adminLink: "https://t.me/Yaki_Tahirov",
-    menu: [
-      { id:"services",  title:"Услуги",    sub:"Боты • WebApp",               action:"openRequest" },
-      { id:"portfolio", title:"Портфолио", sub:"Кейсы/примеры",               action:"scrollWorks" },
-      { id:"prices",    title:"Прайс",     sub:"Ориентиры",                  action:"openRequest" },
-      { id:"reviews",   title:"Отзывы",    sub:"Скрины/текст",               action:"openRequest" },
-      { id:"contacts",  title:"Контакты",  sub:"Telegram • Телефон • Email", action:"openContacts" },
+    sections: [
+      { id:"services",  title:"Услуги",    sub:"Боты • WebApp" },
+      { id:"portfolio", title:"Портфолио", sub:"Кейсы/примеры" },
+      { id:"prices",    title:"Прайс",     sub:"Ориентиры" },
+      { id:"contacts",  title:"Контакты",  sub:"Связаться" },
     ],
-    beforeAfter: [
-      { title:"Telegram Bot",   subtitle:"Заявка • Меню",           cta1:{text:"Открыть", action:"openTG"}, cta2:{text:"Запрос", action:"openRequest"} },
-      { title:"Telegram WebApp",subtitle:"Каталог • UI",            cta1:{text:"Демо",   action:"openLink", url:"https://tahirovdd-lang.github.io/Portfolio-bot/"}, cta2:{text:"Запрос", action:"openRequest"} },
-    ],
-    works: [
-      { title:"Grand Cru",      subtitle:"Catalog • Search • Leads", cta1:{text:"Запрос", action:"openRequest"}, cta2:{text:"Написать", action:"openTG"} },
-      { title:"Restaurant Menu",subtitle:"Menu • Delivery • Lang",   cta1:{text:"Запрос", action:"openRequest"}, cta2:{text:"Написать", action:"openTG"} },
-    ]
+    cards: {
+      services: [
+        { title:"Telegram Bot", subtitle:"Заявка • Меню", cta1:{text:"Запрос", act:"openRequest"}, cta2:{text:"Написать", act:"openTG"} },
+        { title:"Telegram WebApp", subtitle:"Каталог • UI", cta1:{text:"Демо", act:"openLink", url:"https://tahirovdd-lang.github.io/Portfolio-bot/"}, cta2:{text:"Запрос", act:"openRequest"} },
+      ],
+      portfolio: [
+        { title:"Grand Cru", subtitle:"Catalog • Search • Leads", cta1:{text:"Запрос", act:"openRequest"}, cta2:{text:"Написать", act:"openTG"} },
+        { title:"Restaurant Menu", subtitle:"Menu • Delivery • Lang", cta1:{text:"Запрос", act:"openRequest"}, cta2:{text:"Написать", act:"openTG"} },
+      ],
+      prices: [
+        { title:"Прайс-лист", subtitle:"Сформирую под задачу", cta1:{text:"Запрос", act:"openRequest"}, cta2:{text:"Контакты", act:"openContacts"} },
+      ],
+      contacts: [
+        { title:"Связаться", subtitle:"Telegram • Телефон • Email", cta1:{text:"Открыть контакты", act:"openContacts"}, cta2:{text:"Написать", act:"openTG"} },
+      ]
+    }
   };
 
   let activeId = "services";
@@ -525,8 +512,8 @@
         <b>${item.title}</b>
         <p>${item.subtitle || ""}</p>
         <div class="actions">
-          ${item.cta1 ? `<button class="btn" data-act="${item.cta1.action}" data-url="${item.cta1.url || ""}">${item.cta1.text}</button>` : ""}
-          ${item.cta2 ? `<button class="btn primary" data-act="${item.cta2.action}" data-url="${item.cta2.url || ""}">${item.cta2.text}</button>` : ""}
+          ${item.cta1 ? `<button class="btn" data-act="${item.cta1.act}" data-url="${item.cta1.url || ""}">${item.cta1.text}</button>` : ""}
+          ${item.cta2 ? `<button class="btn primary" data-act="${item.cta2.act}" data-url="${item.cta2.url || ""}">${item.cta2.text}</button>` : ""}
         </div>
       </div>
     `;
@@ -537,6 +524,7 @@
       btn.onclick = ()=>{
         const act = btn.getAttribute("data-act");
         const url = btn.getAttribute("data-url") || "";
+
         if(act === "openRequest") openModal("mRequest");
         if(act === "openContacts") openModal("mContacts");
         if(act === "openTG") window.open(DATA.adminLink, "_blank");
@@ -545,42 +533,41 @@
     });
   }
 
-  // render menu (NO icons)
+  function renderSection(id){
+    const sec = DATA.sections.find(s=>s.id===id);
+    document.getElementById("secTitle").textContent = sec?.title || "";
+    document.getElementById("secSub").textContent = sec?.sub || "";
+
+    const grid = document.getElementById("cardsGrid");
+    grid.innerHTML = (DATA.cards[id] || []).map(cardTemplate).join("");
+    bindActions(grid);
+
+    if(id === "contacts") openModal("mContacts");
+  }
+
+  // render left menu (✅ ONLY 4 items, ✅ no icons)
   const menuList = document.getElementById("menuList");
-  menuList.innerHTML = DATA.menu.map(m=>`
-    <button class="mi" type="button" data-id="${m.id}" data-action="${m.action}">
-      ${m.title}
-      <small>${m.sub}</small>
+  menuList.innerHTML = DATA.sections.map(s=>`
+    <button class="mi" type="button" data-id="${s.id}">
+      ${s.title}
     </button>
   `).join("");
 
   menuList.querySelectorAll(".mi").forEach(btn=>{
     btn.onclick = ()=>{
       const id = btn.getAttribute("data-id");
-      const action = btn.getAttribute("data-action");
       setActive(id);
-
-      if(action === "openContacts") openModal("mContacts");
-      else if(action === "openRequest") openModal("mRequest");
-      else if(action === "scrollWorks"){
-        document.getElementById("secWorks").scrollIntoView({behavior:"smooth", block:"start"});
-      }
+      renderSection(id);
     };
   });
 
   setActive(activeId);
+  renderSection(activeId);
 
-  // render sections
-  const beforeEl = document.getElementById("beforeAfterGrid");
-  beforeEl.innerHTML = DATA.beforeAfter.map(cardTemplate).join("");
-  bindActions(beforeEl);
-
-  const worksEl = document.getElementById("worksGrid");
-  worksEl.innerHTML = DATA.works.map(cardTemplate).join("");
-  bindActions(worksEl);
-
+  // contacts button
   document.getElementById("btnWriteTG").onclick = ()=> window.open(DATA.adminLink, "_blank");
 
+  // sendData request
   const rHint = document.getElementById('rHint');
   document.getElementById('rSend').onclick = ()=>{
     rHint.textContent = "";
