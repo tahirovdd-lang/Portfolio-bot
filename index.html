@@ -34,7 +34,6 @@
       --vh: 1vh;
       --maxW: 1180px;
 
-      /* ✅ ЛЕВАЯ ПАНЕЛЬ ВЫТЯНУТА ВВЫСЬ */
       --leftW: 190px;
       --gap: 14px;
 
@@ -50,6 +49,7 @@
       color:var(--text);
       overflow-x:hidden;
       -webkit-overflow-scrolling: touch;
+
       padding:
         calc(10px + var(--safeT))
         calc(10px + var(--safeR))
@@ -101,7 +101,6 @@
       gap: 12px;
     }
 
-    /* header */
     .top{
       border: 1px solid var(--stroke);
       background: linear-gradient(180deg, rgba(255,255,255,.085), rgba(255,255,255,.03));
@@ -137,7 +136,6 @@
       font-size: 13px;
     }
 
-    /* panels */
     .panel{
       border: 1px solid var(--stroke);
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.028));
@@ -159,7 +157,6 @@
     }
     .panel > *{position:relative; z-index:1;}
 
-    /* ✅ layout: слева всегда список вниз */
     .layout{
       display:grid;
       grid-template-columns: var(--leftW) 1fr;
@@ -168,13 +165,13 @@
       min-height: calc(var(--vh) * 100 - 24px - var(--safeT) - var(--safeB));
     }
 
-    /* ✅ LEFT: вытянутая ввысь колонка */
+    /* LEFT */
     .left{
       position: sticky;
       top: calc(10px + var(--safeT));
       width: var(--leftW);
       padding: 10px;
-      height: calc(var(--vh) * 100 - 24px - var(--safeT) - var(--safeB)); /* вытянули */
+      height: calc(var(--vh) * 100 - 24px - var(--safeT) - var(--safeB));
       display:flex;
       flex-direction:column;
       gap:10px;
@@ -189,11 +186,11 @@
     }
     .menu{
       display:flex;
-      flex-direction:column;         /* ✅ СТРОГО ВНИЗ */
+      flex-direction:column;
       gap: 10px;
       padding: 0 4px 4px;
-      overflow:auto;                /* если не влезет */
-      scrollbar-width: none;
+      overflow:auto;
+      scrollbar-width:none;
       flex: 1 1 auto;
     }
     .menu::-webkit-scrollbar{ display:none; }
@@ -216,11 +213,10 @@
       font-weight: 1000;
       position:relative;
       overflow:hidden;
-      transition: transform .08s ease, border-color .15s ease, filter .15s ease;
+      transition: transform .08s ease, border-color .15s ease;
     }
     .mi:active{ transform: translateY(1px); }
 
-    /* "иконка" раздела — круг с буквой (не svg, не emoji, не img) */
     .miBadge{
       width: 32px;
       height: 32px;
@@ -259,6 +255,7 @@
       text-overflow:ellipsis;
       line-height:1.1;
     }
+
     .mi.active{
       border-color: rgba(120,190,255,.46);
       background:
@@ -297,7 +294,7 @@
       white-space:nowrap;
     }
 
-    /* ✅ "Иконку рекламных ботов" сделали меньше и в ряд (1 бот = 1 карточка в строке) */
+    /* bots row */
     .botsRow{
       display:flex;
       flex-direction:row;
@@ -330,7 +327,6 @@
     }
     .botTile > *{position:relative; z-index:1;}
 
-    /* ✅ маленькая "иконка" бота */
     .botIcon{
       width: 38px;
       height: 38px;
@@ -378,15 +374,95 @@
     .ghost b{display:block; font-size:14px; font-weight:1000; margin-bottom:6px;}
     .ghost p{margin:0; color: rgba(246,248,255,.62); font-weight:900; font-size:12px; line-height:1.4;}
 
-    /* ✅ телефон: всё равно "вниз", просто делаем колонку уже */
+    /* ✅ АДАПТАЦИЯ ПОД ТЕЛЕФОН */
     @media (max-width: 860px){
-      :root{ --leftW: 152px; }
-      .layout{ grid-template-columns: var(--leftW) 1fr; } /* НЕ вбок! оставляем слева */
-      .left{ height: calc(var(--vh) * 100 - 24px - var(--safeT) - var(--safeB)); }
-      .mi{ min-height: 46px; }
-      .miBadge{ width:30px; height:30px; }
-      .botTile{ width: 100%; }
-      .botsRow{ flex-wrap: wrap; } /* чтобы на узком экране не вылезало */
+      :root{
+        --leftW: 78px;   /* узкая колонка */
+        --gap: 10px;
+      }
+
+      body{
+        padding:
+          calc(8px + var(--safeT))
+          calc(8px + var(--safeR))
+          calc(10px + var(--safeB))
+          calc(8px + var(--safeL));
+      }
+
+      .top{ padding: 10px 12px; border-radius: 22px; }
+      .brand h1{ font-size: 22px; }
+      .brand p{ font-size: 12px; }
+
+      .layout{
+        grid-template-columns: var(--leftW) 1fr; /* ✅ слева остается */
+        min-height: auto;
+      }
+
+      .left{
+        padding: 8px;
+        border-radius: 22px;
+        height: calc(var(--vh) * 100 - 20px - var(--safeT) - var(--safeB));
+      }
+      .leftTitle{
+        margin: 2px 2px 6px;
+        font-size: 10px;
+        opacity: .8;
+      }
+      .menu{ gap: 8px; padding: 0 2px 2px; }
+
+      /* ✅ пункты меню компактнее */
+      .mi{
+        padding: 8px;
+        min-height: 52px;
+        border-radius: 18px;
+        justify-content:center;     /* центруем */
+      }
+
+      /* ✅ на телефоне показываем только круг-иконку, текст скрываем */
+      .miText{ display:none; }
+      .miBadge{
+        width: 36px;
+        height: 36px;
+        font-size: 12px;
+      }
+
+      /* ✅ правая часть компактнее */
+      .main{ padding: 10px; border-radius: 22px; }
+      .secHead{ padding: 6px 4px 10px; }
+      .secHead h2{ font-size: 16px; }
+      .secHead span{ font-size: 10px; }
+
+      /* ✅ 1 бот в ряд, чтобы не вылезало */
+      .botsRow{
+        padding: 0 4px 8px;
+        flex-wrap: wrap;     /* перенос */
+      }
+      .botTile{
+        width: 100%;
+        padding: 12px;
+        border-radius: 20px;
+      }
+      .botIcon{
+        width: 34px;
+        height: 34px;
+        border-radius: 13px;
+        font-size: 11px;
+      }
+      .botText b{ font-size: 13px; }
+      .botText p{ font-size: 11.5px; }
+
+      .ghost{
+        margin: 0 4px 6px;
+        padding: 12px;
+        border-radius: 20px;
+      }
+    }
+
+    /* ✅ совсем маленькие экраны */
+    @media (max-width: 360px){
+      :root{ --leftW: 72px; }
+      .miBadge{ width: 34px; height: 34px; }
+      .brand h1{ font-size: 21px; }
     }
   </style>
 </head>
@@ -394,7 +470,6 @@
 <body>
   <div class="wrap">
 
-    <!-- HEADER -->
     <section class="top">
       <div class="brand">
         <h1>TG Studio</h1>
@@ -402,16 +477,13 @@
       </div>
     </section>
 
-    <!-- LAYOUT -->
     <section class="layout">
 
-      <!-- LEFT: Разделы (строго вниз) -->
       <aside class="panel left">
         <div class="leftTitle">Разделы</div>
         <div class="menu" id="menuList"></div>
       </aside>
 
-      <!-- RIGHT -->
       <div class="right">
         <section class="panel main" id="secMain">
           <div class="secHead">
@@ -419,13 +491,11 @@
             <span id="secSub">Внешний вид</span>
           </div>
 
-          <!-- ✅ один бот в ряд (1 карточка) -->
           <div class="botsRow" id="botsRow"></div>
 
-          <!-- placeholder для дизайна -->
           <div class="ghost" id="ghost">
             <b>Настраиваем внешний вид</b>
-            <p>Сейчас оставлен один элемент “Рекламный бот” (1 штука). Остальной контент отключён.</p>
+            <p>Слева разделы строго сверху вниз. На телефоне меню становится узкой колонкой (только кружки), контент справа.</p>
           </div>
         </section>
       </div>
@@ -473,14 +543,14 @@
     const row = document.getElementById("botsRow");
     row.innerHTML = "";
 
-    // ✅ только в "Услуги" показываем 1 рекламный бот (как ты просишь)
+    // ✅ 1 рекламный бот только в "Услуги"
     if(id === "services"){
       row.innerHTML = `
         <div class="botTile">
           <div class="botIcon">BOT</div>
           <div class="botText">
             <b>Рекламный бот</b>
-            <p>Один элемент в ряд • компактная иконка</p>
+            <p>1 бот • компактная карточка</p>
           </div>
         </div>
       `;
@@ -491,8 +561,6 @@
     const sec = DATA.sections.find(s=>s.id===id);
     document.getElementById("secTitle").textContent = sec?.title || "";
     document.getElementById("secSub").textContent = sec?.sub || "Внешний вид";
-
-    // ✅ при нажатии разделов “примерные боты” не размножаем — только 1 (или 0)
     renderBotsForSection(id);
   }
 
