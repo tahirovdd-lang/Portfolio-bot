@@ -1,3 +1,4 @@
+```html
 <!doctype html>
 <html lang="ru">
 <head>
@@ -33,15 +34,20 @@
       --vh: 1vh;
       --maxW: 1180px;
 
-      /* ✅ премиум sidebar */
+      /* sidebar */
       --leftW: 150px;
       --gap: 14px;
 
       --blueA: rgba(77,163,255,.96);
       --blueB: rgba(43,108,255,.88);
 
-      /* ✅ меньше иконки (превью) работ */
-      --shotH: 102px; /* было 132px */
+      /* ✅ превью работ */
+      --shotH: 92px;
+
+      /* ✅ УЗКИЕ ИКОНКИ (превью) ДЛЯ КАРТОЧЕК:
+         "До и После", "Telegram WebApp", "Примеры работ", "Restaurant Menu" */
+      --shotW: 120px;   /* ширина каждой иконки */
+      --shotWm: 104px;  /* на телефоне */
     }
 
     *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
@@ -66,7 +72,6 @@
         linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 45%, var(--bg2) 100%);
     }
 
-    /* дымка */
     body:before{
       content:"";
       position:fixed; inset:-140px;
@@ -82,7 +87,6 @@
       transform: translateZ(0);
     }
 
-    /* зерно */
     body:after{
       content:"";
       position:fixed; inset:0;
@@ -105,7 +109,6 @@
       gap: 12px;
     }
 
-    /* ✅ шапка компактная (без кнопок) */
     .top{
       border: 1px solid var(--stroke);
       background: linear-gradient(180deg, rgba(255,255,255,.085), rgba(255,255,255,.03));
@@ -179,7 +182,6 @@
       white-space:nowrap;
     }
 
-    /* ✅ ЛЭЙАУТ: слева Разделы, справа контент */
     .layout{
       display:grid;
       grid-template-columns: var(--leftW) 1fr;
@@ -188,7 +190,6 @@
       min-height: calc(var(--vh) * 100 - 24px - var(--safeT) - var(--safeB));
     }
 
-    /* стеклянные панели */
     .panel{
       border: 1px solid var(--stroke);
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.028));
@@ -211,7 +212,6 @@
     }
     .panel > *{position:relative; z-index:1;}
 
-    /* ✅ ПРЕМИУМ SIDEBAR */
     .left{
       position: sticky;
       top: calc(10px + var(--safeT));
@@ -251,7 +251,6 @@
       transition: transform .08s ease, filter .15s ease, border-color .15s ease;
     }
     .mi:active{ transform: translateY(1px); }
-
     .mi.active{
       border-color: rgba(120,190,255,.46);
       background:
@@ -305,7 +304,6 @@
       line-height:1.05;
     }
 
-    /* ПРАВАЯ ЧАСТЬ */
     .right{
       display:flex;
       flex-direction:column;
@@ -419,20 +417,19 @@
       white-space:nowrap;
     }
 
+    /* ✅ ДВА превью становятся "узкими иконками" */
     .shots{
       padding: 0 12px 12px;
-      display:grid;
-      grid-template-columns: 1fr 1fr;
+      display:flex;
       gap: 10px;
+      align-items:flex-start;
+      flex-wrap: wrap; /* чтобы не ломалось на узких экранах */
     }
-    @media (max-width: 420px){
-      .shots{ grid-template-columns: 1fr; }
-    }
-
-    /* ✅ уменьшили превью работ + немного компактнее лейбл */
     .shot{
+      width: var(--shotW);
       height: var(--shotH);
-      border-radius: 18px; /* было 20px */
+      flex: 0 0 auto;
+      border-radius: 18px;
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.05);
       overflow:hidden;
@@ -449,13 +446,13 @@
     .shotLabel{
       position:absolute;
       left:8px; top:8px;
-      padding: 5px 9px;     /* было 6px 10px */
+      padding: 5px 9px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.28);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      font-size: 10px;      /* было 11px */
+      font-size: 10px;
       font-weight:1000;
       color: rgba(246,248,255,.92);
     }
@@ -493,7 +490,6 @@
       box-shadow: 0 16px 34px rgba(60,140,255,.22);
     }
 
-    /* MODAL */
     .modal{
       position:fixed; inset:0;
       display:none;
@@ -544,7 +540,6 @@
     .hint{color: rgba(246,248,255,.62); font-size: 12px; line-height: 1.35;}
     a.link{color: rgba(140,190,255,.98); font-weight:1000; text-decoration:none;}
 
-    /* ✅ МОБИЛЬНАЯ АДАПТАЦИЯ */
     @media (max-width: 860px){
       .layout{ grid-template-columns: 1fr; }
       .left{ width: 100%; position: relative; top:auto; }
@@ -561,8 +556,9 @@
         border-radius: 16px;
       }
 
-      /* ✅ ещё чуть меньше превью на телефоне */
-      :root{ --shotH: 92px; }
+      /* ✅ ещё уже иконки на телефоне */
+      .shot{ width: var(--shotWm); }
+      :root{ --shotH: 86px; }
     }
   </style>
 </head>
@@ -570,7 +566,6 @@
 <body>
   <div class="wrap">
 
-    <!-- HEADER -->
     <section class="top">
       <div class="brandRow">
         <div class="brand">
@@ -585,16 +580,13 @@
       </div>
     </section>
 
-    <!-- ✅ LAYOUT -->
     <section class="layout">
 
-      <!-- LEFT: Разделы -->
       <aside class="panel left">
         <div class="leftTitle">Разделы</div>
         <div class="menu" id="menuList"></div>
       </aside>
 
-      <!-- RIGHT: контент и скролл -->
       <div class="right">
 
         <section class="panel" id="secBeforeAfter">
@@ -868,3 +860,4 @@
 </script>
 </body>
 </html>
+```
