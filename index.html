@@ -34,7 +34,8 @@
       --vh: 1vh;
       --maxW: 1180px;
 
-      --leftW: 168px; /* слева */
+      /* ✅ ЛЕВАЯ ПАНЕЛЬ ВЫТЯНУТА ВВЫСЬ */
+      --leftW: 190px;
       --gap: 14px;
 
       --blueA: rgba(77,163,255,.96);
@@ -63,7 +64,6 @@
         linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 45%, var(--bg2) 100%);
     }
 
-    /* дымка */
     body:before{
       content:"";
       position:fixed; inset:-140px;
@@ -79,7 +79,6 @@
       transform: translateZ(0);
     }
 
-    /* зерно */
     body:after{
       content:"";
       position:fixed; inset:0;
@@ -124,12 +123,6 @@
       opacity:.75;
     }
     .top > *{position:relative; z-index:1;}
-    .brandRow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-    }
     .brand h1{
       margin:0;
       font-size: 26px;
@@ -152,7 +145,6 @@
       box-shadow: var(--shadow2);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      padding: 8px;
       overflow:hidden;
       position:relative;
     }
@@ -167,7 +159,7 @@
     }
     .panel > *{position:relative; z-index:1;}
 
-    /* layout */
+    /* ✅ layout: слева всегда список вниз */
     .layout{
       display:grid;
       grid-template-columns: var(--leftW) 1fr;
@@ -176,26 +168,35 @@
       min-height: calc(var(--vh) * 100 - 24px - var(--safeT) - var(--safeB));
     }
 
-    /* LEFT: разделы списком вниз, "в виде иконки" (без SVG/картинок) */
+    /* ✅ LEFT: вытянутая ввысь колонка */
     .left{
       position: sticky;
       top: calc(10px + var(--safeT));
       width: var(--leftW);
-      padding: 8px;
+      padding: 10px;
+      height: calc(var(--vh) * 100 - 24px - var(--safeT) - var(--safeB)); /* вытянули */
+      display:flex;
+      flex-direction:column;
+      gap:10px;
     }
     .leftTitle{
-      margin: 6px 6px 10px;
+      margin: 4px 6px 0;
       font-weight: 900;
       font-size: 12px;
       opacity:.85;
       letter-spacing:.18px;
+      flex: 0 0 auto;
     }
     .menu{
       display:flex;
-      flex-direction:column;
-      gap: 10px; /* списком вниз */
+      flex-direction:column;         /* ✅ СТРОГО ВНИЗ */
+      gap: 10px;
       padding: 0 4px 4px;
+      overflow:auto;                /* если не влезет */
+      scrollbar-width: none;
+      flex: 1 1 auto;
     }
+    .menu::-webkit-scrollbar{ display:none; }
 
     .mi{
       width:100%;
@@ -207,7 +208,7 @@
       background: rgba(0,0,0,.16);
       box-shadow: 0 12px 26px rgba(0,0,0,.18);
       padding: 8px 10px;
-      min-height: 46px;
+      min-height: 48px;
       cursor:pointer;
       user-select:none;
       text-align:left;
@@ -219,10 +220,10 @@
     }
     .mi:active{ transform: translateY(1px); }
 
-    /* "иконка" — круг с буквой (не svg, не img, не emoji) */
+    /* "иконка" раздела — круг с буквой (не svg, не emoji, не img) */
     .miBadge{
-      width: 30px;
-      height: 30px;
+      width: 32px;
+      height: 32px;
       border-radius: 999px;
       flex:0 0 auto;
       display:grid;
@@ -236,7 +237,6 @@
         linear-gradient(180deg, var(--blueA), var(--blueB));
       box-shadow: 0 14px 28px rgba(60,140,255,.18);
     }
-
     .miText{
       min-width:0;
       display:flex;
@@ -259,7 +259,6 @@
       text-overflow:ellipsis;
       line-height:1.1;
     }
-
     .mi.active{
       border-color: rgba(120,190,255,.46);
       background:
@@ -268,19 +267,22 @@
       box-shadow: 0 18px 34px rgba(60,140,255,.14), 0 12px 26px rgba(0,0,0,.22);
     }
 
-    /* RIGHT: только внешний вид, никаких "примерных ботов" */
+    /* RIGHT */
     .right{
       display:flex;
       flex-direction:column;
       gap: 12px;
       min-width:0;
     }
+    .main{
+      padding: 10px;
+    }
     .secHead{
       display:flex;
       align-items:baseline;
       justify-content:space-between;
       gap:10px;
-      padding: 8px 10px 10px;
+      padding: 6px 6px 10px;
     }
     .secHead h2{
       margin:0;
@@ -295,115 +297,96 @@
       white-space:nowrap;
     }
 
-    .placeholder{
-      border-radius: 22px;
-      border: 1px dashed rgba(255,255,255,.16);
-      background: rgba(0,0,0,.14);
-      padding: 16px;
-      margin: 0 8px 8px;
-      box-shadow: 0 12px 28px rgba(0,0,0,.18);
+    /* ✅ "Иконку рекламных ботов" сделали меньше и в ряд (1 бот = 1 карточка в строке) */
+    .botsRow{
+      display:flex;
+      flex-direction:row;
+      gap: 12px;
+      padding: 0 6px 8px;
+      flex-wrap: nowrap;
     }
-    .placeholder b{
-      display:block;
+    .botTile{
+      flex: 0 0 auto;
+      width: min(520px, 100%);
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.16);
+      box-shadow: var(--shadow2);
+      padding: 12px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      overflow:hidden;
+      position:relative;
+    }
+    .botTile:before{
+      content:"";
+      position:absolute; inset:-2px;
+      pointer-events:none;
+      background:
+        radial-gradient(360px 160px at 20% 0%, rgba(255,255,255,.08), transparent 62%),
+        radial-gradient(360px 200px at 85% 70%, rgba(77,163,255,.10), transparent 64%);
+      opacity:.75;
+    }
+    .botTile > *{position:relative; z-index:1;}
+
+    /* ✅ маленькая "иконка" бота */
+    .botIcon{
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      flex:0 0 auto;
+      display:grid;
+      place-items:center;
+      font-weight: 1000;
+      font-size: 12px;
+      color: rgba(255,255,255,.95);
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      box-shadow: 0 14px 28px rgba(0,0,0,.22);
+    }
+    .botText{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .botText b{
       font-size: 14px;
       font-weight: 1000;
-      margin-bottom: 6px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      line-height:1.1;
     }
-    .placeholder p{
+    .botText p{
       margin:0;
       color: rgba(246,248,255,.62);
       font-weight: 900;
       font-size: 12px;
-      line-height: 1.4;
+      line-height:1.35;
     }
 
-    /* MODAL (оставим для внешнего вида, без демо-контента) */
-    .modal{
-      position:fixed; inset:0;
-      display:none;
-      align-items:flex-end; justify-content:center;
-      padding: 14px 14px calc(14px + var(--safeB));
-      background: rgba(0,0,0,.60);
-      z-index: 999;
+    .ghost{
+      border-radius: 22px;
+      border: 1px dashed rgba(255,255,255,.16);
+      background: rgba(0,0,0,.14);
+      padding: 14px;
+      margin: 0 6px 8px;
+      box-shadow: 0 12px 28px rgba(0,0,0,.18);
     }
-    .sheet{
-      width:min(980px, 100%);
-      border-radius: 26px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(8,12,22,.92);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      padding: 12px;
-      max-height: min(78vh, 720px);
-      overflow:auto;
-    }
-    .sheetTop{
-      display:flex; justify-content:space-between; gap:12px; align-items:flex-start;
-      padding: 6px 6px 10px;
-    }
-    .sheetTop h3{margin:0; font-size:16px; font-weight:1000;}
-    .sheetTop p{margin:6px 0 0; color: rgba(246,248,255,.66); font-size:13px; line-height:1.35;}
-    .x{
-      width:44px; height:44px;
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      cursor:pointer;
-      font-weight:1000;
-    }
-    .form{margin-top:10px; display:flex; flex-direction:column; gap:10px;}
-    .in{
-      width:100%;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      border-radius: 18px;
-      padding: 12px 12px;
-      font-size: 14px;
-      outline:none;
-    }
-    textarea.in{min-height: 96px; resize:none;}
-    .hint{color: rgba(246,248,255,.62); font-size: 12px; line-height: 1.35;}
-    a.link{color: rgba(140,190,255,.98); font-weight:1000; text-decoration:none;}
+    .ghost b{display:block; font-size:14px; font-weight:1000; margin-bottom:6px;}
+    .ghost p{margin:0; color: rgba(246,248,255,.62); font-weight:900; font-size:12px; line-height:1.4;}
 
-    .btn{
-      min-height: 44px;
-      padding: 12px 12px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: rgba(246,248,255,.92);
-      font-weight:1000;
-      cursor:pointer;
-      box-shadow: 0 12px 24px rgba(0,0,0,.22);
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      font-size: 13px;
-      user-select:none;
-    }
-    .btn.primary{
-      background: linear-gradient(180deg, var(--blueA), var(--blueB));
-      border-color: rgba(120,190,255,.48);
-      color:#fff;
-      box-shadow: 0 16px 34px rgba(60,140,255,.22);
-    }
-
-    /* mobile: меню остаётся слева? на телефоне делаем горизонтально, но если хочешь строго слева — скажи */
+    /* ✅ телефон: всё равно "вниз", просто делаем колонку уже */
     @media (max-width: 860px){
-      .layout{ grid-template-columns: 1fr; }
-      .left{ width: 100%; position: relative; top:auto; }
-      .menu{
-        flex-direction: row;
-        overflow:auto;
-        gap:10px;
-        padding: 6px 4px 8px;
-        scrollbar-width: none;
-      }
-      .menu::-webkit-scrollbar{ display:none; }
-      .mi{ min-width: 190px; }
+      :root{ --leftW: 152px; }
+      .layout{ grid-template-columns: var(--leftW) 1fr; } /* НЕ вбок! оставляем слева */
+      .left{ height: calc(var(--vh) * 100 - 24px - var(--safeT) - var(--safeB)); }
+      .mi{ min-height: 46px; }
+      .miBadge{ width:30px; height:30px; }
+      .botTile{ width: 100%; }
+      .botsRow{ flex-wrap: wrap; } /* чтобы на узком экране не вылезало */
     }
   </style>
 </head>
@@ -413,81 +396,41 @@
 
     <!-- HEADER -->
     <section class="top">
-      <div class="brandRow">
-        <div class="brand">
-          <h1>TG Studio</h1>
-          <p>Telegram WebApp</p>
-        </div>
+      <div class="brand">
+        <h1>TG Studio</h1>
+        <p>Telegram WebApp</p>
       </div>
     </section>
 
     <!-- LAYOUT -->
     <section class="layout">
 
-      <!-- LEFT: Разделы (списком вниз, "иконка" = буква в кружке) -->
+      <!-- LEFT: Разделы (строго вниз) -->
       <aside class="panel left">
         <div class="leftTitle">Разделы</div>
         <div class="menu" id="menuList"></div>
       </aside>
 
-      <!-- RIGHT: только внешний вид -->
+      <!-- RIGHT -->
       <div class="right">
-        <section class="panel" id="secMain">
+        <section class="panel main" id="secMain">
           <div class="secHead">
             <h2 id="secTitle">Услуги</h2>
             <span id="secSub">Внешний вид</span>
           </div>
 
-          <div class="placeholder" id="placeholder">
-            <b>Сейчас настраиваем дизайн</b>
-            <p>Контент (примеры ботов/работ) выключен. При нажатии на разделы будет меняться только заголовок.</p>
+          <!-- ✅ один бот в ряд (1 карточка) -->
+          <div class="botsRow" id="botsRow"></div>
+
+          <!-- placeholder для дизайна -->
+          <div class="ghost" id="ghost">
+            <b>Настраиваем внешний вид</b>
+            <p>Сейчас оставлен один элемент “Рекламный бот” (1 штука). Остальной контент отключён.</p>
           </div>
         </section>
       </div>
 
     </section>
-  </div>
-
-  <!-- REQUEST MODAL (можно скрыть/убрать позже) -->
-  <div class="modal" id="mRequest">
-    <div class="sheet">
-      <div class="sheetTop">
-        <div>
-          <h3>Запрос</h3>
-          <p>Опиши задачу — отправлю админу в Telegram.</p>
-        </div>
-        <button class="x" data-close="mRequest">X</button>
-      </div>
-
-      <div class="form">
-        <textarea class="in" id="rText" placeholder="Опиши что нужно: бот / WebApp / интеграции, сроки, бюджет"></textarea>
-        <button class="btn primary" id="rSend" style="width:100%;">Отправить</button>
-        <div class="hint" id="rHint"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- CONTACTS MODAL -->
-  <div class="modal" id="mContacts">
-    <div class="sheet">
-      <div class="sheetTop">
-        <div>
-          <h3>Контакты</h3>
-          <p>Свяжитесь со мной удобным способом:</p>
-        </div>
-        <button class="x" data-close="mContacts">X</button>
-      </div>
-
-      <div class="form">
-        <div class="in" style="display:flex; flex-direction:column; gap:8px;">
-          <div><b>Telegram:</b> <a class="link" href="https://t.me/Yaki_Tahirov" target="_blank" rel="noreferrer">@Yaki_Tahirov</a></div>
-          <div><b>Телефон:</b> <a class="link" href="tel:+998937460022">+998 (93) 746-00-22</a></div>
-          <div><b>Почта:</b> <a class="link" href="mailto:tahirov.dd@gmail.com">tahirov.dd@gmail.com</a></div>
-        </div>
-        <button class="btn primary" id="btnWriteTG" style="width:100%;">Написать в Telegram</button>
-        <div class="hint">Нажмите кнопку — откроется чат.</div>
-      </div>
-    </div>
   </div>
 
 <script>
@@ -509,26 +452,15 @@
   }
 
   const DATA = {
-    adminLink: "https://t.me/Yaki_Tahirov",
     sections: [
       { id:"services",  title:"Услуги",    sub:"Внешний вид", badge:"У" },
       { id:"portfolio", title:"Портфолио", sub:"Внешний вид", badge:"П" },
-      { id:"prices",    title:"Прайс",     sub:"Внешний вид", badge:"₽" }, // если не хочешь символ — скажи, заменю на "П"
+      { id:"prices",    title:"Прайс",     sub:"Внешний вид", badge:"ПР" },
       { id:"contacts",  title:"Контакты",  sub:"Внешний вид", badge:"К" },
     ]
   };
 
   let activeId = "services";
-
-  function openModal(id){ document.getElementById(id).style.display="flex"; }
-  function closeModal(id){ document.getElementById(id).style.display="none"; }
-
-  document.querySelectorAll('[data-close]').forEach(b=>{
-    b.onclick = ()=> closeModal(b.getAttribute('data-close'));
-  });
-  document.querySelectorAll('.modal').forEach(modal=>{
-    modal.addEventListener('click', (e)=>{ if(e.target === modal) modal.style.display = "none"; });
-  });
 
   function setActive(id){
     activeId = id;
@@ -537,17 +469,31 @@
     if(el) el.classList.add('active');
   }
 
+  function renderBotsForSection(id){
+    const row = document.getElementById("botsRow");
+    row.innerHTML = "";
+
+    // ✅ только в "Услуги" показываем 1 рекламный бот (как ты просишь)
+    if(id === "services"){
+      row.innerHTML = `
+        <div class="botTile">
+          <div class="botIcon">BOT</div>
+          <div class="botText">
+            <b>Рекламный бот</b>
+            <p>Один элемент в ряд • компактная иконка</p>
+          </div>
+        </div>
+      `;
+    }
+  }
+
   function renderSection(id){
     const sec = DATA.sections.find(s=>s.id===id);
     document.getElementById("secTitle").textContent = sec?.title || "";
     document.getElementById("secSub").textContent = sec?.sub || "Внешний вид";
 
-    // ✅ никакого контента/примеров — только заголовок
-    // (оставляем placeholder как часть дизайна)
-    if(id === "contacts"){
-      // можно открыть контакты при клике, если нужно — уберу
-      openModal("mContacts");
-    }
+    // ✅ при нажатии разделов “примерные боты” не размножаем — только 1 (или 0)
+    renderBotsForSection(id);
   }
 
   // render left menu
@@ -572,22 +518,6 @@
 
   setActive(activeId);
   renderSection(activeId);
-
-  // contacts button
-  document.getElementById("btnWriteTG").onclick = ()=> window.open(DATA.adminLink, "_blank");
-
-  // sendData request (оставили, но это не "пример бота", это функционал)
-  const rHint = document.getElementById('rHint');
-  document.getElementById('rSend').onclick = ()=>{
-    rHint.textContent = "";
-    const text = document.getElementById('rText').value.trim();
-    if(!text){ rHint.textContent = "Напиши текст запроса."; return; }
-    if(!tg){ rHint.textContent = "Открой в Telegram, чтобы отправить."; return; }
-    tg.sendData(JSON.stringify({ source:"lead", task: text, ts: Date.now() }));
-    tg.HapticFeedback?.notificationOccurred?.("success");
-    rHint.textContent = "Отправлено!";
-    setTimeout(()=>closeModal("mRequest"), 450);
-  };
 </script>
 </body>
 </html>
