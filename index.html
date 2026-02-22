@@ -13,14 +13,18 @@
       --bg2:#0f1c33;
 
       --stroke: rgba(255,255,255,.12);
+      --stroke2: rgba(255,255,255,.18);
+
       --text:#f6f8ff;
       --muted: rgba(246,248,255,.68);
+      --muted2: rgba(246,248,255,.52);
 
       --shadow: 0 22px 58px rgba(0,0,0,.52);
       --shadow2: 0 14px 34px rgba(0,0,0,.34);
 
       --r-xl: 24px;
       --r-lg: 20px;
+      --r-md: 16px;
 
       --safeT: env(safe-area-inset-top, 0px);
       --safeB: env(safe-area-inset-bottom, 0px);
@@ -30,7 +34,7 @@
       --vh: 1vh;
       --maxW: 1180px;
 
-      --leftW: 150px;
+      --leftW: 168px; /* слева */
       --gap: 14px;
 
       --blueA: rgba(77,163,255,.96);
@@ -45,7 +49,6 @@
       color:var(--text);
       overflow-x:hidden;
       -webkit-overflow-scrolling: touch;
-
       padding:
         calc(10px + var(--safeT))
         calc(10px + var(--safeR))
@@ -60,6 +63,7 @@
         linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 45%, var(--bg2) 100%);
     }
 
+    /* дымка */
     body:before{
       content:"";
       position:fixed; inset:-140px;
@@ -75,6 +79,7 @@
       transform: translateZ(0);
     }
 
+    /* зерно */
     body:after{
       content:"";
       position:fixed; inset:0;
@@ -119,6 +124,12 @@
       opacity:.75;
     }
     .top > *{position:relative; z-index:1;}
+    .brandRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
     .brand h1{
       margin:0;
       font-size: 26px;
@@ -141,7 +152,7 @@
       box-shadow: var(--shadow2);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      padding: 10px;
+      padding: 8px;
       overflow:hidden;
       position:relative;
     }
@@ -165,15 +176,15 @@
       min-height: calc(var(--vh) * 100 - 24px - var(--safeT) - var(--safeB));
     }
 
-    /* ✅ LEFT menu: ИКОНКИ УДАЛЕНЫ ПОЛНОСТЬЮ (только текст) */
+    /* LEFT: разделы списком вниз, "в виде иконки" (без SVG/картинок) */
     .left{
       position: sticky;
       top: calc(10px + var(--safeT));
       width: var(--leftW);
-      padding: 10px;
+      padding: 8px;
     }
     .leftTitle{
-      margin: 0 0 8px;
+      margin: 6px 6px 10px;
       font-weight: 900;
       font-size: 12px;
       opacity:.85;
@@ -182,35 +193,82 @@
     .menu{
       display:flex;
       flex-direction:column;
-      gap: 8px;
+      gap: 10px; /* списком вниз */
+      padding: 0 4px 4px;
     }
+
     .mi{
       width:100%;
-      border-radius: 14px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      border-radius: 16px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.16);
       box-shadow: 0 12px 26px rgba(0,0,0,.18);
-      padding: 10px 10px;
-      min-height: 42px;
+      padding: 8px 10px;
+      min-height: 46px;
       cursor:pointer;
       user-select:none;
       text-align:left;
       color: var(--text);
       font-weight: 1000;
-      font-size: 13px;
       position:relative;
       overflow:hidden;
-      transition: transform .08s ease, border-color .15s ease;
+      transition: transform .08s ease, border-color .15s ease, filter .15s ease;
     }
     .mi:active{ transform: translateY(1px); }
+
+    /* "иконка" — круг с буквой (не svg, не img, не emoji) */
+    .miBadge{
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      flex:0 0 auto;
+      display:grid;
+      place-items:center;
+      font-weight: 1000;
+      font-size: 12px;
+      color: rgba(255,255,255,.96);
+      border: 1px solid rgba(120,190,255,.48);
+      background:
+        radial-gradient(18px 18px at 35% 30%, rgba(255,255,255,.22), transparent 62%),
+        linear-gradient(180deg, var(--blueA), var(--blueB));
+      box-shadow: 0 14px 28px rgba(60,140,255,.18);
+    }
+
+    .miText{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+    }
+    .miText b{
+      font-size: 13px;
+      line-height:1.1;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .miText small{
+      font-size: 10px;
+      font-weight: 900;
+      color: var(--muted2);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      line-height:1.1;
+    }
+
     .mi.active{
       border-color: rgba(120,190,255,.46);
       background:
-        radial-gradient(160px 80px at 20% 20%, rgba(77,163,255,.18), transparent 60%),
+        radial-gradient(160px 90px at 20% 20%, rgba(77,163,255,.18), transparent 60%),
         linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      box-shadow: 0 18px 34px rgba(60,140,255,.14), 0 12px 26px rgba(0,0,0,.22);
     }
 
-    /* right */
+    /* RIGHT: только внешний вид, никаких "примерных ботов" */
     .right{
       display:flex;
       flex-direction:column;
@@ -222,7 +280,7 @@
       align-items:baseline;
       justify-content:space-between;
       gap:10px;
-      padding: 4px 2px 10px;
+      padding: 8px 10px 10px;
     }
     .secHead h2{
       margin:0;
@@ -237,67 +295,29 @@
       white-space:nowrap;
     }
 
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:12px;
-    }
-    @media (min-width: 980px){
-      .grid{ grid-template-columns: 1fr 1fr; }
-    }
-
-    /* ✅ cards: ИКОНКИ УДАЛЕНЫ ПОЛНОСТЬЮ */
-    .card{
+    .placeholder{
       border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.16);
-      box-shadow: var(--shadow2);
-      padding: 14px;
+      border: 1px dashed rgba(255,255,255,.16);
+      background: rgba(0,0,0,.14);
+      padding: 16px;
+      margin: 0 8px 8px;
+      box-shadow: 0 12px 28px rgba(0,0,0,.18);
     }
-    .card b{
+    .placeholder b{
       display:block;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 1000;
+      margin-bottom: 6px;
     }
-    .card p{
-      margin:6px 0 10px;
-      color: rgba(246,248,255,.66);
+    .placeholder p{
+      margin:0;
+      color: rgba(246,248,255,.62);
       font-weight: 900;
       font-size: 12px;
-      line-height: 1.35;
-    }
-    .actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .btn{
-      min-height: 42px;
-      padding: 10px 12px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: rgba(246,248,255,.92);
-      font-weight:1000;
-      cursor:pointer;
-      box-shadow: 0 12px 24px rgba(0,0,0,.22);
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      font-size: 13px;
-      user-select:none;
-      flex:1;
-      transition: transform .08s ease;
-    }
-    .btn:active{ transform: translateY(1px); }
-    .btn.primary{
-      background: linear-gradient(180deg, var(--blueA), var(--blueB));
-      border-color: rgba(120,190,255,.48);
-      color:#fff;
-      box-shadow: 0 16px 34px rgba(60,140,255,.22);
+      line-height: 1.4;
     }
 
-    /* modal */
+    /* MODAL (оставим для внешнего вида, без демо-контента) */
     .modal{
       position:fixed; inset:0;
       display:none;
@@ -348,7 +368,30 @@
     .hint{color: rgba(246,248,255,.62); font-size: 12px; line-height: 1.35;}
     a.link{color: rgba(140,190,255,.98); font-weight:1000; text-decoration:none;}
 
-    /* mobile */
+    .btn{
+      min-height: 44px;
+      padding: 12px 12px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: rgba(246,248,255,.92);
+      font-weight:1000;
+      cursor:pointer;
+      box-shadow: 0 12px 24px rgba(0,0,0,.22);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size: 13px;
+      user-select:none;
+    }
+    .btn.primary{
+      background: linear-gradient(180deg, var(--blueA), var(--blueB));
+      border-color: rgba(120,190,255,.48);
+      color:#fff;
+      box-shadow: 0 16px 34px rgba(60,140,255,.22);
+    }
+
+    /* mobile: меню остаётся слева? на телефоне делаем горизонтально, но если хочешь строго слева — скажи */
     @media (max-width: 860px){
       .layout{ grid-template-columns: 1fr; }
       .left{ width: 100%; position: relative; top:auto; }
@@ -356,11 +399,11 @@
         flex-direction: row;
         overflow:auto;
         gap:10px;
-        padding-bottom: 2px;
+        padding: 6px 4px 8px;
         scrollbar-width: none;
       }
       .menu::-webkit-scrollbar{ display:none; }
-      .mi{ min-width: 160px; }
+      .mi{ min-width: 190px; }
     }
   </style>
 </head>
@@ -370,38 +413,42 @@
 
     <!-- HEADER -->
     <section class="top">
-      <div class="brand">
-        <h1>TG Studio</h1>
-        <p>Telegram WebApp</p>
+      <div class="brandRow">
+        <div class="brand">
+          <h1>TG Studio</h1>
+          <p>Telegram WebApp</p>
+        </div>
       </div>
     </section>
 
     <!-- LAYOUT -->
     <section class="layout">
 
-      <!-- LEFT: Разделы (текстом, без иконок) -->
+      <!-- LEFT: Разделы (списком вниз, "иконка" = буква в кружке) -->
       <aside class="panel left">
         <div class="leftTitle">Разделы</div>
         <div class="menu" id="menuList"></div>
       </aside>
 
-      <!-- RIGHT: Контент -->
+      <!-- RIGHT: только внешний вид -->
       <div class="right">
-
         <section class="panel" id="secMain">
           <div class="secHead">
             <h2 id="secTitle">Услуги</h2>
-            <span id="secSub">Боты • WebApp</span>
+            <span id="secSub">Внешний вид</span>
           </div>
 
-          <div class="grid" id="cardsGrid"></div>
+          <div class="placeholder" id="placeholder">
+            <b>Сейчас настраиваем дизайн</b>
+            <p>Контент (примеры ботов/работ) выключен. При нажатии на разделы будет меняться только заголовок.</p>
+          </div>
         </section>
-
       </div>
+
     </section>
   </div>
 
-  <!-- REQUEST MODAL -->
+  <!-- REQUEST MODAL (можно скрыть/убрать позже) -->
   <div class="modal" id="mRequest">
     <div class="sheet">
       <div class="sheetTop">
@@ -464,27 +511,11 @@
   const DATA = {
     adminLink: "https://t.me/Yaki_Tahirov",
     sections: [
-      { id:"services",  title:"Услуги",    sub:"Боты • WebApp" },
-      { id:"portfolio", title:"Портфолио", sub:"Кейсы/примеры" },
-      { id:"prices",    title:"Прайс",     sub:"Ориентиры" },
-      { id:"contacts",  title:"Контакты",  sub:"Связаться" },
-    ],
-    cards: {
-      services: [
-        { title:"Telegram Bot", subtitle:"Заявка • Меню", cta1:{text:"Запрос", act:"openRequest"}, cta2:{text:"Написать", act:"openTG"} },
-        { title:"Telegram WebApp", subtitle:"Каталог • UI", cta1:{text:"Демо", act:"openLink", url:"https://tahirovdd-lang.github.io/Portfolio-bot/"}, cta2:{text:"Запрос", act:"openRequest"} },
-      ],
-      portfolio: [
-        { title:"Grand Cru", subtitle:"Catalog • Search • Leads", cta1:{text:"Запрос", act:"openRequest"}, cta2:{text:"Написать", act:"openTG"} },
-        { title:"Restaurant Menu", subtitle:"Menu • Delivery • Lang", cta1:{text:"Запрос", act:"openRequest"}, cta2:{text:"Написать", act:"openTG"} },
-      ],
-      prices: [
-        { title:"Прайс-лист", subtitle:"Сформирую под задачу", cta1:{text:"Запрос", act:"openRequest"}, cta2:{text:"Контакты", act:"openContacts"} },
-      ],
-      contacts: [
-        { title:"Связаться", subtitle:"Telegram • Телефон • Email", cta1:{text:"Открыть контакты", act:"openContacts"}, cta2:{text:"Написать", act:"openTG"} },
-      ]
-    }
+      { id:"services",  title:"Услуги",    sub:"Внешний вид", badge:"У" },
+      { id:"portfolio", title:"Портфолио", sub:"Внешний вид", badge:"П" },
+      { id:"prices",    title:"Прайс",     sub:"Внешний вид", badge:"₽" }, // если не хочешь символ — скажи, заменю на "П"
+      { id:"contacts",  title:"Контакты",  sub:"Внешний вид", badge:"К" },
+    ]
   };
 
   let activeId = "services";
@@ -506,50 +537,28 @@
     if(el) el.classList.add('active');
   }
 
-  function cardTemplate(item){
-    return `
-      <div class="card">
-        <b>${item.title}</b>
-        <p>${item.subtitle || ""}</p>
-        <div class="actions">
-          ${item.cta1 ? `<button class="btn" data-act="${item.cta1.act}" data-url="${item.cta1.url || ""}">${item.cta1.text}</button>` : ""}
-          ${item.cta2 ? `<button class="btn primary" data-act="${item.cta2.act}" data-url="${item.cta2.url || ""}">${item.cta2.text}</button>` : ""}
-        </div>
-      </div>
-    `;
-  }
-
-  function bindActions(root){
-    root.querySelectorAll('[data-act]').forEach(btn=>{
-      btn.onclick = ()=>{
-        const act = btn.getAttribute("data-act");
-        const url = btn.getAttribute("data-url") || "";
-
-        if(act === "openRequest") openModal("mRequest");
-        if(act === "openContacts") openModal("mContacts");
-        if(act === "openTG") window.open(DATA.adminLink, "_blank");
-        if(act === "openLink") window.open(url || DATA.adminLink, "_blank");
-      };
-    });
-  }
-
   function renderSection(id){
     const sec = DATA.sections.find(s=>s.id===id);
     document.getElementById("secTitle").textContent = sec?.title || "";
-    document.getElementById("secSub").textContent = sec?.sub || "";
+    document.getElementById("secSub").textContent = sec?.sub || "Внешний вид";
 
-    const grid = document.getElementById("cardsGrid");
-    grid.innerHTML = (DATA.cards[id] || []).map(cardTemplate).join("");
-    bindActions(grid);
-
-    if(id === "contacts") openModal("mContacts");
+    // ✅ никакого контента/примеров — только заголовок
+    // (оставляем placeholder как часть дизайна)
+    if(id === "contacts"){
+      // можно открыть контакты при клике, если нужно — уберу
+      openModal("mContacts");
+    }
   }
 
-  // render left menu (✅ ONLY 4 items, ✅ no icons)
+  // render left menu
   const menuList = document.getElementById("menuList");
   menuList.innerHTML = DATA.sections.map(s=>`
     <button class="mi" type="button" data-id="${s.id}">
-      ${s.title}
+      <span class="miBadge">${s.badge}</span>
+      <span class="miText">
+        <b>${s.title}</b>
+        <small>${s.sub}</small>
+      </span>
     </button>
   `).join("");
 
@@ -567,19 +576,13 @@
   // contacts button
   document.getElementById("btnWriteTG").onclick = ()=> window.open(DATA.adminLink, "_blank");
 
-  // sendData request
+  // sendData request (оставили, но это не "пример бота", это функционал)
   const rHint = document.getElementById('rHint');
   document.getElementById('rSend').onclick = ()=>{
     rHint.textContent = "";
     const text = document.getElementById('rText').value.trim();
-    if(!text){
-      rHint.textContent = "Напиши текст запроса.";
-      return;
-    }
-    if(!tg){
-      rHint.textContent = "Открой в Telegram, чтобы отправить.";
-      return;
-    }
+    if(!text){ rHint.textContent = "Напиши текст запроса."; return; }
+    if(!tg){ rHint.textContent = "Открой в Telegram, чтобы отправить."; return; }
     tg.sendData(JSON.stringify({ source:"lead", task: text, ts: Date.now() }));
     tg.HapticFeedback?.notificationOccurred?.("success");
     rHint.textContent = "Отправлено!";
