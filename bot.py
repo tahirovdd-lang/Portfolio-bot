@@ -23,7 +23,7 @@ BOT_TOKEN = os.getenv("BOT_TOKEN", "").strip()
 ADMIN_ID = int(os.getenv("ADMIN_ID", "6013591658"))
 WEBAPP_URL = os.getenv("WEBAPP_URL", "https://tahirovdd-lang.github.io/Portfolio-bot/").strip()
 
-BRAND_NAME = os.getenv("BRAND_NAME", "TG Studio — professional Telegram bot and WebApp solution").strip()
+BRAND_NAME = os.getenv("BRAND_NAME", "TG STUDIO | Digital Solutions").strip()
 BOT_USERNAME = os.getenv("BOT_USERNAME", "@Ecosystem_portfolio_bot").strip()
 PHONE = os.getenv("PHONE", "+998 (93) 746-00-22").strip()
 EMAIL = os.getenv("EMAIL", "tahirov.dd@gmail.com").strip()
@@ -55,32 +55,37 @@ def main_kb() -> ReplyKeyboardMarkup:
 
 
 WELCOME = (
-    f"👋 Привет! Это <b>{BRAND_NAME}</b>\n\n"
-    "Я делаю <b>Telegram-ботов</b> и <b>Telegram WebApp</b> под бизнес.\n"
-    "Нажми <b>🚀 Открыть портфолио</b> — там дизайн в стиле Sebtech + можно отправить запрос прямо из приложения.\n\n"
-    f"🤖 Бот: <b>{BOT_USERNAME}</b>"
+    f"👋 Добро пожаловать в <b>{BRAND_NAME}</b>!\n\n"
+    "💻 <b>Цифровые решения для бизнеса:</b>\n\n"
+    "🖥 <b>POS-системы и автоматизация</b> — касса, склад, аналитика и управление.\n"
+    "📱 <b>Мобильные приложения</b> — Android и iOS.\n"
+    "🤖 <b>Telegram-боты и Mini Apps</b> — каталоги, заказы, программы лояльности.\n"
+    "🌐 <b>Сайты и веб-приложения</b> — от лендингов до онлайн-платформ.\n\n"
+    "🚀 Нажмите <b>«Открыть портфолио»</b>, чтобы увидеть проекты и оставить заявку.\n\n"
+    f"🤖 {BOT_USERNAME}"
 )
 
 SERVICES = (
-    "✅ <b>Услуги</b>\n"
-    "• Telegram-боты: заявки, продажи, меню, запись, поддержка\n"
-    "• Telegram WebApp: каталог, корзина, оплаты, мультиязык\n"
-    "• Интеграции: Click/Payme, Instagram, Яндекс Карты, CRM\n"
-    "• Дизайн и адаптация под iPhone/Android"
+    "🧩 <b>Наши направления</b>\n\n"
+    "🖥 POS-системы: касса, склад, печать чеков, отчёты и аналитика\n"
+    "📱 Приложения для Android и iOS\n"
+    "🤖 Telegram-боты и Mini Apps: каталог, заказы, CRM, лояльность\n"
+    "🌐 Сайты, онлайн-платформы и веб-приложения\n"
+    "🔗 Интеграции, автоматизация и мультиязычные интерфейсы\n\n"
+    "Примеры работ — в разделе «🚀 Открыть портфолио»."
 )
 
 PRICING = (
-    "💰 <b>Прайс (ориентир)</b>\n"
-    "• Бот-визитка/портфолио: от 500 000 сум\n"
-    "• Бот с заявками/формами: от 800 000 сум\n"
-    "• WebApp-каталог: от 1 500 000 сум\n"
-    "• WebApp с корзиной/оплатой: от 2 500 000 сум\n\n"
-    "Точная стоимость зависит от задач — оставь заявку."
+    "💰 <b>Стоимость разработки</b>\n\n"
+    "Каждый проект рассчитывается индивидуально: от небольшого бота "
+    "до полноценной POS-системы или мобильного приложения.\n\n"
+    "Оставьте заявку с описанием задачи — подготовим предложение."
 )
 
 REVIEWS = (
-    "⭐️ <b>Отзывы</b>\n"
-    "Добавлю отзывы в WebApp (текст/скрины) и отдельную страницу.\n"
+    "⭐️ <b>Отзывы и реализованные проекты</b>\n\n"
+    "Посмотрите действующие проекты в портфолио. "
+    "Подтверждённые отзывы клиентов будут опубликованы отдельно."
 )
 
 CONTACTS = (
@@ -88,9 +93,8 @@ CONTACTS = (
     f"• Telegram: {TG_CONTACT}\n"
     f"• Телефон/WhatsApp: {PHONE}\n"
     f"• Почта: {EMAIL}\n"
-    f"• Портфолио (WebApp): {WEBAPP_URL}"
+    f"• Портфолио: {WEBAPP_URL}"
 )
-
 
 # ======================
 # CHAT LEAD FORM (FSM)
@@ -148,7 +152,7 @@ async def lead_name(message: Message, state: FSMContext):
 async def lead_contact(message: Message, state: FSMContext):
     await state.update_data(contact=(message.text or "").strip())
     await state.set_state(Lead.task)
-    await message.answer("Кратко: что нужно сделать? (бот / WebApp / сайт / интеграции)")
+    await message.answer("Кратко: что нужно сделать? (POS / приложение / бот / Mini App / сайт / интеграции)")
 
 
 @dp.message(Lead.task)
