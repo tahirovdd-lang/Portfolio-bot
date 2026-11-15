@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import CommandStart
-from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton, WebAppInfo
+from aiogram.types import Message, ReplyKeyboardMarkup, ReplyKeyboardRemove, KeyboardButton, WebAppInfo
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.enums import ParseMode
@@ -107,6 +107,8 @@ class Lead(StatesGroup):
 @dp.message(CommandStart())
 async def start_cmd(message: Message, state: FSMContext):
     await state.clear()
+    # Remove the old Telegram reply keyboard cached on the client before sending the new one.
+    await message.answer("Обновляем меню…", reply_markup=ReplyKeyboardRemove())
     await message.answer(WELCOME, reply_markup=main_kb())
 
 
