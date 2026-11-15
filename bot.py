@@ -46,9 +46,6 @@ def main_kb() -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(
         keyboard=[
             [KeyboardButton(text="🚀 Открыть портфолио", web_app=WebAppInfo(url=WEBAPP_URL))],
-            [KeyboardButton(text="🧩 Услуги"), KeyboardButton(text="💰 Прайс")],
-            [KeyboardButton(text="⭐️ Отзывы"), KeyboardButton(text="📩 Контакты")],
-            [KeyboardButton(text="📝 Оставить заявку")],
         ],
         resize_keyboard=True
     )
